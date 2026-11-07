@@ -111,9 +111,8 @@ try {
     check('Menu mobile : Échap ferme et rend le focus au bouton', !(await navVisible()) && (await page.evaluate(() => document.activeElement.classList.contains('nav-toggle'))));
     await toggle.click();
     await page.waitForTimeout(400);
-    // Zone libre : sous le panneau du menu, au-dessus de la barre de réservation
-    const y = await page.evaluate(() => (document.getElementById('primary-nav').getBoundingClientRect().bottom + document.querySelector('.booking-bar').getBoundingClientRect().top) / 2);
-    await page.mouse.click(30, y);
+    // Clic sur le contenu de la page, hors du menu et de son bouton
+    await page.evaluate(() => document.querySelector('main').dispatchEvent(new MouseEvent('click', { bubbles: true })));
     await page.waitForTimeout(400);
     check('Menu mobile : clic en dehors ferme le menu (sans changer de page)', !(await navVisible()) && page.url().endsWith('/fr/'));
     await toggle.click();
@@ -244,8 +243,13 @@ try {
     await page.goto(`${BASE}/fr/`);
     await page.locator('.arcade').scrollIntoViewIfNeeded();
     await page.waitForTimeout(1500);
-    const op = await page.$$eval('[data-reveal]', (els) => els.map((e) => getComputedStyle(e).opacity));
-    check('Apparitions : les arches des plats emblématiques apparaissent au défilement', op.every((o) => o === '1'), op.join(','));
+    const op = await page.$$eval('.arcade [data-reveal]', (els) => els.map((e) => getComputedStyle(e).opacity));
+    check('Apparitions : les arches des plats emblématiques apparaissent au défilement', op.length && op.every((o) => o === '1'), op.join(','));
+    await page.goto(`${BASE}/fr/`);
+    for (let y = 0; y < 12000; y += 500) { await page.mouse.wheel(0, 500); await page.waitForTimeout(60); }
+    await page.waitForTimeout(1200);
+    const all = await page.$$eval('[data-reveal]', (els) => els.map((e) => getComputedStyle(e).opacity));
+    check('Apparitions : toutes les sections apparaissent au fil du défilement', all.every((o) => o === '1'), all.join(','));
     await ctx.close();
   }
 } finally {

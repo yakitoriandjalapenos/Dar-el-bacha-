@@ -90,6 +90,8 @@ test('production acceptée quand tous les contenus sont renseignés (données de
     if (!c.items.length) c.items.push({ id: `test-${c.id}`, name: T('Plat'), description: null, price: 100, image: null });
     for (const i of c.items) { delete i.status; i.price = 120; }
   }
+  // Plats emblématiques désignés par le restaurant (ici, données de test), avec leur photo
+  menu.categories.flatMap((c) => c.items).slice(0, 3).forEach((i) => { i.signature = true; i.image = img; });
   await writeJSON('src/content/menu.json', menu);
 
   const media = await readJSON('src/content/media.json');

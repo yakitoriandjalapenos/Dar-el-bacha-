@@ -39,7 +39,7 @@
     document.addEventListener('focusin', (e) => {
       if (isOpen() && !nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
     });
-    window.matchMedia('(min-width: 64rem)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+    window.matchMedia('(min-width: 72rem)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
     menuReady = true;
   });
   // Signal pour layout.mjs : la navigation fonctionne, le mode JavaScript peut être conservé.
@@ -60,6 +60,18 @@
       });
     }, { rootMargin: '0px 0px -10% 0px' });
     revealables.forEach((el) => io.observe(el));
+  });
+
+  /* ---------- Fondu des photographies différées (jamais l'image principale, chargée en priorité) ---------- */
+  safely('images', () => {
+    if (reduceMotion) return;
+    document.querySelectorAll('.media img[loading="lazy"]').forEach((img) => {
+      if (img.complete) return;
+      img.classList.add('is-loading');
+      const done = () => img.classList.remove('is-loading');
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    });
   });
 
   /* ---------- Formulaire de demande de réservation ---------- */

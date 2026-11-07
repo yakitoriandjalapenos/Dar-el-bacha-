@@ -270,7 +270,7 @@ export function validateMedia(media, langs) {
     if (value.image && !value.alt) warnings.push(`media.json › ${label} : photo sans texte alternatif (considérée comme décorative).`);
   };
   const expect = {
-    'home.hero': 1, 'home.philosophy': 1, 'home.signature': 3, 'home.mosaic': 3,
+    'home.hero': 1, 'home.philosophy': 1, 'home.mosaic': 3,
     'histoire.presentation': 1, 'histoire.philosophie': 1, 'histoire.inspiration': 1, 'histoire.savoirFaire': 1,
     'histoire.recevoir': 1, 'histoire.ambiance': 1, 'contact.map': 1,
   };

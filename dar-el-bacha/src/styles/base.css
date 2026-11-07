@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Base : reset léger, typographie, accessibilité
+   Base : reset léger, typographie, accessibilité, transitions entre pages
    ========================================================================== */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -7,7 +7,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: var(--space-l);
+  scroll-padding-top: calc(var(--header-h) + var(--space-l));
 }
 
 body {
@@ -16,28 +16,31 @@ body {
   color: var(--fg);
   font-family: var(--font-text);
   font-size: var(--step-0);
+  font-weight: 400;
   line-height: var(--leading-text);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Fond et couleur suivent le thème local (sections .theme-dark) */
-.theme-dark { background: var(--bg); color: var(--fg); }
+/* Fond et couleur suivent le thème local (sections .theme-dark, .theme-sand) */
+.theme-dark, .theme-sand { background: var(--bg); color: var(--fg); }
 
 img, svg, picture, video { display: block; max-width: 100%; height: auto; }
-
-/* Logo officiel : une découpe raster ne dépasse jamais la moitié de sa largeur réelle (pas d'agrandissement) ;
-   un fichier SVG définitif (.logo--vector) n'a pas de limite. */
-.logo { width: auto; max-width: min(100%, var(--logo-max, 100%)); height: auto; }
-.logo--vector { max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
 p, h1, h2, h3, h4, figure, blockquote, dl, dd { margin: 0; }
 ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 
+/* Logo officiel : une découpe raster ne dépasse jamais la moitié de sa largeur réelle (pas d'agrandissement) ;
+   un fichier SVG définitif (.logo--vector) n'a pas de limite. */
+.logo { height: auto; max-width: var(--logo-max, 100%); }
+.logo--vector { max-width: 100%; }
+
+/* ---------- Typographie ---------- */
+
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 500;
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
   color: var(--heading);
@@ -49,21 +52,44 @@ h3 { font-size: var(--step-2); }
 
 p { text-wrap: pretty; max-width: var(--measure); }
 
-a { color: var(--link); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a { color: var(--link); text-underline-offset: 0.22em; text-decoration-thickness: 1px; transition: color var(--dur-fast) ease; }
 a:hover { text-decoration-thickness: 2px; }
+
+/* Surtitre : petites capitales espacées précédées d'un filet doré (sobre en arabe) */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-text);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent-text);
+  max-width: none;
+}
+.eyebrow::before { content: ""; inline-size: 2rem; block-size: 1px; background: var(--accent); flex: none; }
+.eyebrow:lang(ar) { font-size: var(--step--1); text-transform: none; }
+
+/* Chapeau éditorial : italique de titrage en latin, naskh en arabe */
+.lead {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--fg);
+  max-width: 34em;
+}
+.lead:lang(ar) { font-family: var(--font-text); font-style: normal; line-height: 1.9; color: var(--fg-muted); }
 
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
   border-radius: var(--radius-s);
 }
-
 main:focus { outline: none; }
 
-/* Contenus réservés au mode sans JavaScript */
-.js .no-js-only { display: none; }
-
-::selection { background: var(--c-sand-300); color: var(--c-ink); }
+::selection { background: var(--c-sand); color: var(--c-walnut); }
 
 /* Lien d'évitement */
 .skip-link {
@@ -73,7 +99,7 @@ main:focus { outline: none; }
   z-index: 100;
   padding: var(--space-2xs) var(--space-s);
   background: var(--c-ivory);
-  color: var(--c-emerald-800);
+  color: var(--c-emerald);
   transform: translateY(-200%);
 }
 .skip-link:focus { transform: none; }
@@ -88,18 +114,57 @@ main:focus { outline: none; }
 
 /* Information à confirmer : visible et facile à repérer avant la mise en ligne */
 .tbc {
-  color: var(--c-brown-700);
-  background: color-mix(in srgb, var(--c-sand-300) 45%, transparent);
-  padding-inline: 0.3em;
+  color: var(--c-walnut);
+  background: color-mix(in srgb, var(--c-sand) 70%, transparent);
+  padding: 0.05em 0.4em;
   border-radius: var(--radius-s);
   font-family: var(--font-text);
-  font-size: 0.92em;
-  letter-spacing: 0;
+  font-style: normal;
+  font-size: 0.85em;
+  letter-spacing: 0.02em;
 }
-.theme-dark .tbc { color: var(--c-gold-300); background: color-mix(in srgb, var(--c-emerald-600) 60%, transparent); }
+.theme-dark .tbc { color: var(--c-gold-300); background: color-mix(in srgb, var(--c-emerald-600) 55%, transparent); }
+
+/* Contenus réservés au mode sans JavaScript */
+.js .no-js-only { display: none; }
+
+/* ---------- Textures et motifs (décor : jamais plus d'un motif par section) ---------- */
+
+/* Grain de tadelakt sur les sections claires */
+.texture { position: relative; isolation: isolate; }
+.texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--img-grain);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+/* Treillis de moucharabieh, en or très discret, sur les sections émeraude */
+.lattice { position: relative; isolation: isolate; }
+.lattice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent);
+  opacity: 0.07;
+  -webkit-mask: var(--img-moucharabieh) 0 0 / 56px 56px repeat;
+  mask: var(--img-moucharabieh) 0 0 / 56px 56px repeat;
+  pointer-events: none;
+}
+
+/* ---------- Transitions entre les pages (navigateurs compatibles ; sans effet ailleurs) ---------- */
+
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 280ms; animation-timing-function: var(--ease-out); }
 
 /* Réduction des animations : on coupe tout, sans exception */
 @media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

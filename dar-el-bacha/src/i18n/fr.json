@@ -1,5 +1,8 @@
 {
-  "lang": { "name": "Français", "short": "FR" },
+  "lang": {
+    "name": "Français",
+    "short": "FR"
+  },
   "a11y": {
     "skip": "Aller au contenu",
     "primaryNav": "Navigation principale",
@@ -53,30 +56,48 @@
       "seoDescription": "Dar el Bacha, restaurant gastronomique marocain à Casablanca : cuisine de tradition, art de recevoir et réservation en ligne ou par WhatsApp.",
       "hero": {
         "title": "Une grande maison pour la cuisine marocaine",
-        "text": "À Casablanca, Dar el Bacha sert la gastronomie marocaine avec l'exigence des grandes tables : recettes de tradition, produits choisis, service attentif."
+        "text": "À Casablanca, Dar el Bacha sert la gastronomie marocaine avec l'exigence des grandes tables : recettes de tradition, produits choisis, service attentif.",
+        "eyebrow": "Casablanca · Gastronomie marocaine"
       },
       "intro": {
         "title": "Une adresse à Casablanca",
-        "text": "Dar el Bacha réunit l'héritage culinaire marocain et le soin d'une table gastronomique. Chaque visite est pensée comme une invitation : prendre place, se laisser servir, goûter."
+        "text": "Dar el Bacha réunit l'héritage culinaire marocain et le soin d'une table gastronomique. Chaque visite est pensée comme une invitation : prendre place, se laisser servir, goûter.",
+        "eyebrow": "La maison"
       },
       "philosophy": {
         "title": "La tradition comme point de départ",
-        "text": "Les recettes marocaines se transmettent par le geste et la patience. Nous les servons avec le même respect, dans une présentation contemporaine qui laisse parler le produit."
+        "text": "Les recettes marocaines se transmettent par le geste et la patience. Nous les servons avec le même respect, dans une présentation contemporaine qui laisse parler le produit.",
+        "eyebrow": "Philosophie"
       },
       "signature": {
         "title": "Plats emblématiques",
-        "text": "Une sélection de la carte, présentée ici dès que les plats et leurs photographies seront validés par le restaurant."
+        "text": "Une sélection de la carte, présentée ici dès que les plats et leurs photographies seront validés par le restaurant.",
+        "eyebrow": "Sélection"
       },
       "experience": {
         "title": "Le temps d'un repas",
-        "text": "De l'accueil à la fin du repas, chaque moment suit le rythme de l'hospitalité marocaine : attentif, généreux, jamais pressé."
+        "text": "De l'accueil à la fin du repas, chaque moment suit le rythme de l'hospitalité marocaine : attentif, généreux, jamais pressé.",
+        "eyebrow": "L'art de recevoir"
       },
       "photos": {
-        "title": "La maison en images"
+        "title": "La maison en images",
+        "eyebrow": "Galerie"
       },
       "cta": {
         "title": "Réserver votre table",
-        "text": "Envoyez une demande en ligne ou écrivez-nous sur WhatsApp. Le restaurant confirme chaque réservation."
+        "text": "Envoyez une demande en ligne ou écrivez-nous sur WhatsApp. Le restaurant confirme chaque réservation.",
+        "eyebrow": "Réservation"
+      },
+      "specialties": {
+        "eyebrow": "La carte",
+        "title": "Les saveurs de la carte",
+        "text": "Une carte volontairement resserrée, construite autour des grands classiques de la cuisine marocaine.",
+        "items": {
+          "entrees": "Salades marocaines et entrées de saison",
+          "plats": "Tajines, spécialités fassies et couscous",
+          "desserts": "Pâtisseries, amandes et fleur d'oranger",
+          "boissons": "Thé marocain, infusions et jus frais"
+        }
       }
     },
     "histoire": {
@@ -85,12 +106,29 @@
       "title": "Notre histoire",
       "lead": "Une maison dédiée à la cuisine marocaine et à l'art de recevoir.",
       "sections": {
-        "presentation": { "title": "Dar el Bacha" },
-        "philosophie": { "title": "Philosophie culinaire", "text": "Partir des recettes de tradition, choisir les produits avec soin, puis dresser chaque assiette avec la précision d'une table gastronomique." },
-        "inspiration": { "title": "L'inspiration marocaine", "text": "Les épices, les cuissons lentes, les douceurs à l'amande et à la fleur d'oranger : la cuisine marocaine offre un répertoire d'une grande richesse, que la carte explore avec mesure." },
-        "savoirFaire": { "title": "Savoir-faire et traditions", "text": "Certaines préparations demandent des heures. Ce temps fait partie de la recette, et nous le respectons." },
-        "recevoir": { "title": "L'art de recevoir", "text": "Recevoir, au Maroc, est une manière d'honorer ses hôtes. Ce sens de l'accueil guide le service, du premier mot à la dernière attention." },
-        "ambiance": { "title": "L'ambiance", "text": "Une lumière douce, des matières naturelles, des détails d'artisanat : un cadre pensé pour que le repas se déroule sans hâte." }
+        "presentation": {
+          "title": "Dar el Bacha"
+        },
+        "philosophie": {
+          "title": "Philosophie culinaire",
+          "text": "Partir des recettes de tradition, choisir les produits avec soin, puis dresser chaque assiette avec la précision d'une table gastronomique."
+        },
+        "inspiration": {
+          "title": "L'inspiration marocaine",
+          "text": "Les épices, les cuissons lentes, les douceurs à l'amande et à la fleur d'oranger : la cuisine marocaine offre un répertoire d'une grande richesse, que la carte explore avec mesure."
+        },
+        "savoirFaire": {
+          "title": "Savoir-faire et traditions",
+          "text": "Certaines préparations demandent des heures. Ce temps fait partie de la recette, et nous le respectons."
+        },
+        "recevoir": {
+          "title": "L'art de recevoir",
+          "text": "Recevoir, au Maroc, est une manière d'honorer ses hôtes. Ce sens de l'accueil guide le service, du premier mot à la dernière attention."
+        },
+        "ambiance": {
+          "title": "L'ambiance",
+          "text": "Une lumière douce, des matières naturelles, des détails d'artisanat : un cadre pensé pour que le repas se déroule sans hâte."
+        }
       }
     },
     "carte": {
@@ -107,7 +145,8 @@
         "boissons": "Boissons"
       },
       "empty": "Sélection en cours de validation par le restaurant.",
-      "pending": "À valider"
+      "pending": "À valider",
+      "ingredients": "Ingrédients et particularités"
     },
     "galerie": {
       "seoTitle": "Galerie — Plats, salle et ambiance | Dar el Bacha",
@@ -164,7 +203,12 @@
         "note": "Le restaurant vous répond sur WhatsApp pour confirmer la réservation.",
         "useForm": "Les informations saisies dans le formulaire sont reprises dans le message.",
         "message": "Bonjour, je souhaite réserver une table chez Dar el Bacha.",
-        "fields": { "name": "Nom", "date": "Date", "time": "Heure", "guests": "Personnes" }
+        "fields": {
+          "name": "Nom",
+          "date": "Date",
+          "time": "Heure",
+          "guests": "Personnes"
+        }
       },
       "system": {
         "title": "Réservation en ligne",

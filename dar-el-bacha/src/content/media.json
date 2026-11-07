@@ -1,14 +1,9 @@
 {
-  "_comment": "Emplacements photo des pages (la galerie est dans gallery.json). image : nom d'une photo préparée par « npm run images » (ex. « restaurant/salle-principale »), ou null = emplacement temporaire signalé « Photographie officielle à venir ». alt : texte alternatif { fr, en, ar } à rédiger avec la photo ; null si la photo est purement décorative. Ne jamais y placer une photo qui ne vient pas du restaurant.",
+  "_comment": "Emplacements photo des pages (la galerie est dans gallery.json ; les plats emblématiques de l'accueil utilisent les photos de menu.json). image : nom d'une photo préparée par « npm run images » (ex. « restaurant/salle-principale »), ou null = emplacement temporaire signalé « Photographie officielle à venir ». alt : texte alternatif { fr, en, ar } à rédiger avec la photo ; null si la photo est purement décorative. Ne jamais y placer une photo qui ne vient pas du restaurant.",
 
   "home": {
     "hero": { "image": null, "alt": null },
     "philosophy": { "image": null, "alt": null },
-    "signature": [
-      { "image": null, "alt": null },
-      { "image": null, "alt": null },
-      { "image": null, "alt": null }
-    ],
     "mosaic": [
       { "image": null, "alt": null, "format": "portrait" },
       { "image": null, "alt": null, "format": "paysage" },

@@ -1,11 +1,12 @@
 /* ==========================================================================
-   Layout : conteneurs, grilles, en-tête, pied de page
+   Layout : conteneurs, rythme vertical, en-tête, menu mobile, pied de page
    ========================================================================== */
 
 .wrap {
   width: min(100% - 2 * var(--gutter), var(--wrap-max));
   margin-inline: auto;
 }
+.wrap--narrow { width: min(100% - 2 * var(--gutter), var(--wrap-narrow)); }
 
 .section { padding-block: var(--space-2xl); }
 .section--tight { padding-block: var(--space-xl); }
@@ -17,27 +18,21 @@
 .stack-l { --stack-gap: var(--space-m); }
 
 /* Titre à gauche, texte à droite (empilés sur mobile) */
-.split {
-  display: grid;
-  gap: var(--space-m) var(--space-l);
-}
+.split { display: grid; gap: var(--space-m) var(--space-l); }
 @media (min-width: 56rem) {
   .split { grid-template-columns: 5fr 6fr; align-items: start; }
   .split > :last-child { padding-block-start: 0.6em; }
 }
 
-/* Média + texte */
-.feature {
-  display: grid;
-  gap: var(--space-l);
-  align-items: center;
-}
+/* Média + texte (anciennes et nouvelles compositions éditoriales) */
+.feature, .editorial { display: grid; gap: var(--space-l); align-items: center; }
 @media (min-width: 56rem) {
   .feature { grid-template-columns: 7fr 5fr; gap: var(--space-xl); }
   .feature--reverse > :first-child { order: 2; }
+  .editorial { grid-template-columns: 5fr 6fr; gap: var(--space-2xl); }
+  .editorial--reverse > :first-child { order: 2; }
 }
-
-.lead { font-size: var(--step-1); color: var(--fg-muted); max-width: 32em; }
+.editorial__media { width: min(100%, 26rem); justify-self: center; }
 
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
 
@@ -45,8 +40,14 @@
 
 .site-header {
   position: relative;
-  z-index: 20;
+  z-index: 30;
+  background: var(--bg);
   border-block-end: 1px solid var(--rule);
+  view-transition-name: site-header;
+}
+/* Grand écran : en-tête toujours visible (accès permanent à la navigation et à la réservation) */
+@media (min-width: 72rem) {
+  .site-header { position: sticky; top: 0; }
 }
 .site-header__inner {
   display: flex;
@@ -65,20 +66,22 @@
   text-decoration: none;
   padding-block: var(--space-2xs);
 }
-.brand__symbol { height: 3.5rem; width: auto; }
+.brand__symbol { height: 3.4rem; width: auto; }
 .brand__name {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.12rem;
+  font-weight: 500;
   letter-spacing: var(--tracking-wordmark);
   text-transform: uppercase;
   white-space: nowrap;
 }
-.brand__name:lang(ar) { font-size: 1.45rem; text-transform: none; }
-.brand:hover .brand__name { color: var(--accent); }
+.brand__name:lang(ar) { font-size: 1.3rem; text-transform: none; }
+.brand:hover .brand__name { color: var(--accent-text); }
 .brand--full .brand__logo { height: 4.25rem; width: auto; }
 @media (max-width: 40rem) {
   .brand__symbol { height: 2.75rem; }
-  .brand__name { font-size: 0.95rem; letter-spacing: 0.14em; }
+  .brand__name { font-size: 0.98rem; letter-spacing: 0.16em; }
+  .site-header__inner { gap: var(--space-s); }
   /* Bouton menu : icône seule, le libellé reste lu par les lecteurs d'écran */
   .nav-toggle { padding: var(--space-xs); }
   .nav-toggle__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -86,19 +89,35 @@
 
 .primary-nav__list {
   display: flex;
-  gap: var(--space-m);
+  gap: clamp(1rem, 0.2rem + 1.4vw, 1.75rem);
   align-items: center;
 }
 .primary-nav__list a {
+  position: relative;
   color: var(--fg);
   text-decoration: none;
   font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
   padding-block: var(--space-2xs);
-  border-block-end: 1px solid transparent;
-  transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease;
 }
-.primary-nav__list a:hover { color: var(--accent); }
-.primary-nav__list a[aria-current="page"] { border-block-end-color: var(--accent); }
+.primary-nav__list a:lang(ar), :lang(ar) .primary-nav__list a { letter-spacing: 0; text-transform: none; font-size: var(--step-0); }
+/* Filet doré qui se déploie au survol et marque la page active */
+.primary-nav__list a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0.2rem;
+  block-size: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.primary-nav__list a:hover { color: var(--accent-text); }
+.primary-nav__list a:hover::after,
+.primary-nav__list a[aria-current="page"]::after { transform: scaleX(1); }
 
 .site-header__tools { display: flex; align-items: center; gap: var(--space-s); }
 
@@ -106,13 +125,16 @@
   display: none;
   align-items: center;
   gap: var(--space-2xs);
+  min-height: 2.75rem;
   background: none;
   border: 1px solid var(--rule);
   border-radius: var(--radius-s);
   padding: var(--space-2xs) var(--space-xs);
   font-size: var(--step--1);
+  transition: border-color var(--dur-fast) ease;
 }
-.nav-toggle__bars { width: 1.1rem; height: 0.7rem; position: relative; }
+.nav-toggle:hover { border-color: var(--accent); }
+.nav-toggle__bars { width: 1.2rem; height: 0.7rem; position: relative; }
 .nav-toggle__bars::before,
 .nav-toggle__bars::after {
   content: "";
@@ -127,8 +149,9 @@
 .nav-toggle[aria-expanded="true"] .nav-toggle__bars::before { transform: translateY(0.33rem) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle__bars::after { transform: translateY(-0.33rem) rotate(-45deg); }
 
-/* Mobile : menu repliable (seulement si JavaScript est actif ; sinon les liens restent visibles) */
-@media (max-width: 63.99rem) {
+/* Mobile, tablette et petits portables : menu repliable (seulement si JavaScript est actif ; sinon les liens restent visibles).
+   La navigation horizontale complète s'affiche à partir de 72rem, où elle tient sur une ligne dans les trois langues. */
+@media (max-width: 71.99rem) {
   .site-header__inner { flex-wrap: wrap; }
   .js .nav-toggle { display: inline-flex; }
 
@@ -141,6 +164,8 @@
     position: absolute;
     inset-inline: 0;
     top: 100%;
+    max-height: calc(100svh - var(--header-h));
+    overflow-y: auto;
     background: var(--bg);
     border-block-end: 1px solid var(--rule);
     padding: var(--space-s) var(--gutter) var(--space-l);
@@ -159,11 +184,15 @@
   .js .primary-nav__list a {
     display: block;
     font-family: var(--font-display);
-    font-size: var(--step-2);
+    font-size: var(--step-3);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
     padding-block: var(--space-xs);
     border-block-end: 1px solid var(--rule);
   }
-  .js .primary-nav__list a[aria-current="page"] { color: var(--accent); }
+  .js .primary-nav__list a::after { display: none; }
+  .js .primary-nav__list a[aria-current="page"] { color: var(--accent-text); }
   .primary-nav__cta { margin-block-start: var(--space-m); display: grid; gap: var(--space-m); justify-items: start; }
   .js .site-header__inner { flex-wrap: nowrap; }
   .js .lang-switch--bar { display: none; }
@@ -174,9 +203,16 @@
   .site-header__tools .btn { display: none; }
 }
 
+/* Très petits écrans (320px) : nom de la maison resserré pour tenir à côté du bouton de menu */
+@media (max-width: 22rem) {
+  .brand { gap: var(--space-2xs); }
+  .brand__symbol { height: 2.4rem; }
+  .brand__name { font-size: 0.86rem; letter-spacing: 0.1em; }
+}
+
 /* Sans JavaScript, le sélecteur reste dans la barre : on n'affiche pas son double */
 .no-js .lang-switch--panel { display: none; }
-@media (min-width: 64rem) {
+@media (min-width: 72rem) {
   .primary-nav__cta { display: none; }
 }
 
@@ -184,29 +220,42 @@
 
 .site-footer {
   --bg: var(--c-emerald-950);
-  padding-block: var(--space-xl) var(--space-l);
-  border-block-start: 1px solid var(--rule);
+  position: relative;
+  padding-block: var(--space-2xl) var(--space-l);
   font-size: var(--step--1);
 }
 .site-footer__grid {
   display: grid;
-  gap: var(--space-l);
+  gap: var(--space-xl) var(--space-l);
 }
 @media (min-width: 48rem) {
+  .site-footer__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 64rem) {
   .site-footer__grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
 }
 .site-footer h2 {
-  font-size: var(--step-0);
-  color: var(--accent);
-  margin-block-end: var(--space-xs);
+  font-family: var(--font-text);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-block-end: var(--space-s);
 }
+.site-footer h2:lang(ar), :lang(ar) .site-footer h2 { font-size: var(--step--1); text-transform: none; }
+.site-footer__brand > * + * { margin-block-start: var(--space-s); }
 .footer-logo { display: inline-block; }
-.footer-logo img { width: 10.5rem; height: auto; }
+.footer-logo img { width: 9.5rem; }
 .site-footer p { color: var(--fg-muted); }
-.site-footer ul a { color: var(--fg); text-decoration: none; }
-.site-footer ul a:hover { color: var(--accent); text-decoration: underline; }
+.site-footer a { color: var(--fg); text-decoration: none; }
+.site-footer a:hover { color: var(--accent-text); text-decoration: underline; }
 .site-footer ul > li + li { margin-block-start: var(--space-3xs); }
 .site-footer address { font-style: normal; }
+.site-footer__langs-title { margin-block-start: var(--space-l); }
+.site-footer__langs { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-s); }
+.site-footer__langs li + li { margin-block-start: 0 !important; }
+.site-footer__langs a[aria-current="true"] { color: var(--accent-text); }
 .site-footer__base {
   margin-block-start: var(--space-xl);
   padding-block-start: var(--space-s);
@@ -224,7 +273,8 @@
   padding: var(--space-2xs) var(--gutter);
   padding-block-end: max(var(--space-2xs), env(safe-area-inset-bottom));
   border-block-start: 1px solid var(--rule);
-  box-shadow: 0 -0.5rem 1.5rem color-mix(in srgb, var(--c-ink) 18%, transparent);
+  box-shadow: 0 -0.5rem 1.5rem color-mix(in srgb, var(--c-walnut) 20%, transparent);
+  view-transition-name: booking-bar;
 }
 @media (min-width: 40rem) {
   .booking-bar { display: none; }

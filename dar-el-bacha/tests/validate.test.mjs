@@ -135,11 +135,11 @@ test('informations officielles : formats contrôlés', () => {
 
 test('emplacements photo : structure, nom de photo, texte alternatif', () => {
   const m = clone(media);
-  m.home.signature.pop();
+  m.home.mosaic.pop();
   m.histoire.ambiance.image = 'Photo Salle.JPG';
   m.contact.map.alt = { fr: 'Plan' };
   const errors = validateMedia(m, LANGS).errors.join('\n');
-  assert.match(errors, /home\.signature : liste de 3 emplacements attendue/);
+  assert.match(errors, /home\.mosaic : liste de 3 emplacements attendue/);
   assert.match(errors, /nom de photo invalide/);
   assert.match(errors, /contact\.map › alt : version en manquante/);
 

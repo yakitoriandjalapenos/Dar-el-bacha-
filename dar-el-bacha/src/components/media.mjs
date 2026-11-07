@@ -5,20 +5,23 @@ import { html, attrs } from '../../scripts/lib/html.mjs';
  *
  * image : nom d'une photo préparée par « npm run images » (ex. "restaurant/salle"),
  *         ou { src: "photos/salle", width: 1600, height: 1067 } (chemin sous src/assets/img/, sans extension),
- *         ou null → emplacement temporaire avec motif zellige et légende (balisé comme provisoire).
+ *         ou null → emplacement provisoire élégant (tadelakt, moucharabieh, arche) avec la mention
+ *         « Photographie officielle à venir », balisé comme provisoire. Il n'imite jamais une photographie.
  * Le build fournit ctx.resolveImage() (dimensions, couleur dominante) et ctx.picture() (variantes AVIF/WebP/JPEG).
  *
  * Priorités de chargement :
  *   eager: true               → chargement immédiat (image visible dès l'ouverture, au moins sur grand écran) ;
  *   priority: 'high'          → en plus, priorité haute : une seule image par page (l'image principale), contrôlé au build ;
- *   par défaut                → chargement différé (hors écran).
+ *   par défaut                → chargement différé (hors écran), avec un fondu discret à l'arrivée (main.js).
  */
 export function media(ctx, { image = null, alt = '', format = 'paysage', caption, dark = false, eager = false, priority = null, sizes = '100vw', className = '' } = {}) {
   const cls = ['media', format && `media--${format}`, className].filter(Boolean).join(' ');
 
   if (!image) {
-    return html`<div class="${cls} media--placeholder${dark ? ' is-dark' : ''}" role="img" aria-label="${caption || ctx.t('tbc.photo')}" data-provisional="photo">
-      <span class="media__caption" aria-hidden="true">${caption || ctx.t('tbc.photo')}</span>
+    const label = caption || ctx.t('tbc.photo');
+    return html`<div class="${cls} media--placeholder${dark ? ' is-dark' : ''}" role="img" aria-label="${label}" data-provisional="photo">
+      <svg class="media__mark" viewBox="0 0 100 140" aria-hidden="true" focusable="false"><path d="M10 140V64C2 54 0 36 11 21 22 8 38 2 50 0c12 2 28 8 39 21 11 15 9 33 1 43v76"/></svg>
+      <span class="media__caption" aria-hidden="true">${label}</span>
     </div>`;
   }
 

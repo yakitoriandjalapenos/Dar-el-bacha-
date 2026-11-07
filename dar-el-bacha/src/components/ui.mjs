@@ -28,11 +28,12 @@ export function info(ctx, value, tbcKey) {
 export const ornament = (center = false) =>
   html`<div class="ornament${center ? ' ornament--center' : ''}" aria-hidden="true">${icons.star()}</div>`;
 
-/** En-tête des pages intérieures (fond émeraude, filet d'arche en écho au hero). */
-export function pageHead({ title, lead }) {
+/** En-tête des pages intérieures (fond émeraude, treillis, filet d'arche en écho au hero). */
+export function pageHead({ title, lead, kicker }) {
   return html`<header class="page-head theme-dark">
     ${archLine('page-head__arch arch-frame__line')}
     <div class="wrap page-head__inner stack">
+      ${kicker && html`<p class="eyebrow">${kicker}</p>`}
       <h1>${title}</h1>
       ${lead && html`<p class="lead">${lead}</p>`}
     </div>

@@ -1,5 +1,8 @@
 {
-  "lang": { "name": "English", "short": "EN" },
+  "lang": {
+    "name": "English",
+    "short": "EN"
+  },
   "a11y": {
     "skip": "Skip to content",
     "primaryNav": "Main navigation",
@@ -53,30 +56,48 @@
       "seoDescription": "Dar el Bacha, a Moroccan fine dining restaurant in Casablanca: traditional cuisine, the art of hospitality, and table requests online or via WhatsApp.",
       "hero": {
         "title": "A grand house for Moroccan cuisine",
-        "text": "In Casablanca, Dar el Bacha serves Moroccan gastronomy with the care of a fine dining table: traditional recipes, carefully chosen produce, attentive service."
+        "text": "In Casablanca, Dar el Bacha serves Moroccan gastronomy with the care of a fine dining table: traditional recipes, carefully chosen produce, attentive service.",
+        "eyebrow": "Casablanca · Moroccan fine dining"
       },
       "intro": {
         "title": "An address in Casablanca",
-        "text": "Dar el Bacha brings together Morocco's culinary heritage and the precision of fine dining. Every visit is meant as an invitation: take your seat, let us look after you, and taste."
+        "text": "Dar el Bacha brings together Morocco's culinary heritage and the precision of fine dining. Every visit is meant as an invitation: take your seat, let us look after you, and taste.",
+        "eyebrow": "The house"
       },
       "philosophy": {
         "title": "Tradition as a starting point",
-        "text": "Moroccan recipes are passed down through gesture and patience. We serve them with the same respect, in a contemporary presentation that lets the produce speak."
+        "text": "Moroccan recipes are passed down through gesture and patience. We serve them with the same respect, in a contemporary presentation that lets the produce speak.",
+        "eyebrow": "Philosophy"
       },
       "signature": {
         "title": "Signature dishes",
-        "text": "A selection from the menu, shown here once the dishes and their photographs have been approved by the restaurant."
+        "text": "A selection from the menu, shown here once the dishes and their photographs have been approved by the restaurant.",
+        "eyebrow": "Selection"
       },
       "experience": {
         "title": "The time of a meal",
-        "text": "From your arrival to the end of the meal, every moment follows the rhythm of Moroccan hospitality: attentive, generous, never rushed."
+        "text": "From your arrival to the end of the meal, every moment follows the rhythm of Moroccan hospitality: attentive, generous, never rushed.",
+        "eyebrow": "The art of hospitality"
       },
       "photos": {
-        "title": "The house in pictures"
+        "title": "The house in pictures",
+        "eyebrow": "Gallery"
       },
       "cta": {
         "title": "Book your table",
-        "text": "Send a request online or message us on WhatsApp. The restaurant confirms every reservation."
+        "text": "Send a request online or message us on WhatsApp. The restaurant confirms every reservation.",
+        "eyebrow": "Reservations"
+      },
+      "specialties": {
+        "eyebrow": "The menu",
+        "title": "Flavours of the menu",
+        "text": "A deliberately concise menu, built around the great classics of Moroccan cuisine.",
+        "items": {
+          "entrees": "Moroccan salads and seasonal starters",
+          "plats": "Tagines, Fassi specialities and couscous",
+          "desserts": "Pastries, almonds and orange blossom",
+          "boissons": "Moroccan tea, infusions and fresh juices"
+        }
       }
     },
     "histoire": {
@@ -85,12 +106,29 @@
       "title": "Our story",
       "lead": "A house devoted to Moroccan cuisine and the art of hospitality.",
       "sections": {
-        "presentation": { "title": "Dar el Bacha" },
-        "philosophie": { "title": "Culinary philosophy", "text": "Start from traditional recipes, choose produce with care, then plate each dish with the precision of fine dining." },
-        "inspiration": { "title": "Moroccan inspiration", "text": "Spices, slow cooking, almond and orange blossom sweets: Moroccan cuisine offers a remarkably rich repertoire, which the menu explores with restraint." },
-        "savoirFaire": { "title": "Know-how and tradition", "text": "Some preparations take hours. That time is part of the recipe, and we respect it." },
-        "recevoir": { "title": "The art of hospitality", "text": "In Morocco, welcoming guests is a way of honouring them. That sense of hospitality guides our service, from the first word to the last attention." },
-        "ambiance": { "title": "The atmosphere", "text": "Soft light, natural materials, crafted details: a setting designed so that the meal unfolds without haste." }
+        "presentation": {
+          "title": "Dar el Bacha"
+        },
+        "philosophie": {
+          "title": "Culinary philosophy",
+          "text": "Start from traditional recipes, choose produce with care, then plate each dish with the precision of fine dining."
+        },
+        "inspiration": {
+          "title": "Moroccan inspiration",
+          "text": "Spices, slow cooking, almond and orange blossom sweets: Moroccan cuisine offers a remarkably rich repertoire, which the menu explores with restraint."
+        },
+        "savoirFaire": {
+          "title": "Know-how and tradition",
+          "text": "Some preparations take hours. That time is part of the recipe, and we respect it."
+        },
+        "recevoir": {
+          "title": "The art of hospitality",
+          "text": "In Morocco, welcoming guests is a way of honouring them. That sense of hospitality guides our service, from the first word to the last attention."
+        },
+        "ambiance": {
+          "title": "The atmosphere",
+          "text": "Soft light, natural materials, crafted details: a setting designed so that the meal unfolds without haste."
+        }
       }
     },
     "carte": {
@@ -107,7 +145,8 @@
         "boissons": "Drinks"
       },
       "empty": "Selection being finalised by the restaurant.",
-      "pending": "To be approved"
+      "pending": "To be approved",
+      "ingredients": "Ingredients and details"
     },
     "galerie": {
       "seoTitle": "Gallery — Dishes, dining room and atmosphere | Dar el Bacha",
@@ -164,7 +203,12 @@
         "note": "The restaurant replies on WhatsApp to confirm your reservation.",
         "useForm": "Details entered in the form are included in the message.",
         "message": "Hello, I would like to book a table at Dar el Bacha.",
-        "fields": { "name": "Name", "date": "Date", "time": "Time", "guests": "Guests" }
+        "fields": {
+          "name": "Name",
+          "date": "Date",
+          "time": "Time",
+          "guests": "Guests"
+        }
       },
       "system": {
         "title": "Book online",
