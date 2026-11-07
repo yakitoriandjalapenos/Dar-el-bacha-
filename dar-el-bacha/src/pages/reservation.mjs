@@ -94,9 +94,14 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.cta.e
         ${eyebrow(p('paths.form'))}
         <h2 id="form-title">${f('title')}</h2>
         <p>${f('text')}</p>
-        <form id="reservation-form" novalidate${endpoint ? html` method="post" action="${endpoint}"` : ''}
+        <!-- Sans JavaScript, le navigateur valide les champs et envoie la demande au service (s'il est relié) ;
+             avec JavaScript, main.js prend le relais (messages traduits, mêmes règles que le serveur). -->
+        <form id="reservation-form"${endpoint ? html` method="post" action="${endpoint}"` : ''}
           data-endpoint="${endpoint || ''}"${endpoint ? '' : html` data-provisional="form-endpoint"`}
+          data-max-days="${ctx.reservationMaxDays}"${site.openingHours ? html` data-opening-hours="${JSON.stringify(site.openingHours)}"` : ''}
           data-messages="${JSON.stringify(messages)}">
+          <input type="hidden" name="lang" value="${ctx.lang}">
+          <input type="hidden" name="started" value="">
           <div class="form-grid">
             ${field({ id: 'name', autocomplete: 'name', full: true, extra: html` maxlength="120"` })}
             ${field({ id: 'email', type: 'email', autocomplete: 'email', extra: html` maxlength="160"` })}
@@ -111,8 +116,16 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.cta.e
             <label for="f-website">Website</label>
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
+          <div class="field field--consent">
+            <div class="consent">
+              <input id="f-consent" name="consent" type="checkbox" value="yes" required aria-describedby="e-consent consent-info">
+              <label for="f-consent">${f('consent')} <span class="visually-hidden">(${ctx.t('a11y.required')})</span><span aria-hidden="true">*</span></label>
+            </div>
+            <p class="note" id="consent-info">${f('privacyInfo')} <a href="${ctx.path('confidentialite')}">${ctx.t('legal.privacy')}</a></p>
+            <p class="field__error" id="e-consent"></p>
+          </div>
           <p class="note">${f('note')}</p>
-          <p class="note no-js-only">${f('noScript')}</p>
+          ${!endpoint && html`<p class="note no-js-only">${f('noScript')}</p>`}
           <button class="btn" type="submit">${f('submit')}</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>

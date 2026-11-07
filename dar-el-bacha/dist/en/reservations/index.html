@@ -14,9 +14,9 @@
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/cormorant-garamond-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.7b33cacfe2.css">
+<link rel="stylesheet" href="/assets/site.ca15305256.css">
 <script>(function(d){d.classList.replace('no-js','js');addEventListener('load',function(){if(!d.classList.contains('js-ok'))d.classList.replace('js','no-js')})})(document.documentElement)</script>
-<script src="/assets/main.42bc8ca315.js" defer></script>
+<script src="/assets/main.fc5d34fbf7.js" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="Reservations — Dar el Bacha, Casablanca">
@@ -119,9 +119,14 @@
         <p class="eyebrow">Send a request, then confirmed by the restaurant</p>
         <h2 id="form-title">Online request</h2>
         <p>Fill in the form. The restaurant will contact you to confirm your table.</p>
-        <form id="reservation-form" novalidate
+        <!-- Sans JavaScript, le navigateur valide les champs et envoie la demande au service (s'il est relié) ;
+             avec JavaScript, main.js prend le relais (messages traduits, mêmes règles que le serveur). -->
+        <form id="reservation-form"
           data-endpoint="" data-provisional="form-endpoint"
-          data-messages="{&quot;sending&quot;:&quot;Sending…&quot;,&quot;success&quot;:&quot;Request sent. It is awaiting confirmation from the restaurant.&quot;,&quot;error&quot;:&quot;Your request could not be sent. Check your connection and try again, or call the restaurant.&quot;,&quot;invalid&quot;:&quot;Some fields need to be completed or corrected.&quot;,&quot;notConfigured&quot;:&quot;Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone.&quot;,&quot;errors&quot;:{&quot;required&quot;:&quot;This field is required.&quot;,&quot;email&quot;:&quot;Enter a valid email address, for example name@domain.com.&quot;,&quot;phone&quot;:&quot;Enter a valid phone number.&quot;,&quot;date&quot;:&quot;Choose a date from today onwards.&quot;},&quot;whatsapp&quot;:{&quot;intro&quot;:&quot;Hello, I would like to book a table at Dar el Bacha.&quot;,&quot;fields&quot;:{&quot;name&quot;:&quot;Name&quot;,&quot;date&quot;:&quot;Date&quot;,&quot;time&quot;:&quot;Time&quot;,&quot;guests&quot;:&quot;Guests&quot;}}}">
+          data-max-days="180"
+          data-messages="{&quot;sending&quot;:&quot;Sending…&quot;,&quot;success&quot;:&quot;Request sent. It is awaiting confirmation from the restaurant.&quot;,&quot;error&quot;:&quot;Your request could not be sent. Check your connection and try again, or call the restaurant.&quot;,&quot;invalid&quot;:&quot;Some fields need to be completed or corrected.&quot;,&quot;notConfigured&quot;:&quot;Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone.&quot;,&quot;simulated&quot;:&quot;Test mode: the sending service is not active yet, your request has not been passed on to the restaurant. Please contact it by phone or WhatsApp.&quot;,&quot;rateLimited&quot;:&quot;Several requests have already been sent from this connection. Please try again later or contact the restaurant by phone or WhatsApp.&quot;,&quot;errors&quot;:{&quot;required&quot;:&quot;This field is required.&quot;,&quot;email&quot;:&quot;Enter a valid email address, for example name@domain.com.&quot;,&quot;phone&quot;:&quot;Enter a valid phone number.&quot;,&quot;date&quot;:&quot;Choose a date from today onwards.&quot;,&quot;consent&quot;:&quot;Please agree to the use of your information to send the request.&quot;,&quot;dateTooFar&quot;:&quot;Please choose a closer date.&quot;,&quot;time&quot;:&quot;Please choose a valid time (in 15-minute steps).&quot;,&quot;guests&quot;:&quot;Please choose the number of guests.&quot;,&quot;closedDay&quot;:&quot;The restaurant is closed on that day.&quot;,&quot;closure&quot;:&quot;The restaurant is exceptionally closed on that date.&quot;,&quot;outsideHours&quot;:&quot;This time is outside opening hours.&quot;,&quot;tooLong&quot;:&quot;This text is too long.&quot;,&quot;invalid&quot;:&quot;This field contains characters that are not allowed.&quot;},&quot;whatsapp&quot;:{&quot;intro&quot;:&quot;Hello, I would like to book a table at Dar el Bacha.&quot;,&quot;fields&quot;:{&quot;name&quot;:&quot;Name&quot;,&quot;date&quot;:&quot;Date&quot;,&quot;time&quot;:&quot;Time&quot;,&quot;guests&quot;:&quot;Guests&quot;}}}">
+          <input type="hidden" name="lang" value="en">
+          <input type="hidden" name="started" value="">
           <div class="form-grid">
             
     <div class="field field--full">
@@ -174,6 +179,14 @@
           <div class="visually-hidden" aria-hidden="true">
             <label for="f-website">Website</label>
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="field field--consent">
+            <div class="consent">
+              <input id="f-consent" name="consent" type="checkbox" value="yes" required aria-describedby="e-consent consent-info">
+              <label for="f-consent">I agree that this information may be used to process my reservation request. <span class="visually-hidden">(required)</span><span aria-hidden="true">*</span></label>
+            </div>
+            <p class="note" id="consent-info">Your data is sent to the restaurant solely to reply to your request. Retention period and how to exercise your rights: <a href="/en/privacy/">Privacy</a></p>
+            <p class="field__error" id="e-consent"></p>
           </div>
           <p class="note">Sending the form is not a confirmation: your request stays pending until the restaurant replies.</p>
           <p class="note no-js-only">Sending online requires JavaScript, which is turned off in your browser. You can message us on WhatsApp or call us.</p>

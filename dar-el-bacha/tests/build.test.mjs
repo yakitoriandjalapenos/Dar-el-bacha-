@@ -38,11 +38,12 @@ after(async () => {
   await rm(dir, { recursive: true, force: true });
 });
 
-test('prévisualisation : 26 pages (6 principales et 2 juridiques × 3 langues, 404, racine), noindex partout, aucune URL absolue sans domaine officiel', async () => {
+test('prévisualisation : 41 pages (6 principales, 2 juridiques et 5 résultats de demande × 3 langues, 404, racine), noindex partout, aucune URL absolue sans domaine officiel', async () => {
   const r = build();
   assert.equal(r.status, 0, r.stderr);
   const pages = await listHtml(path.join(dir, 'dist'));
-  assert.equal(pages.length, 26);
+  assert.equal(pages.length, 41);
+  assert.match(await html('en/reservations/statut/pending/index.html'), /awaiting confirmation/);
   for (const p of pages) {
     const h = await html(p);
     assert.match(h, /<meta name="robots" content="noindex, nofollow">/, p);

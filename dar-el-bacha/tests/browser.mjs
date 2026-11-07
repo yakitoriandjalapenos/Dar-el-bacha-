@@ -18,7 +18,7 @@ import { readdirSync, statSync, mkdtempSync, cpSync, readFileSync, writeFileSync
 import { spawnSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createStaticServer } from '../scripts/lib/static-server.mjs';
 import { LANGS, PAGES, LEGAL_PAGES, DEFAULT_LANG, pathFor } from '../src/routes.mjs';
 
@@ -189,7 +189,7 @@ try {
         focused: document.activeElement.id,
         status: document.querySelector('.form-status').dataset.state,
       }));
-      check(`Formulaire ${code} : champs vides → erreurs liées, focus sur le premier champ`, invalid.errors === 6 && invalid.focused === 'f-name' && invalid.status === 'invalid', JSON.stringify(invalid));
+      check(`Formulaire ${code} : champs vides et consentement absent → 7 erreurs liées, focus sur le premier champ`, invalid.errors === 7 && invalid.focused === 'f-name' && invalid.status === 'invalid', JSON.stringify(invalid));
 
       await page.fill('#f-name', 'Test');
       await page.fill('#f-email', 'pas-un-email');
@@ -204,6 +204,7 @@ try {
       await page.fill('#f-date', min);
       await page.fill('#f-time', '20:00');
       await page.selectOption('#f-guests', '2');
+      await page.check('#f-consent');
       await page.click('#reservation-form [type=submit]');
       const status = await page.evaluate(() => document.querySelector('.form-status').dataset.state);
       check(`Formulaire ${code} : formulaire valide sans service d'envoi → message clair, aucune fausse réussite`, status === 'error');
@@ -377,6 +378,92 @@ try {
   } finally {
     fxServer?.close();
     rmSync(tmp, { recursive: true, force: true });
+  }
+
+  /* ---------- 11. Demande de réservation reliée au service (copie de test, envoi SIMULÉ, données de test) ---------- */
+  const tmpR = mkdtempSync(path.join(os.tmpdir(), 'dar-el-bacha-reservation-'));
+  let apiServer;
+  try {
+    for (const p of ['scripts', 'src', 'server', 'package.json']) cpSync(path.join(ROOT, p), path.join(tmpR, p), { recursive: true });
+    const siteFile = path.join(tmpR, 'src/content/site.json');
+    const siteR = JSON.parse(readFileSync(siteFile, 'utf8'));
+    // Horaires DE TEST : fermé le lundi, service du soir les autres jours
+    const evening = [['19:00', '23:00']];
+    siteR.openingHours = { days: { mon: [], tue: evening, wed: evening, thu: evening, fri: evening, sat: evening, sun: evening } };
+    writeFileSync(siteFile, JSON.stringify(siteR, null, 2));
+    const b = spawnSync(process.execPath, ['scripts/build.mjs'], { cwd: tmpR, encoding: 'utf8', env: { ...process.env, FORM_ENDPOINT: '/api/reservation' } });
+    if (b.status !== 0) throw new Error(`build de la copie de test : ${b.stderr}`);
+    const { createReservationService } = await import(pathToFileURL(path.join(tmpR, 'server/index.mjs')).href);
+    const service = createReservationService({ ALLOWED_ORIGINS: '' });
+    apiServer = createStaticServer({ root: path.join(tmpR, 'dist'), home: '/fr/', routes: { '/api/reservation': service.node } });
+    await new Promise((r) => apiServer.listen(0, r));
+    const API_BASE = `http://localhost:${apiServer.address().port}`;
+    const dayOffset = (want) => { for (let i = 2; i < 14; i++) { const d = new Date(Date.now() + i * 864e5); if (((d.getUTCDay() + 6) % 7 === 0) === want) return d.toISOString().slice(0, 10); } };
+    const MONDAY = dayOffset(true);
+    const OPEN_DAY = dayOffset(false);
+    const fill = async (page, { date = OPEN_DAY, time = '20:00', consent = true } = {}) => {
+      await page.fill('#f-name', 'Client Test');
+      await page.fill('#f-email', 'client@exemple-test.ma');
+      await page.fill('#f-phone', '+212 600 000 000');
+      await page.fill('#f-date', date);
+      await page.fill('#f-time', time);
+      await page.selectOption('#f-guests', '2');
+      if (consent) await page.check('#f-consent');
+      await page.waitForTimeout(3100); // délai minimal de saisie (anti-robot côté serveur)
+    };
+    const state = (page) => page.evaluate(() => ({ state: document.querySelector('.form-status').dataset.state, text: document.querySelector('.form-status').textContent, errors: Object.fromEntries([...document.querySelectorAll('.field__error')].filter((e) => e.textContent).map((e) => [e.id, e.textContent])) }));
+
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    await page.goto(`${API_BASE}/fr/reservation/`);
+    await fill(page, { date: MONDAY });
+    await page.click('#reservation-form [type=submit]');
+    let st = await state(page);
+    check('Service : jour de fermeture refusé dans le navigateur (horaires fournis)', /fermé ce jour-là/.test(st.errors['e-date'] || ''), JSON.stringify(st));
+    await page.fill('#f-date', OPEN_DAY);
+    await page.fill('#f-time', '13:00');
+    await page.click('#reservation-form [type=submit]');
+    st = await state(page);
+    check('Service : heure hors des horaires refusée dans le navigateur', /en dehors des horaires/.test(st.errors['e-time'] || ''), JSON.stringify(st));
+    await page.fill('#f-time', '20:00');
+    await page.click('#reservation-form [type=submit]');
+    await page.waitForFunction(() => document.querySelector('.form-status').dataset.state !== 'sending');
+    st = await state(page);
+    check('Service : demande valide en mode simulation → « mode test » affiché, aucune fausse réussite', st.state === 'error' && /Mode test/.test(st.text), JSON.stringify(st));
+
+    // Réponses du service simulées par interception : en attente, refus serveur, limite d'envois
+    const reply = (status, body) => page.route('**/api/reservation', (r) => r.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) }), { times: 1 });
+    await reply(202, { status: 'pending' });
+    await page.click('#reservation-form [type=submit]');
+    await page.waitForFunction(() => document.querySelector('.form-status').dataset.state === 'success');
+    st = await state(page);
+    const reset = await page.inputValue('#f-name');
+    check('Service : demande transmise → « en attente de confirmation », jamais « confirmée », formulaire vidé', /en attente de confirmation/.test(st.text) && !/confirmée/.test(st.text) && reset === '', JSON.stringify(st));
+    await fill(page);
+    await reply(422, { error: 'invalid', fields: { date: 'closure' } });
+    await page.click('#reservation-form [type=submit]');
+    await page.waitForFunction(() => document.querySelector('.form-status').dataset.state === 'invalid');
+    st = await state(page);
+    check('Service : refus du serveur affiché sur le bon champ, dans la langue de la page', /exceptionnellement fermé/.test(st.errors['e-date'] || ''), JSON.stringify(st));
+    await reply(429, { error: 'rate-limited', retryAfter: 600 });
+    await page.click('#reservation-form [type=submit]');
+    await page.waitForFunction(() => /Plusieurs demandes/.test(document.querySelector('.form-status').textContent));
+    check('Service : limite d\'envois signalée clairement', true);
+    await ctx.close();
+
+    // Sans JavaScript : envoi classique, validé par le navigateur et le serveur, page de résultat dans la langue
+    const noJs = await browser.newContext({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });
+    const p2 = await noJs.newPage();
+    await p2.goto(`${API_BASE}/ar/reservations/`);
+    await fill(p2);
+    await Promise.all([p2.waitForURL('**/statut/**'), p2.click('#reservation-form [type=submit]')]);
+    const url = p2.url();
+    const title = await p2.textContent('h1');
+    check('Sans JavaScript : demande envoyée au service, redirection vers la page de résultat arabe (mode test)', url.endsWith('/ar/reservations/statut/simulated/') && title.includes('وضع الاختبار'), `${url} — ${title}`);
+    await noJs.close();
+  } finally {
+    apiServer?.close();
+    rmSync(tmpR, { recursive: true, force: true });
   }
 } finally {
   await browser.close();

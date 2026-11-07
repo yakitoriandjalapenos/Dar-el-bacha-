@@ -25,7 +25,13 @@ export const LEGAL_PAGES = [
   { id: 'mentions', slug: { fr: 'mentions-legales', en: 'legal-notice', ar: 'legal-notice' } },
 ];
 
+// Résultats d'une demande de réservation envoyée sans JavaScript (pages non indexées, produites par le build) :
+// le service redirige vers /<langue>/<page réservation>/statut/<résultat>/.
+export const RESERVATION_RESULTS = ['pending', 'simulated', 'invalid', 'rate-limited', 'error'];
+export const statusPath = (lang, result) => `${pathFor('reservation', lang)}statut/${result}/`;
+
 export function pathFor(pageId, lang) {
+  if (pageId.startsWith('statut:')) return statusPath(lang, pageId.slice('statut:'.length));
   const page = [...PAGES, ...LEGAL_PAGES].find((p) => p.id === pageId);
   if (!page) throw new Error(`Page inconnue : ${pageId}`);
   const slug = page.slug[lang];

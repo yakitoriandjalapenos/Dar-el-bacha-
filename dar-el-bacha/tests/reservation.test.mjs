@@ -131,9 +131,11 @@ test('sans JavaScript : redirection vers la page de résultat dans la langue du 
   const { handle } = setup();
   let r = await post(handle, { ...VALID, lang: 'ar' }, { form: true });
   assert.equal(r.status, 303);
-  assert.equal(r.headers.Location, '/ar/reservation/statut/simulated/');
+  assert.equal(r.headers.Location, '/ar/reservations/statut/simulated/');
   r = await post(handle, { ...VALID, lang: 'en', email: '' }, { form: true });
-  assert.equal(r.headers.Location, '/en/reservation/statut/invalid/');
+  assert.equal(r.headers.Location, '/en/reservations/statut/invalid/');
+  r = await post(handle, { ...VALID, lang: 'fr' }, { form: true });
+  assert.equal(r.headers.Location, '/fr/reservation/statut/simulated/');
 });
 
 test('protections : origine étrangère, méthode, requête mal formée ou trop grosse, limite d\'envois', async () => {

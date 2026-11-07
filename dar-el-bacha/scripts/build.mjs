@@ -20,7 +20,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { LANGS, DEFAULT_LANG, PAGES, LEGAL_PAGES, pathFor } from '../src/routes.mjs';
+import { LANGS, DEFAULT_LANG, PAGES, LEGAL_PAGES, RESERVATION_RESULTS, pathFor } from '../src/routes.mjs';
 
 // Pages générées et référencées : les six pages principales et les pages juridiques
 const SITE_PAGES = [...PAGES, ...LEGAL_PAGES];
@@ -91,6 +91,11 @@ const total = menuCheck.total;
 const siteUrl = parseSiteUrl(site.siteUrl).url;
 
 // Blocages propres à la production, complétés après le contrôle du site généré
+// Point d'envoi du formulaire : en prévisualisation seulement, FORM_ENDPOINT peut le remplacer (npm run dev branche
+// le service local en mode simulation) ; en production, seule la valeur de site.json compte.
+if (!PROD && process.env.FORM_ENDPOINT) site.reservation = { ...site.reservation, formEndpoint: process.env.FORM_ENDPOINT };
+const RESERVATION_MAX_DAYS = Number(process.env.RESERVATION_MAX_DAYS) || 180;
+
 const prodBlockers = [];
 if (PROD && !siteUrl) prodBlockers.push('siteUrl : URL officielle du site non configurée dans src/content/site.json.');
 if (PROD && !site.reservation?.formEndpoint) prodBlockers.push('reservation.formEndpoint : aucun service ne reçoit les demandes du formulaire de réservation.');
@@ -158,6 +163,7 @@ function makeCtx(lang, pageId) {
     menu,
     gallery,
     media,
+    reservationMaxDays: RESERVATION_MAX_DAYS,
     mode: MODE,
     preview: !PROD,
     siteUrl,
@@ -300,7 +306,7 @@ function menuSchema(ctx) {
 /* ------------------------------------------------------------------ */
 
 const pageModules = {};
-for (const p of [...SITE_PAGES.map((p) => p.id), '404']) {
+for (const p of [...SITE_PAGES.map((p) => p.id), '404', 'statut']) {
   pageModules[p] = await import(pathToFileURL(path.join(SRC, 'pages', `${p}.mjs`)).href);
 }
 
@@ -328,6 +334,18 @@ for (const l of LANGS) {
     const file = path.posix.join(pathFor(page.id, l.code).slice(1), 'index.html');
     await writePage(file, doc);
     pageChecks.push({ file, lang: l.code, dir: l.dir, path: pathFor(page.id, l.code), indexable: !result.noindex, alternates: alternatesFor(page.id) });
+  }
+}
+
+// Résultats des demandes de réservation envoyées sans JavaScript (non indexés)
+for (const l of LANGS) {
+  for (const result of RESERVATION_RESULTS) {
+    const id = `statut:${result}`;
+    const ctx = makeCtx(l.code, id);
+    const page = pageModules.statut.render(ctx);
+    const file = path.posix.join(pathFor(id, l.code).slice(1), 'index.html');
+    await writePage(file, layout(ctx, page).toString());
+    pageChecks.push({ file, lang: l.code, dir: l.dir, path: pathFor(id, l.code), indexable: false, alternates: [] });
   }
 }
 

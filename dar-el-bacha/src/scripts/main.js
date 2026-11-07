@@ -189,23 +189,62 @@
     const status = form.querySelector('.form-status');
     const submit = form.querySelector('[type="submit"]');
     const dateInput = form.elements.date;
+    // Avec JavaScript, la validation est faite ici (messages traduits) ; sans JavaScript, le navigateur s'en charge.
+    form.noValidate = true;
 
-    // Pas de date passée
-    const today = new Date();
-    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-    const todayISO = today.toISOString().slice(0, 10);
-    if (dateInput) dateInput.min = todayISO;
+    // Dates au fuseau du restaurant (mêmes règles que le serveur : server/reservation/rules.mjs)
+    const isoInMorocco = (d) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Casablanca' }).format(d);
+    const todayISO = isoInMorocco(new Date());
+    const maxDays = Number(form.dataset.maxDays) || 180;
+    const maxISO = isoInMorocco(new Date(Date.now() + maxDays * 864e5));
+    if (dateInput) { dateInput.min = todayISO; dateInput.max = maxISO; }
+
+    // Horaires d'ouverture publiés par le build (site.json › openingHours), s'ils sont fournis
+    let hours = null;
+    safely('horaires', () => { if (form.dataset.openingHours) hours = JSON.parse(form.dataset.openingHours); });
+    const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+    const minutes = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+    const rangesOf = (date) => hours.days[DAYS[(new Date(`${date}T12:00:00Z`).getUTCDay() + 6) % 7]] || [];
+    // Jour : fermeture exceptionnelle ou jour de fermeture habituel
+    const dayError = (date) => {
+      if (!hours || !hours.days || !date) return '';
+      if ((hours.closures || []).includes(date)) return errorsText.closure;
+      return rangesOf(date).length ? '' : errorsText.closedDay;
+    };
+    // Heure : en dehors des plages du jour choisi (jour ouvert)
+    const timeError = (date, time) => {
+      if (!hours || !hours.days || !date || !time || dayError(date)) return '';
+      const t = minutes(time);
+      const inside = rangesOf(date).some(([a, b]) => { const s = minutes(a); const e = minutes(b); return e > s ? t >= s && t < e : t >= s || t < e; });
+      return inside ? '' : errorsText.outsideHours;
+    };
+
+    // Temps de saisie (anti-robot côté serveur) : mesuré à la première interaction
+    const started = form.elements.started;
+    form.addEventListener('focusin', () => { if (started && !started.value) started.value = String(Date.now()); }, { once: true });
 
     const errorFor = (input) => {
+      if (input.type === 'checkbox') return input.required && !input.checked ? errorsText.consent : '';
       const v = input.value.trim();
       if (input.required && !v) return errorsText.required;
       if (!v) return '';
+      if (input.maxLength > 0 && v.length > input.maxLength) return errorsText.tooLong;
       if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return errorsText.email;
       if (input.type === 'tel') {
         const digits = v.replace(/\D/g, '');
         if (!/^[+0-9 ().-]+$/.test(v) || digits.length < 8 || digits.length > 15) return errorsText.phone;
       }
-      if (input.name === 'date' && v < todayISO) return errorsText.date;
+      if (input.name === 'date') {
+        if (v < todayISO) return errorsText.date;
+        if (v > maxISO) return errorsText.dateTooFar;
+        const closed = dayError(v);
+        if (closed) return closed;
+      }
+      if (input.name === 'time') {
+        if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(v) || Number(v.slice(3)) % 15) return errorsText.time;
+        const outside = timeError(dateInput?.value, v);
+        if (outside) return outside;
+      }
       return '';
     };
 
@@ -215,10 +254,11 @@
       input.setAttribute('aria-invalid', text ? 'true' : 'false');
     };
 
-    const fields = Array.from(form.querySelectorAll('input:not([name="website"]), select, textarea'));
+    const fields = Array.from(form.querySelectorAll('input:not([type="hidden"]):not([name="website"]), select, textarea'));
     fields.forEach((input) => {
-      input.addEventListener('blur', () => { if (input.value) showError(input, errorFor(input)); });
+      input.addEventListener('blur', () => { if (input.value && input.type !== 'checkbox') showError(input, errorFor(input)); });
       input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') === 'true') showError(input, errorFor(input)); });
+      input.addEventListener('change', () => { if (input.type === 'checkbox' && input.getAttribute('aria-invalid') === 'true') showError(input, errorFor(input)); });
     });
 
     const setStatus = (state, text) => {
@@ -256,17 +296,37 @@
       try {
         const data = Object.fromEntries(new FormData(form));
         data.lang = root.lang;
+        data.consent = form.elements.consent?.checked ? 'yes' : '';
         const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(data),
           signal: controller?.signal,
         });
-        if (!res.ok) throw new Error(String(res.status));
-        form.reset();
-        fields.forEach((input) => input.removeAttribute('aria-invalid'));
-        // Demande reçue ≠ réservation confirmée
-        setStatus('success', msg.success);
+        const body = await res.json().catch(() => ({}));
+        if (res.status === 202 && body.status === 'pending') {
+          form.reset();
+          if (started) started.value = '';
+          fields.forEach((input) => input.removeAttribute('aria-invalid'));
+          // Demande transmise ≠ réservation confirmée : elle reste en attente de la réponse du restaurant
+          setStatus('success', msg.success);
+        } else if (res.ok && body.status === 'simulated') {
+          // Mode test : rien n'a été transmis au restaurant, on le dit
+          setStatus('error', msg.simulated);
+        } else if (res.status === 422 && body.fields) {
+          // Contrôle serveur : on affiche les mêmes messages que dans le navigateur
+          let first = null;
+          Object.entries(body.fields).forEach(([name, code]) => {
+            const input = form.elements[name];
+            if (input && input.nodeType === 1) { showError(input, errorsText[code] || errorsText.required); first = first || input; }
+          });
+          setStatus('invalid', msg.invalid);
+          if (first) first.focus();
+        } else if (res.status === 429) {
+          setStatus('error', msg.rateLimited);
+        } else {
+          throw new Error(String(res.status));
+        }
       } catch {
         setStatus('error', msg.error);
       } finally {

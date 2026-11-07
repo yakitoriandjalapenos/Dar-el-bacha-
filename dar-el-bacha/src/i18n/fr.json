@@ -198,14 +198,27 @@
           "success": "Demande envoyée. Elle est en attente de confirmation par le restaurant.",
           "error": "La demande n'a pas pu être envoyée. Vérifiez votre connexion et réessayez, ou contactez le restaurant par téléphone.",
           "invalid": "Certains champs sont à compléter ou à corriger.",
-          "notConfigured": "L'envoi en ligne n'est pas encore activé. Contactez le restaurant par WhatsApp ou par téléphone."
+          "notConfigured": "L'envoi en ligne n'est pas encore activé. Contactez le restaurant par WhatsApp ou par téléphone.",
+          "simulated": "Mode test : le service d'envoi n'est pas encore activé, votre demande n'a pas été transmise au restaurant. Merci de le contacter par téléphone ou par WhatsApp.",
+          "rateLimited": "Plusieurs demandes ont déjà été envoyées depuis cette connexion. Merci de réessayer plus tard ou de contacter le restaurant par téléphone ou par WhatsApp."
         },
         "errors": {
           "required": "Ce champ est obligatoire.",
           "email": "Saisissez une adresse e-mail valide, par exemple nom@domaine.com.",
           "phone": "Saisissez un numéro de téléphone valide.",
-          "date": "Choisissez une date à partir d'aujourd'hui."
-        }
+          "date": "Choisissez une date à partir d'aujourd'hui.",
+          "consent": "Merci d'accepter l'utilisation de vos informations pour envoyer la demande.",
+          "dateTooFar": "Choisissez une date plus proche.",
+          "time": "Choisissez une heure valide (par tranche de 15 minutes).",
+          "guests": "Choisissez le nombre de personnes.",
+          "closedDay": "Le restaurant est fermé ce jour-là.",
+          "closure": "Le restaurant est exceptionnellement fermé à cette date.",
+          "outsideHours": "Cette heure est en dehors des horaires d'ouverture.",
+          "tooLong": "Ce texte est trop long.",
+          "invalid": "Ce champ contient des caractères non autorisés."
+        },
+        "consent": "J'accepte que ces informations soient utilisées pour traiter ma demande de réservation.",
+        "privacyInfo": "Vos données sont transmises au restaurant uniquement pour répondre à votre demande. Durée de conservation et exercice de vos droits :"
       },
       "whatsapp": {
         "title": "Par WhatsApp",
@@ -348,6 +361,29 @@
           "title": "Données personnelles",
           "text": "Le traitement des données transmises par le formulaire de demande de réservation est décrit dans la politique de confidentialité."
         }
+      }
+    },
+    "statut": {
+      "back": "Revenir au formulaire",
+      "pending": {
+        "title": "Demande envoyée",
+        "text": "Votre demande de réservation a bien été transmise au restaurant. Elle est en attente de confirmation : le restaurant vous répondra pour confirmer votre table."
+      },
+      "simulated": {
+        "title": "Mode test",
+        "text": "Le service d'envoi n'est pas encore activé : votre demande n'a pas été transmise au restaurant. Merci de le contacter par téléphone ou par WhatsApp."
+      },
+      "invalid": {
+        "title": "Demande incomplète",
+        "text": "Certaines informations sont manquantes ou incorrectes. Revenez au formulaire pour les vérifier."
+      },
+      "rate-limited": {
+        "title": "Trop de demandes",
+        "text": "Plusieurs demandes ont déjà été envoyées depuis cette connexion. Merci de réessayer plus tard ou de contacter le restaurant par téléphone ou par WhatsApp."
+      },
+      "error": {
+        "title": "Demande non envoyée",
+        "text": "Votre demande n'a pas pu être envoyée. Merci de réessayer ou de contacter le restaurant par téléphone ou par WhatsApp."
       }
     }
   },

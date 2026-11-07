@@ -15,6 +15,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createStaticServer, listen } from './lib/static-server.mjs';
 import { DEFAULT_LANG, pathFor } from '../src/routes.mjs';
+import { createReservationService } from '../server/index.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -23,6 +24,10 @@ const WATCH = [path.join(ROOT, 'src'), path.join(ROOT, 'scripts')];
 const PORT = Number(process.env.PORT) || 4321;
 const HOME = pathFor('home', DEFAULT_LANG);
 const EVENTS = '/__dev/events';
+// Service des demandes de réservation, en mode simulation tant que MAIL_PROVIDER n'est pas configuré :
+// le formulaire du site local y est relié (FORM_ENDPOINT), sans jamais rien transmettre au restaurant.
+const API = '/api/reservation';
+const reservation = createReservationService(process.env, { port: PORT });
 
 /* ---------- Rechargement du navigateur ---------- */
 
@@ -36,6 +41,7 @@ es.addEventListener('reload',()=>location.reload());
 es.addEventListener('build-error',(e)=>{const msg=JSON.parse(e.data);if(!box){box=document.createElement('pre');box.style.cssText='position:fixed;inset:auto 0 0 0;z-index:9999;max-height:50vh;overflow:auto;margin:0;padding:1rem;background:#2a0f0a;color:#ffd9cf;font:13px/1.5 ui-monospace,monospace;white-space:pre-wrap;direction:ltr;text-align:left';document.body.append(box);}box.textContent='Build en erreur (le site affiché est la dernière version valide)\\n\\n'+msg;});})();</script>`;
 
 const routes = {
+  [API]: reservation.node,
   [EVENTS]: (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' });
     res.write(': connecté\n\n');
@@ -56,7 +62,7 @@ function build() {
   if (running) { queued = true; return; }
   running = true;
   const started = Date.now();
-  const child = spawn(process.execPath, [BUILD], { cwd: ROOT, stdio: first ? 'inherit' : ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(process.execPath, [BUILD], { cwd: ROOT, env: { ...process.env, FORM_ENDPOINT: process.env.FORM_ENDPOINT ?? API }, stdio: first ? 'inherit' : ['ignore', 'pipe', 'pipe'] });
   let output = '';
   child.stdout?.on('data', (d) => { output += d; });
   child.stderr?.on('data', (d) => { output += d; });
@@ -111,6 +117,7 @@ function startServer() {
   listen(server, PORT, () => {
     WATCH.forEach(watchTree);
     console.log(`→ http://localhost:${PORT}${HOME}   (rechargement automatique actif, Ctrl+C pour arrêter)`);
+    console.log(`  Demandes de réservation : ${API} — envoi ${reservation.mailer.simulated ? 'SIMULÉ (rien n\'est transmis au restaurant)' : `par ${reservation.mailer.provider}`}`);
   });
 }
 

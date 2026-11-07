@@ -13,6 +13,7 @@
 */
 import { randomUUID } from 'node:crypto';
 import { validateRequest, LANGS } from './rules.mjs';
+import { statusPath as siteStatusPath } from '../../src/routes.mjs';
 
 const LANG_NAMES = { fr: 'français', en: 'anglais', ar: 'arabe' };
 
@@ -49,7 +50,7 @@ export function createReservationHandler({
   allowedOrigins = [],
   now = () => new Date(),
   logger = defaultLogger,
-  statusPath = (lang, result) => `/${lang}/reservation/statut/${result}/`,
+  statusPath = siteStatusPath,
   maxBodyBytes = 10 * 1024,
   maxDaysAhead = 180,
 } = {}) {

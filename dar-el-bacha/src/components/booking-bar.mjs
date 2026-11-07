@@ -7,7 +7,7 @@ import { button } from './ui.mjs';
  * Fonctionne sans JavaScript.
  */
 export function bookingBar(ctx) {
-  if (ctx.pageId === 'reservation') return '';
+  if (ctx.pageId === 'reservation' || ctx.pageId.startsWith('statut:')) return '';
   return html`<div class="booking-bar theme-dark">
     ${button({ href: ctx.path('reservation'), label: ctx.t('cta.reserve'), className: 'btn--block' })}
   </div>`;

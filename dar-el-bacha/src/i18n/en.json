@@ -198,14 +198,27 @@
           "success": "Request sent. It is awaiting confirmation from the restaurant.",
           "error": "Your request could not be sent. Check your connection and try again, or call the restaurant.",
           "invalid": "Some fields need to be completed or corrected.",
-          "notConfigured": "Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone."
+          "notConfigured": "Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone.",
+          "simulated": "Test mode: the sending service is not active yet, your request has not been passed on to the restaurant. Please contact it by phone or WhatsApp.",
+          "rateLimited": "Several requests have already been sent from this connection. Please try again later or contact the restaurant by phone or WhatsApp."
         },
         "errors": {
           "required": "This field is required.",
           "email": "Enter a valid email address, for example name@domain.com.",
           "phone": "Enter a valid phone number.",
-          "date": "Choose a date from today onwards."
-        }
+          "date": "Choose a date from today onwards.",
+          "consent": "Please agree to the use of your information to send the request.",
+          "dateTooFar": "Please choose a closer date.",
+          "time": "Please choose a valid time (in 15-minute steps).",
+          "guests": "Please choose the number of guests.",
+          "closedDay": "The restaurant is closed on that day.",
+          "closure": "The restaurant is exceptionally closed on that date.",
+          "outsideHours": "This time is outside opening hours.",
+          "tooLong": "This text is too long.",
+          "invalid": "This field contains characters that are not allowed."
+        },
+        "consent": "I agree that this information may be used to process my reservation request.",
+        "privacyInfo": "Your data is sent to the restaurant solely to reply to your request. Retention period and how to exercise your rights:"
       },
       "whatsapp": {
         "title": "Via WhatsApp",
@@ -348,6 +361,29 @@
           "title": "Personal data",
           "text": "The processing of data sent through the reservation request form is described in the privacy policy."
         }
+      }
+    },
+    "statut": {
+      "back": "Back to the form",
+      "pending": {
+        "title": "Request sent",
+        "text": "Your reservation request has been passed on to the restaurant. It is awaiting confirmation: the restaurant will reply to confirm your table."
+      },
+      "simulated": {
+        "title": "Test mode",
+        "text": "The sending service is not active yet: your request has not been passed on to the restaurant. Please contact it by phone or WhatsApp."
+      },
+      "invalid": {
+        "title": "Incomplete request",
+        "text": "Some information is missing or incorrect. Go back to the form to check it."
+      },
+      "rate-limited": {
+        "title": "Too many requests",
+        "text": "Several requests have already been sent from this connection. Please try again later or contact the restaurant by phone or WhatsApp."
+      },
+      "error": {
+        "title": "Request not sent",
+        "text": "Your request could not be sent. Please try again or contact the restaurant by phone or WhatsApp."
       }
     }
   },
