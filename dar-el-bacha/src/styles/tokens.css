@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Design tokens — DAR EL BACHA
+   Toutes les couleurs, polices et mesures du site partent d'ici.
+   ========================================================================== */
+
+:root {
+  /* Palette de marque */
+  --c-emerald-950: #0c2a21;
+  --c-emerald-900: #0f3128;
+  --c-emerald-800: #12372b;
+  --c-emerald-700: #1c4a3b;
+  --c-emerald-600: #2a5c4b;
+  --c-gold-500: #b08d57;   /* or : filets, icônes, bordures — pas de texte sur fond clair */
+  --c-gold-300: #cdb07a;   /* or clair : texte et détails sur fond émeraude */
+  --c-sand-300: #d9c7a6;
+  --c-sand-200: #e6d9c0;
+  --c-sand-100: #efe6d4;
+  --c-ivory: #f5f0e6;
+  --c-ivory-50: #faf7f1;
+  --c-brown-700: #5b3a26;
+  --c-ink: #1e1c19;        /* noir doux */
+  --c-ink-soft: #4a443c;
+  --c-danger: #9b2c1f;
+  --c-success: #1c5a3f;
+
+  /* Rôles (thème clair par défaut) */
+  --bg: var(--c-ivory);
+  --bg-raised: var(--c-ivory-50);
+  --fg: var(--c-ink);
+  --fg-muted: var(--c-ink-soft);
+  --heading: var(--c-emerald-800);
+  --accent: var(--c-gold-500);
+  --rule: color-mix(in srgb, var(--c-gold-500) 55%, transparent);
+  --link: var(--c-emerald-700);
+  --focus: var(--c-gold-500);
+
+  /* Typographie */
+  --font-display: "Dar Display", "Lora", Georgia, "Times New Roman", serif;
+  --font-text: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --leading-text: 1.65;
+  --leading-display: 1.12;
+  --tracking-display: -0.01em;
+  --tracking-wordmark: 0.2em;
+
+  /* Échelle typographique fluide (quarte, ~1.333) */
+  --step--1: clamp(0.84rem, 0.82rem + 0.1vw, 0.9rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.19rem, 1.12rem + 0.35vw, 1.375rem);
+  --step-2: clamp(1.42rem, 1.28rem + 0.7vw, 1.875rem);
+  --step-3: clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem);
+  --step-4: clamp(2.15rem, 1.7rem + 2.2vw, 3.5rem);
+  --step-5: clamp(2.5rem, 1.8rem + 3.4vw, 4.6rem);
+
+  /* Espacements fluides */
+  --space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.3rem);
+  --space-2xs: clamp(0.5rem, 0.48rem + 0.1vw, 0.56rem);
+  --space-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.85rem);
+  --space-s: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
+  --space-m: clamp(1.5rem, 1.4rem + 0.5vw, 1.75rem);
+  --space-l: clamp(2rem, 1.8rem + 1vw, 2.75rem);
+  --space-xl: clamp(3rem, 2.6rem + 2vw, 4.5rem);
+  --space-2xl: clamp(4.5rem, 3.6rem + 4vw, 7.5rem);
+
+  /* Mise en page */
+  --gutter: clamp(1.25rem, 0.8rem + 2.5vw, 3rem);
+  --wrap-max: 76rem;
+  --measure: 34em;          /* longueur de ligne confortable */
+  --header-h: 4.5rem;
+
+  /* Formes & mouvements */
+  --radius-s: 2px;
+  --radius-m: 4px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 900ms;
+
+  /* Ressources graphiques (chemins relatifs à /assets/, où se trouve la feuille de style compilée) */
+  --img-arch: url("img/arch.svg");
+  --img-zellige: url("img/zellige.svg");
+}
+
+/* Sections sur fond émeraude */
+.theme-dark {
+  --bg: var(--c-emerald-800);
+  --bg-raised: var(--c-emerald-700);
+  --fg: var(--c-ivory);
+  --fg-muted: color-mix(in srgb, var(--c-ivory) 78%, var(--c-emerald-800));
+  --heading: var(--c-ivory);
+  --accent: var(--c-gold-300);
+  --rule: color-mix(in srgb, var(--c-gold-300) 45%, transparent);
+  --link: var(--c-gold-300);
+  --focus: var(--c-gold-300);
+}
+
+/* Arabe : polices dédiées, interlignage plus ample, jamais d'espacement entre lettres */
+:root:lang(ar) {
+  --font-display: "Dar Display Arabic", "Noto Naskh Arabic", "Amiri", "Geeza Pro", "Traditional Arabic", serif;
+  --font-text: "Dar Text Arabic", "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  --leading-text: 1.85;
+  --leading-display: 1.4;
+  --tracking-display: 0;
+  --tracking-wordmark: 0;
+}

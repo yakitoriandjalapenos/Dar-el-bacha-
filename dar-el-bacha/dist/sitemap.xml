@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://dar-el-bacha.example/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/en/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/ar/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/fr/notre-histoire/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/notre-histoire/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/our-story/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/our-story/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/notre-histoire/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/en/our-story/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/notre-histoire/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/our-story/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/our-story/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/notre-histoire/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/ar/our-story/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/notre-histoire/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/our-story/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/our-story/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/notre-histoire/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/fr/la-carte/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/la-carte/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/menu/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/menu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/la-carte/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/en/menu/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/la-carte/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/menu/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/menu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/la-carte/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/ar/menu/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/la-carte/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/menu/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/menu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/la-carte/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/fr/galerie/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/galerie/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/galerie/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/en/gallery/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/galerie/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/galerie/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/ar/gallery/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/galerie/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/galerie/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/fr/reservation/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/reservation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/reservations/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/reservations/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/reservation/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/en/reservations/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/reservation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/reservations/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/reservations/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/reservation/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/ar/reservations/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/reservation/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/reservations/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/reservations/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/reservation/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/fr/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/contact/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/contact/"/>
+  </url>
+  <url>
+    <loc>https://dar-el-bacha.example/ar/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/contact/"/>
+  </url>
+</urlset>

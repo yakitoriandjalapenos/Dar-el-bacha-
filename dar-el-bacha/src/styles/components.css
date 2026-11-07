@@ -1,0 +1,248 @@
+/* ==========================================================================
+   Composants
+   ========================================================================== */
+
+/* ---------- Boutons ---------- */
+
+.btn {
+  --btn-bg: var(--c-emerald-800);
+  --btn-fg: var(--c-ivory);
+  --btn-border: var(--c-emerald-800);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-height: 3rem;
+  padding: 0.7em 1.5em;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-s);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.btn:hover { --btn-bg: var(--c-emerald-700); --btn-border: var(--c-emerald-700); text-decoration: none; }
+.btn--ghost { --btn-bg: transparent; --btn-fg: var(--c-emerald-800); --btn-border: var(--c-emerald-800); }
+.btn--ghost:hover { --btn-bg: var(--c-emerald-800); --btn-fg: var(--c-ivory); }
+
+.theme-dark .btn { --btn-bg: var(--c-gold-300); --btn-fg: var(--c-ink); --btn-border: var(--c-gold-300); }
+.theme-dark .btn:hover { --btn-bg: var(--c-sand-200); --btn-border: var(--c-sand-200); }
+.theme-dark .btn--ghost { --btn-bg: transparent; --btn-fg: var(--c-ivory); --btn-border: color-mix(in srgb, var(--c-ivory) 55%, transparent); }
+.theme-dark .btn--ghost:hover { --btn-bg: var(--c-ivory); --btn-fg: var(--c-emerald-800); --btn-border: var(--c-ivory); }
+
+.btn--small { min-height: 2.5rem; padding: 0.45em 1.1em; }
+.btn--block { width: 100%; }
+.btn[aria-disabled="true"], .btn:disabled { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
+.btn svg { width: 1.1em; height: 1.1em; flex: none; }
+
+/* Lien texte avec filet */
+.text-link {
+  display: inline-block;
+  color: var(--link);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  padding-block-end: 0.15em;
+  border-block-end: 1px solid var(--accent);
+}
+.text-link:hover { border-block-end-width: 2px; }
+
+/* ---------- Sélecteur de langue ---------- */
+
+.lang-switch__list { display: flex; gap: var(--space-2xs); }
+.lang-switch a {
+  display: inline-block;
+  min-width: 2.25rem;
+  padding: 0.3em 0.45em;
+  text-align: center;
+  color: var(--fg-muted);
+  font-size: var(--step--1);
+  text-decoration: none;
+  border-block-end: 1px solid transparent;
+}
+.lang-switch a:hover { color: var(--fg); }
+.lang-switch a[aria-current="true"] { color: var(--fg); border-block-end-color: var(--accent); }
+.lang-switch a:lang(ar) { font-family: "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif; }
+
+/* ---------- Arche marocaine ----------
+   Forme commune : arc outrepassé brisé (SVG en masque).
+   .arch          → cadre d'image
+   .arch--framed  → ajoute un filet doré décalé autour de l'arche */
+
+.arch {
+  position: relative;
+  aspect-ratio: 5 / 7;
+  -webkit-mask: var(--img-arch) center / 100% 100% no-repeat;
+  mask: var(--img-arch) center / 100% 100% no-repeat;
+}
+.arch > .media,
+.arch > picture,
+.arch > img { width: 100%; height: 100%; }
+.arch img { object-fit: cover; height: 100%; }
+
+.arch-frame { position: relative; padding: 4%; }
+.arch-frame__line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: var(--accent);
+  pointer-events: none;
+}
+.arch-frame__line path { fill: none; stroke: currentColor; stroke-width: 0.3; }
+
+/* ---------- Médias ---------- */
+
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-sand-200);
+}
+.media img { width: 100%; height: 100%; object-fit: cover; }
+.media--portrait { aspect-ratio: 4 / 5; }
+.media--paysage { aspect-ratio: 3 / 2; }
+.media--carre { aspect-ratio: 1; }
+.arch > .media { aspect-ratio: auto; }
+
+/* Emplacement photo temporaire : motif zellige, légende explicite */
+.media--placeholder {
+  --ph-bg: var(--c-sand-200);
+  --ph-line: var(--c-brown-700);
+  --ph-text: var(--c-ink-soft);
+  display: grid;
+  place-items: end start;
+  background: var(--ph-bg);
+}
+.media--placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ph-line);
+  opacity: 0.14;
+  -webkit-mask: var(--img-zellige) 0 0 / 48px 48px repeat;
+  mask: var(--img-zellige) 0 0 / 48px 48px repeat;
+}
+.theme-dark .media--placeholder,
+.media--placeholder.is-dark {
+  --ph-bg: var(--c-emerald-700);
+  --ph-line: var(--c-gold-300);
+  --ph-text: color-mix(in srgb, var(--c-ivory) 80%, transparent);
+}
+.media__caption {
+  position: relative;
+  margin: var(--space-xs);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: var(--ph-text);
+}
+.arch .media__caption { margin: var(--space-s) auto; text-align: center; }
+.arch .media--placeholder { place-items: end center; }
+
+/* ---------- Ornement : étoile à huit branches entre deux filets ---------- */
+
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  color: var(--accent);
+  max-width: 14rem;
+}
+.ornament::before,
+.ornament::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.ornament svg { width: 1.1rem; height: 1.1rem; flex: none; }
+.ornament--center { margin-inline: auto; }
+
+/* ---------- En-tête de page intérieure ---------- */
+
+.page-head {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--space-xl) var(--space-xl);
+}
+.page-head__inner { position: relative; z-index: 1; }
+.page-head h1 { font-size: var(--step-5); max-width: 14em; }
+.page-head .lead { margin-block-start: var(--space-s); }
+.page-head__arch {
+  position: absolute;
+  inset-block: var(--space-m) -12%;
+  inset-inline-start: auto;
+  inset-inline-end: max(var(--gutter), (100% - var(--wrap-max)) / 2);
+  width: clamp(9rem, 22vw, 17rem);
+  height: auto;
+  color: var(--accent);
+  opacity: 0.6;
+}
+@media (max-width: 40rem) {
+  .page-head__arch { opacity: 0.25; inset-inline-end: -3rem; }
+}
+
+/* ---------- Formulaires ---------- */
+
+.field { display: grid; gap: var(--space-3xs); }
+.field label { font-size: var(--step--1); font-weight: 500; color: var(--fg); }
+.field__hint { font-weight: 400; color: var(--fg-muted); }
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.65em 0.85em;
+  background: var(--c-ivory-50);
+  color: var(--c-ink);
+  border: 1px solid color-mix(in srgb, var(--c-ink) 28%, transparent);
+  border-radius: var(--radius-s);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.field textarea { min-height: 7rem; resize: vertical; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--c-emerald-600); }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  outline: none;
+  border-color: var(--c-emerald-700);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-gold-500) 45%, transparent);
+}
+.field [aria-invalid="true"] { border-color: var(--c-danger); }
+.field__error { min-height: 0; font-size: var(--step--1); color: var(--c-danger); }
+.field__error:empty { display: none; }
+
+.form-grid { display: grid; gap: var(--space-s); }
+@media (min-width: 40rem) {
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid .field--full { grid-column: 1 / -1; }
+}
+
+.form-status {
+  padding: var(--space-xs) var(--space-s);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--c-sand-100);
+  font-size: var(--step--1);
+}
+.form-status:empty { display: none; }
+.form-status[data-state="success"] { border-color: var(--c-success); }
+.form-status[data-state="error"], .form-status[data-state="invalid"] { border-color: var(--c-danger); }
+
+.note { font-size: var(--step--1); color: var(--fg-muted); }
+
+/* ---------- Liste d'informations pratiques ---------- */
+
+.info-list { display: grid; gap: var(--space-m); }
+.info-list > div { display: grid; gap: var(--space-3xs); padding-block-start: var(--space-s); border-block-start: 1px solid var(--rule); }
+.info-list dt { font-size: var(--step--1); color: var(--fg-muted); }
+.info-list dd { font-size: var(--step-1); font-family: var(--font-display); color: var(--heading); }
+.info-list dd a { color: inherit; }
+
+/* ---------- Apparition progressive (uniquement avec JS et sans réduction des animations) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+    transition-delay: calc(var(--reveal-i, 0) * 120ms);
+  }
+  .js [data-reveal].is-visible { opacity: 1; transform: none; }
+}

@@ -1,0 +1,193 @@
+{
+  "lang": { "name": "English", "short": "EN" },
+  "a11y": {
+    "skip": "Skip to content",
+    "primaryNav": "Main navigation",
+    "languages": "Choose language",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "home": "Dar el Bacha, home",
+    "required": "required",
+    "newTab": "opens in a new tab"
+  },
+  "nav": {
+    "home": "Home",
+    "histoire": "Our story",
+    "carte": "Menu",
+    "galerie": "Gallery",
+    "reservation": "Reservations",
+    "contact": "Contact"
+  },
+  "cta": {
+    "reserve": "Book a table",
+    "viewMenu": "Explore the menu",
+    "viewGallery": "View the gallery",
+    "readStory": "Read our story",
+    "whatsapp": "Message us on WhatsApp",
+    "directions": "Get directions",
+    "openMaps": "Open in Google Maps",
+    "backHome": "Back to home"
+  },
+  "tbc": {
+    "address": "[ADDRESS TO BE CONFIRMED]",
+    "phone": "[PHONE TO BE CONFIRMED]",
+    "email": "[EMAIL TO BE CONFIRMED]",
+    "hours": "[OPENING HOURS TO BE CONFIRMED]",
+    "whatsapp": "[WHATSAPP NUMBER TO BE CONFIRMED]",
+    "price": "[PRICE TO BE CONFIRMED]",
+    "social": "[SOCIAL ACCOUNTS TO BE CONFIRMED]",
+    "map": "[LOCATION TO BE CONFIRMED]",
+    "story": "[RESTAURANT INTRODUCTION AND HISTORY TO BE CONFIRMED]",
+    "photo": "Official photograph to come"
+  },
+  "footer": {
+    "tagline": "Moroccan fine dining in Casablanca",
+    "find": "Find us",
+    "explore": "Explore",
+    "follow": "Follow us",
+    "rights": "© {year} Dar el Bacha. All rights reserved."
+  },
+  "pages": {
+    "home": {
+      "seoTitle": "Dar el Bacha — Moroccan fine dining restaurant in Casablanca",
+      "seoDescription": "Dar el Bacha, a Moroccan fine dining restaurant in Casablanca: traditional cuisine, the art of hospitality, and table requests online or via WhatsApp.",
+      "hero": {
+        "title": "A grand house for Moroccan cuisine",
+        "text": "In Casablanca, Dar el Bacha serves Moroccan gastronomy with the care of a fine dining table: traditional recipes, carefully chosen produce, attentive service."
+      },
+      "intro": {
+        "title": "An address in Casablanca",
+        "text": "Dar el Bacha brings together Morocco's culinary heritage and the precision of fine dining. Every visit is meant as an invitation: take your seat, let us look after you, and taste."
+      },
+      "philosophy": {
+        "title": "Tradition as a starting point",
+        "text": "Moroccan recipes are passed down through gesture and patience. We serve them with the same respect, in a contemporary presentation that lets the produce speak."
+      },
+      "signature": {
+        "title": "Signature dishes",
+        "text": "A selection from the menu, shown here once the dishes and their photographs have been approved by the restaurant."
+      },
+      "experience": {
+        "title": "The time of a meal",
+        "text": "From your arrival to the end of the meal, every moment follows the rhythm of Moroccan hospitality: attentive, generous, never rushed."
+      },
+      "photos": {
+        "title": "The house in pictures"
+      },
+      "cta": {
+        "title": "Book your table",
+        "text": "Send a request online or message us on WhatsApp. The restaurant confirms every reservation."
+      }
+    },
+    "histoire": {
+      "seoTitle": "Our story — Dar el Bacha, Casablanca",
+      "seoDescription": "The identity of Dar el Bacha: traditional Moroccan cuisine, inherited know-how and the art of hospitality in Casablanca.",
+      "title": "Our story",
+      "lead": "A house devoted to Moroccan cuisine and the art of hospitality.",
+      "sections": {
+        "presentation": { "title": "Dar el Bacha" },
+        "philosophie": { "title": "Culinary philosophy", "text": "Start from traditional recipes, choose produce with care, then plate each dish with the precision of fine dining." },
+        "inspiration": { "title": "Moroccan inspiration", "text": "Spices, slow cooking, almond and orange blossom sweets: Moroccan cuisine offers a remarkably rich repertoire, which the menu explores with restraint." },
+        "savoirFaire": { "title": "Know-how and tradition", "text": "Some preparations take hours. That time is part of the recipe, and we respect it." },
+        "recevoir": { "title": "The art of hospitality", "text": "In Morocco, welcoming guests is a way of honouring them. That sense of hospitality guides our service, from the first word to the last attention." },
+        "ambiance": { "title": "The atmosphere", "text": "Soft light, natural materials, crafted details: a setting designed so that the meal unfolds without haste." }
+      }
+    },
+    "carte": {
+      "seoTitle": "Menu — Moroccan fine dining | Dar el Bacha",
+      "seoDescription": "Explore the menu at Dar el Bacha in Casablanca: starters, tagines, Fassi specialities, couscous, desserts and Moroccan drinks.",
+      "title": "Menu",
+      "lead": "A focused menu built around the great classics of Moroccan cuisine, from starters to sweets.",
+      "notice": "Dishes, descriptions and prices are being finalised by the restaurant.",
+      "categoriesNav": "Menu categories",
+      "categories": {
+        "entrees": "Starters",
+        "plats": "Main courses",
+        "desserts": "Desserts",
+        "boissons": "Drinks"
+      },
+      "empty": "Selection being finalised by the restaurant.",
+      "pending": "To be approved"
+    },
+    "galerie": {
+      "seoTitle": "Gallery — Dishes, dining room and atmosphere | Dar el Bacha",
+      "seoDescription": "The dishes, architecture and atmosphere of Dar el Bacha, a Moroccan fine dining restaurant in Casablanca, in photographs.",
+      "title": "Gallery",
+      "lead": "The dishes, the house, the light.",
+      "themes": {
+        "plats": "The dishes",
+        "details": "Culinary details",
+        "interieur": "The interior",
+        "architecture": "The architecture",
+        "decoration": "The decor",
+        "ambiance": "The atmosphere",
+        "accueil": "The art of hospitality"
+      }
+    },
+    "reservation": {
+      "seoTitle": "Reservations — Dar el Bacha, Casablanca",
+      "seoDescription": "Book your table at Dar el Bacha in Casablanca: online request or WhatsApp message. Every reservation is confirmed by the restaurant.",
+      "title": "Reservations",
+      "lead": "Two ways to request a table. Either way, your reservation is confirmed by the restaurant.",
+      "form": {
+        "title": "Online request",
+        "text": "Fill in the form. The restaurant will contact you to confirm your table.",
+        "name": "Full name",
+        "email": "Email address",
+        "phone": "Phone",
+        "date": "Preferred date",
+        "time": "Preferred time",
+        "guests": "Number of guests",
+        "guestsMore": "More than 12",
+        "message": "Message",
+        "optional": "optional",
+        "submit": "Send request",
+        "note": "Sending the form is not a confirmation: your request stays pending until the restaurant replies.",
+        "status": {
+          "sending": "Sending…",
+          "success": "Request sent. It is awaiting confirmation from the restaurant.",
+          "error": "Your request could not be sent. Check your connection and try again, or call the restaurant.",
+          "invalid": "Some fields need to be completed or corrected.",
+          "notConfigured": "Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone."
+        },
+        "errors": {
+          "required": "This field is required.",
+          "email": "Enter a valid email address, for example name@domain.com.",
+          "phone": "Enter a valid phone number.",
+          "date": "Choose a date from today onwards."
+        }
+      },
+      "whatsapp": {
+        "title": "Via WhatsApp",
+        "text": "Open a conversation with a pre-written message. You review it, complete it if needed and send it yourself.",
+        "note": "The restaurant replies on WhatsApp to confirm your reservation.",
+        "useForm": "Details entered in the form are included in the message.",
+        "message": "Hello, I would like to book a table at Dar el Bacha.",
+        "fields": { "name": "Name", "date": "Date", "time": "Time", "guests": "Guests" }
+      },
+      "system": {
+        "title": "Book online",
+        "text": "Choose a time slot from the restaurant's real availability."
+      }
+    },
+    "contact": {
+      "seoTitle": "Contact and directions — Dar el Bacha, Casablanca",
+      "seoDescription": "Address, phone, opening hours and directions to Dar el Bacha, a Moroccan fine dining restaurant in Casablanca.",
+      "title": "Contact",
+      "lead": "Find us, call us, write to us.",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Opening hours",
+      "whatsapp": "WhatsApp",
+      "social": "Social media",
+      "map": "Getting here"
+    },
+    "notFound": {
+      "seoTitle": "Page not found — Dar el Bacha",
+      "seoDescription": "This page does not exist or has been moved.",
+      "title": "Page not found",
+      "lead": "This page does not exist or has been moved."
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "_comment": "Informations officielles du restaurant. Toute valeur null est affichée sur le site comme « À CONFIRMER » et listée par le build. Remplacer null par la valeur officielle avant la mise en ligne.",
+
+  "name": "DAR EL BACHA",
+  "nameAr": "دار الباشا",
+  "city": "Casablanca",
+
+  "logo": {
+    "_comment": "En-tête : « symbole » = porte du logo + nom en texte (lisible, traduit en arabe) ; « complet » = logo complet avec le nom. Fichiers dans src/assets/img/logo/.",
+    "header": "symbole"
+  },
+  "ogImage": "/og-image.jpg",
+  "countryCode": "MA",
+
+  "siteUrl": null,
+
+  "address": {
+    "street": null,
+    "postalCode": null,
+    "district": null
+  },
+  "geo": {
+    "latitude": null,
+    "longitude": null
+  },
+
+  "phone": null,
+  "email": null,
+
+  "whatsapp": {
+    "_comment": "Numéro WhatsApp officiel au format international, chiffres uniquement, sans + ni espaces. Exemple de format : 2125XXXXXXXX",
+    "number": null
+  },
+
+  "hours": null,
+
+  "googleMapsUrl": null,
+
+  "social": {
+    "instagram": null,
+    "facebook": null,
+    "tripadvisor": null
+  },
+
+  "reservation": {
+    "_comment": "formEndpoint : URL du service qui reçoit les demandes du formulaire (à brancher). bookingSystem : système de réservation connecté optionnel ; laissé à null, il n'apparaît pas sur le site.",
+    "formEndpoint": null,
+    "bookingSystem": null
+  }
+}

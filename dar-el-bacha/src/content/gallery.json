@@ -1,0 +1,54 @@
+{
+  "_comment": "Galerie. Chaque emplacement attend une photographie officielle. image : chemin sans extension sous src/assets/img/ (le build cherchera .avif, .webp et .jpg). format : portrait | paysage | carre (pilote la composition). alt : texte alternatif par langue, à rédiger avec la photo.",
+  "items": [
+    {
+      "id": "plat-signature",
+      "theme": "plats",
+      "format": "portrait",
+      "image": null,
+      "alt": null
+    },
+    {
+      "id": "salle",
+      "theme": "interieur",
+      "format": "paysage",
+      "image": null,
+      "alt": null
+    },
+    {
+      "id": "arches",
+      "theme": "architecture",
+      "format": "portrait",
+      "image": null,
+      "alt": null
+    },
+    {
+      "id": "service-the",
+      "theme": "accueil",
+      "format": "portrait",
+      "image": null,
+      "alt": null
+    },
+    {
+      "id": "detail-epices",
+      "theme": "details",
+      "format": "carre",
+      "image": null,
+      "alt": null
+    },
+    {
+      "id": "zellige",
+      "theme": "decoration",
+      "format": "carre",
+      "image": null,
+      "alt": null
+    },
+    {
+      "id": "lumiere",
+      "theme": "ambiance",
+      "format": "paysage",
+      "image": null,
+      "alt": null
+    }
+  ]
+}

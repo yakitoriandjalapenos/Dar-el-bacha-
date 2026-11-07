@@ -1,0 +1,189 @@
+/* ==========================================================================
+   Sections propres aux pages
+   ========================================================================== */
+
+/* ---------- Accueil : hero ---------- */
+
+.hero { padding-block: var(--space-xl) var(--space-2xl); }
+.hero__grid {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: center;
+}
+.hero h1 { max-width: 11em; }
+.hero__text > * + * { margin-block-start: var(--space-m); }
+.hero__text .actions { margin-block-start: var(--space-l); }
+.hero__visual { width: min(78%, 20rem); }
+
+@media (min-width: 56rem) {
+  .hero__grid {
+    grid-template-columns: 7fr 5fr;
+    min-height: min(calc(100svh - var(--header-h) - var(--space-xl) - var(--space-2xl)), 46rem);
+  }
+  .hero__visual { width: min(100%, 25rem); justify-self: end; }
+}
+
+/* Le seul moment chorégraphié du site : l'arche se dessine, l'image apparaît.
+   Le titre (élément LCP) n'est jamais masqué. */
+.hero .arch-frame__line path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: arch-draw 2.2s var(--ease-out) 0.15s forwards;
+}
+.hero .arch { animation: arch-rise 1.4s var(--ease-out) 0.1s both; }
+
+@keyframes arch-draw { to { stroke-dashoffset: 0; } }
+@keyframes arch-rise {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Accueil : arcade des plats emblématiques ---------- */
+
+.arcade {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.75rem, 2.5vw, 2.5rem);
+  margin-block-start: var(--space-l);
+}
+@media (max-width: 40rem) {
+  .arcade {
+    grid-template-columns: repeat(3, 72%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-block-end: var(--space-xs);
+  }
+  .arcade > * { scroll-snap-align: start; }
+}
+
+/* ---------- Accueil : mosaïque photo ---------- */
+
+.mosaic {
+  display: grid;
+  gap: var(--space-s);
+  margin-block-start: var(--space-l);
+}
+@media (min-width: 48rem) {
+  .mosaic {
+    grid-template-columns: 5fr 4fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .mosaic > :first-child { grid-row: span 2; min-height: 32rem; }
+  .mosaic > .media { aspect-ratio: auto; height: 100%; }
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-s) var(--space-l);
+}
+.section-head p { margin-block-start: var(--space-xs); color: var(--fg-muted); }
+
+/* ---------- La carte ---------- */
+
+.menu-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-block-end: 1px solid var(--rule);
+}
+.menu-nav ul {
+  display: flex;
+  gap: var(--space-m);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.menu-nav a {
+  display: block;
+  padding-block: var(--space-xs);
+  white-space: nowrap;
+  color: var(--fg-muted);
+  text-decoration: none;
+  font-size: var(--step--1);
+}
+.menu-nav a:hover { color: var(--fg); }
+
+.menu-notice { margin-block-start: var(--space-m); }
+
+.menu-category { padding-block: var(--space-xl) 0; scroll-margin-top: 3.5rem; }
+.menu-category:last-of-type { padding-block-end: var(--space-2xl); }
+.menu-category__head { display: flex; align-items: center; gap: var(--space-s); }
+.menu-category__head h2 { font-size: var(--step-3); }
+.menu-category__head::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+.dish-list { display: grid; gap: var(--space-m); margin-block-start: var(--space-m); max-width: 46rem; }
+.dish__row { display: flex; align-items: baseline; gap: var(--space-xs); }
+.dish__name { font-family: var(--font-display); font-size: var(--step-1); color: var(--heading); }
+.dish__leader { flex: 1; min-width: 1.5rem; border-block-end: 1px dotted var(--c-gold-500); transform: translateY(-0.3em); }
+.dish__price { font-size: var(--step--1); white-space: nowrap; }
+.dish__desc { margin-block-start: var(--space-3xs); color: var(--fg-muted); }
+.badge {
+  display: inline-block;
+  margin-inline-start: var(--space-2xs);
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-s);
+  font-family: var(--font-text);
+  font-size: 0.72rem;
+  color: var(--c-brown-700);
+  vertical-align: middle;
+}
+.menu-empty { margin-block-start: var(--space-s); color: var(--fg-muted); font-style: italic; }
+
+/* ---------- Galerie ---------- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: clamp(9rem, 30vw, 15rem);
+  grid-auto-flow: dense;
+  gap: var(--space-s);
+}
+@media (min-width: 48rem) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 72rem) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+.gallery-grid > li { min-width: 0; }
+.gallery-grid .media { height: 100%; aspect-ratio: auto; }
+.gallery-item--portrait { grid-row: span 2; }
+.gallery-item--paysage { grid-column: span 2; }
+
+/* ---------- Réservation ---------- */
+
+.booking {
+  display: grid;
+  gap: var(--space-l);
+  align-items: start;
+}
+@media (min-width: 60rem) { .booking { grid-template-columns: 7fr 5fr; } }
+
+.panel {
+  padding: var(--space-l);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-m);
+  background: var(--bg-raised);
+}
+.panel > * + * { margin-block-start: var(--space-s); }
+.panel h2 { font-size: var(--step-3); }
+.panel.theme-dark { background: var(--bg); }
+.panel .form-grid { margin-block-start: var(--space-m); }
+.panel form > * + * { margin-block-start: var(--space-m); }
+
+.booking-system { margin-block-end: var(--space-l); }
+
+/* ---------- Contact ---------- */
+
+.contact-grid { display: grid; gap: var(--space-xl); }
+@media (min-width: 56rem) { .contact-grid { grid-template-columns: 5fr 6fr; } }
+.contact-map > * + * { margin-block-start: var(--space-s); }
+
+/* ---------- Bandeau d'appel à l'action ---------- */
+
+.cta-band .split { align-items: end; }
+.cta-band p { color: var(--fg-muted); }
+.cta-band .actions { margin-block-start: var(--space-m); }
+
+/* ---------- 404 ---------- */
+
+.not-found { min-height: 50vh; display: grid; align-content: center; }
