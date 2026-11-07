@@ -20,7 +20,10 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { LANGS, DEFAULT_LANG, PAGES, pathFor } from '../src/routes.mjs';
+import { LANGS, DEFAULT_LANG, PAGES, LEGAL_PAGES, pathFor } from '../src/routes.mjs';
+
+// Pages générées et référencées : les six pages principales et les pages juridiques
+const SITE_PAGES = [...PAGES, ...LEGAL_PAGES];
 import { layout } from '../src/components/layout.mjs';
 import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, collectImageRefs } from './lib/validate.mjs';
 import { checkOutput } from './lib/check-output.mjs';
@@ -297,7 +300,7 @@ function menuSchema(ctx) {
 /* ------------------------------------------------------------------ */
 
 const pageModules = {};
-for (const p of [...PAGES.map((p) => p.id), '404']) {
+for (const p of [...SITE_PAGES.map((p) => p.id), '404']) {
   pageModules[p] = await import(pathToFileURL(path.join(SRC, 'pages', `${p}.mjs`)).href);
 }
 
@@ -318,7 +321,7 @@ const alternatesFor = (id) => [
 ];
 
 for (const l of LANGS) {
-  for (const page of PAGES) {
+  for (const page of SITE_PAGES) {
     const ctx = makeCtx(l.code, page.id);
     const result = pageModules[page.id].render(ctx);
     const doc = layout(ctx, { ...result, jsonLd: (result.jsonLd || []).filter(Boolean) }).toString();
@@ -349,7 +352,7 @@ await writePage('index.html', `<!doctype html><html lang="${DEFAULT_LANG}"><head
 
 // Sitemap avec alternatives linguistiques (uniquement sur le domaine officiel)
 if (siteUrl) {
-  const urls = PAGES.flatMap((page) =>
+  const urls = SITE_PAGES.flatMap((page) =>
     LANGS.map((l) => {
       const alts = alternatesFor(page.id).map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${siteUrl}${a.path}"/>`).join('\n');
       return `  <url>\n    <loc>${siteUrl}${pathFor(page.id, l.code)}</loc>\n${alts}\n  </url>`;
@@ -384,6 +387,8 @@ const PROVISIONAL_LABELS = {
   photo: 'photographies provisoires', 'dish-pending': 'plats « à valider »', 'menu-empty': 'catégories de la carte vides',
   'menu-notice': 'mention « carte en cours de validation »', 'signature-pending': 'texte d\'attente des plats emblématiques',
   'form-endpoint': 'formulaire de réservation non relié',
+  'legal-draft': 'pages juridiques non validées par un juriste',
+  legal: 'informations juridiques',
   conditions: 'conditions de réservation',
 };
 const forbiddenTexts = LANGS.flatMap((l) => [...Object.values(dict[l.code].tbc || {}), get(dict[l.code], 'pages.carte.pending')]);

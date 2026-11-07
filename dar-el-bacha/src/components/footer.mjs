@@ -56,7 +56,15 @@ export function footer(ctx) {
         </div>
       </div>
 
-      <p class="site-footer__base">${ctx.t('footer.rights', { year: ctx.year })}</p>
+      <div class="site-footer__base">
+        <p>${ctx.t('footer.rights', { year: ctx.year })}</p>
+        <nav class="site-footer__legal" aria-label="${ctx.t('legal.nav')}">
+          <ul role="list">
+            <li><a href="${ctx.path('mentions')}">${ctx.t('legal.notice')}</a></li>
+            <li><a href="${ctx.path('confidentialite')}">${ctx.t('legal.privacy')}</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </footer>`;
 }

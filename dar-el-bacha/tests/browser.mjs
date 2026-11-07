@@ -20,7 +20,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createStaticServer } from '../scripts/lib/static-server.mjs';
-import { LANGS, PAGES, DEFAULT_LANG, pathFor } from '../src/routes.mjs';
+import { LANGS, PAGES, LEGAL_PAGES, DEFAULT_LANG, pathFor } from '../src/routes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -34,7 +34,7 @@ try {
 }
 
 const WIDTHS = [320, 360, 390, 768, 1024, 1440, 1920];
-const URLS = [...LANGS.flatMap((l) => PAGES.map((p) => pathFor(p.id, l.code))), '/404.html'];
+const URLS = [...LANGS.flatMap((l) => [...PAGES, ...LEGAL_PAGES].map((p) => pathFor(p.id, l.code))), '/404.html'];
 
 const results = [];
 const check = (name, ok, detail = '') => results.push({ name, ok: Boolean(ok), detail });
@@ -278,7 +278,7 @@ try {
     const page = await ctx.newPage();
     const ALLOWED = new Set(['English', 'Français', 'Google', 'JavaScript', 'WhatsApp', 'Instagram', 'Facebook', 'Tripadvisor']);
     const leaks = [];
-    for (const p of PAGES) {
+    for (const p of [...PAGES, ...LEGAL_PAGES]) {
       await page.goto(BASE + pathFor(p.id, 'ar'));
       const words = await page.evaluate(() => {
         const out = [];

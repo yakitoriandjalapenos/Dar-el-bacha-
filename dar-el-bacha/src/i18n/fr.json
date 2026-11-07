@@ -42,7 +42,8 @@
     "map": "[LOCALISATION À CONFIRMER]",
     "story": "[PRÉSENTATION ET HISTOIRE DU RESTAURANT À CONFIRMER]",
     "photo": "Photographie officielle à venir",
-    "conditions": "[CONDITIONS DE RÉSERVATION À CONFIRMER]"
+    "conditions": "[CONDITIONS DE RÉSERVATION À CONFIRMER]",
+    "legal": "[INFORMATION JURIDIQUE À CONFIRMER]"
   },
   "footer": {
     "tagline": "Gastronomie marocaine à Casablanca",
@@ -257,9 +258,126 @@
       "seoDescription": "Cette page n'existe pas ou a été déplacée.",
       "title": "Page introuvable",
       "lead": "Cette page n'existe pas ou a été déplacée."
+    },
+    "confidentialite": {
+      "seoTitle": "Politique de confidentialité — Dar el Bacha",
+      "seoDescription": "Comment Dar el Bacha traite les données personnelles transmises par le formulaire de demande de réservation, conformément à la loi marocaine n° 09-08.",
+      "title": "Politique de confidentialité",
+      "lead": "Les données que vous nous confiez, l'usage qui en est fait et vos droits.",
+      "sections": {
+        "controller": {
+          "title": "Responsable du traitement",
+          "text": "Les données personnelles collectées sur ce site sont traitées sous la responsabilité de :"
+        },
+        "data": {
+          "title": "Données collectées",
+          "text": "Le site ne collecte des données personnelles que lorsque vous envoyez une demande de réservation par le formulaire :",
+          "item1": "vos nom et prénom ;",
+          "item2": "votre adresse e-mail et votre numéro de téléphone ;",
+          "item3": "la date, l'heure et le nombre de personnes souhaités ;",
+          "item4": "le message facultatif que vous ajoutez ;",
+          "item5": "la langue dans laquelle vous consultez le site."
+        },
+        "purpose": {
+          "title": "Finalité",
+          "text": "Ces données servent uniquement à traiter votre demande de réservation et à vous répondre. Elles ne sont ni utilisées à des fins de prospection commerciale, ni cédées à des tiers."
+        },
+        "basis": {
+          "title": "Fondement",
+          "text": "Le traitement repose sur votre consentement, exprimé en cochant la case prévue avant l'envoi du formulaire. Sans ce consentement, la demande ne peut pas être envoyée ; vous pouvez toujours contacter le restaurant par téléphone ou par WhatsApp."
+        },
+        "recipients": {
+          "title": "Destinataires",
+          "text": "Vos données sont destinées au restaurant. Elles transitent par les prestataires techniques suivants, qui n'y ont accès que pour assurer leur service :"
+        },
+        "transfers": {
+          "title": "Localisation des données et transferts",
+          "text": "Lieu d'hébergement et de traitement des données, et transferts éventuels hors du Maroc :"
+        },
+        "retention": {
+          "title": "Durée de conservation"
+        },
+        "rights": {
+          "title": "Vos droits",
+          "text": "Conformément à la loi n° 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel, vous disposez d'un droit d'accès, de rectification et d'opposition, pour des motifs légitimes, au traitement de vos données. Pour l'exercer, écrivez à :"
+        },
+        "cndp": {
+          "title": "Commission nationale de contrôle de la protection des données à caractère personnel (CNDP)",
+          "text": "Les formalités applicables auprès de la CNDP sont en cours de vérification par le restaurant ; leur référence figurera ci-dessous. Vous pouvez également adresser une réclamation à la CNDP :"
+        },
+        "thirdParty": {
+          "title": "Services tiers",
+          "whatsapp": "WhatsApp : le bouton WhatsApp ouvre une conversation avec un message prérempli que vous envoyez vous-même ; les échanges relèvent ensuite des conditions de WhatsApp.",
+          "maps": "Google Maps : le plan d'accès n'est chargé qu'à votre demande, lorsque vous cliquez sur « Afficher le plan interactif » ; Google reçoit alors les données techniques habituelles (adresse IP, navigateur).",
+          "booking": "Système de réservation en ligne : s'il est proposé, son module n'est chargé qu'à votre demande et relève des conditions de son éditeur."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "text": "Le site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience. Si cela devait changer, cette politique serait mise à jour au préalable."
+        },
+        "security": {
+          "title": "Sécurité",
+          "text": "Les échanges avec le site sont chiffrés. Les demandes ne sont pas enregistrées dans une base de données du site : elles sont transmises au restaurant par e-mail. Les journaux techniques du service de réservation ne contiennent aucune donnée personnelle ; l'hébergeur peut toutefois conserver des journaux techniques de connexion."
+        }
+      }
+    },
+    "mentions": {
+      "seoTitle": "Mentions légales — Dar el Bacha",
+      "seoDescription": "Informations légales sur l'éditeur et l'hébergeur du site de Dar el Bacha, restaurant gastronomique marocain à Casablanca.",
+      "title": "Mentions légales",
+      "lead": "Éditeur, publication et hébergement du site.",
+      "sections": {
+        "editor": {
+          "title": "Éditeur du site"
+        },
+        "director": {
+          "title": "Publication"
+        },
+        "hosting": {
+          "title": "Hébergement"
+        },
+        "ip": {
+          "title": "Propriété intellectuelle",
+          "text": "Le logo, les textes, les photographies et les éléments graphiques de ce site sont protégés. Toute reproduction ou réutilisation sans autorisation écrite préalable est interdite."
+        },
+        "credits": {
+          "title": "Crédits",
+          "fonts": "Les polices de caractères du site sont utilisées sous licence libre :"
+        },
+        "privacy": {
+          "title": "Données personnelles",
+          "text": "Le traitement des données transmises par le formulaire de demande de réservation est décrit dans la politique de confidentialité."
+        }
+      }
     }
   },
   "hours": {
     "closed": "Fermé"
+  },
+  "legal": {
+    "draft": "Document en cours de validation juridique : les informations ci-dessous doivent être complétées par le restaurant et vérifiées par un juriste avant la mise en ligne.",
+    "nav": "Informations légales",
+    "privacy": "Confidentialité",
+    "notice": "Mentions légales",
+    "fields": {
+      "companyName": "Raison sociale",
+      "legalForm": "Forme juridique",
+      "shareCapital": "Capital social",
+      "registeredOffice": "Siège social",
+      "rc": "Registre du commerce (RC)",
+      "ice": "Identifiant commun de l'entreprise (ICE)",
+      "identifiantFiscal": "Identifiant fiscal (IF)",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "publicationDirector": "Directeur de la publication",
+      "dataController": "Responsable du traitement",
+      "dataContactEmail": "Contact pour les données personnelles",
+      "cndpReference": "Référence de la déclaration CNDP",
+      "dataRetention": "Durée de conservation",
+      "dataTransfers": "Localisation et transferts",
+      "hosting": "Hébergeur",
+      "emailProvider": "Service d'envoi d'e-mails",
+      "photoCredits": "Crédits photographiques"
+    }
   }
 }

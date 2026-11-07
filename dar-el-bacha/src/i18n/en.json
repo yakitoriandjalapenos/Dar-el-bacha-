@@ -42,7 +42,8 @@
     "map": "[LOCATION TO BE CONFIRMED]",
     "story": "[RESTAURANT INTRODUCTION AND HISTORY TO BE CONFIRMED]",
     "photo": "Official photograph to come",
-    "conditions": "[BOOKING CONDITIONS TO BE CONFIRMED]"
+    "conditions": "[BOOKING CONDITIONS TO BE CONFIRMED]",
+    "legal": "[LEGAL INFORMATION TO BE CONFIRMED]"
   },
   "footer": {
     "tagline": "Moroccan fine dining in Casablanca",
@@ -257,9 +258,126 @@
       "seoDescription": "This page does not exist or has been moved.",
       "title": "Page not found",
       "lead": "This page does not exist or has been moved."
+    },
+    "confidentialite": {
+      "seoTitle": "Privacy policy — Dar el Bacha",
+      "seoDescription": "How Dar el Bacha processes the personal data sent through the reservation request form, in accordance with Moroccan Law No. 09-08.",
+      "title": "Privacy policy",
+      "lead": "The data you entrust to us, how it is used and your rights.",
+      "sections": {
+        "controller": {
+          "title": "Data controller",
+          "text": "Personal data collected on this site is processed under the responsibility of:"
+        },
+        "data": {
+          "title": "Data collected",
+          "text": "The site only collects personal data when you send a reservation request through the form:",
+          "item1": "your full name;",
+          "item2": "your email address and phone number;",
+          "item3": "the requested date, time and number of guests;",
+          "item4": "the optional message you add;",
+          "item5": "the language in which you browse the site."
+        },
+        "purpose": {
+          "title": "Purpose",
+          "text": "This data is used solely to process your reservation request and reply to you. It is neither used for marketing nor shared with third parties."
+        },
+        "basis": {
+          "title": "Legal basis",
+          "text": "Processing is based on your consent, given by ticking the box provided before sending the form. Without this consent the request cannot be sent; you can always contact the restaurant by phone or WhatsApp."
+        },
+        "recipients": {
+          "title": "Recipients",
+          "text": "Your data is intended for the restaurant. It passes through the following technical service providers, who only access it to provide their service:"
+        },
+        "transfers": {
+          "title": "Data location and transfers",
+          "text": "Where the data is hosted and processed, and any transfers outside Morocco:"
+        },
+        "retention": {
+          "title": "Retention period"
+        },
+        "rights": {
+          "title": "Your rights",
+          "text": "In accordance with Law No. 09-08 on the protection of individuals with regard to the processing of personal data, you have the right to access and rectify your data and, on legitimate grounds, to object to its processing. To exercise these rights, write to:"
+        },
+        "cndp": {
+          "title": "National Commission for the Control of Personal Data Protection (CNDP)",
+          "text": "The formalities applicable with the CNDP are being verified by the restaurant; their reference will appear below. You may also lodge a complaint with the CNDP:"
+        },
+        "thirdParty": {
+          "title": "Third-party services",
+          "whatsapp": "WhatsApp: the WhatsApp button opens a conversation with a pre-filled message that you send yourself; the exchange is then governed by WhatsApp’s terms.",
+          "maps": "Google Maps: the access map is only loaded when you ask for it, by clicking “Show the interactive map”; Google then receives the usual technical data (IP address, browser).",
+          "booking": "Online booking system: if offered, its module is only loaded when you ask for it and is governed by its provider’s terms."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "text": "The site sets no cookies and uses no audience measurement tool. Should this change, this policy would be updated beforehand."
+        },
+        "security": {
+          "title": "Security",
+          "text": "Exchanges with the site are encrypted. Requests are not stored in a database on the site: they are sent to the restaurant by email. The reservation service’s technical logs contain no personal data; the hosting provider may however keep technical connection logs."
+        }
+      }
+    },
+    "mentions": {
+      "seoTitle": "Legal notice — Dar el Bacha",
+      "seoDescription": "Legal information about the publisher and hosting provider of the website of Dar el Bacha, Moroccan fine dining restaurant in Casablanca.",
+      "title": "Legal notice",
+      "lead": "Publisher, publication and hosting of the site.",
+      "sections": {
+        "editor": {
+          "title": "Site publisher"
+        },
+        "director": {
+          "title": "Publication"
+        },
+        "hosting": {
+          "title": "Hosting"
+        },
+        "ip": {
+          "title": "Intellectual property",
+          "text": "The logo, texts, photographs and graphic elements of this site are protected. Any reproduction or reuse without prior written permission is prohibited."
+        },
+        "credits": {
+          "title": "Credits",
+          "fonts": "The site’s typefaces are used under an open licence:"
+        },
+        "privacy": {
+          "title": "Personal data",
+          "text": "The processing of data sent through the reservation request form is described in the privacy policy."
+        }
+      }
     }
   },
   "hours": {
     "closed": "Closed"
+  },
+  "legal": {
+    "draft": "Document under legal review: the information below must be completed by the restaurant and checked by a legal professional before the site goes live.",
+    "nav": "Legal information",
+    "privacy": "Privacy",
+    "notice": "Legal notice",
+    "fields": {
+      "companyName": "Company name",
+      "legalForm": "Legal form",
+      "shareCapital": "Share capital",
+      "registeredOffice": "Registered office",
+      "rc": "Trade register (RC)",
+      "ice": "Common company identifier (ICE)",
+      "identifiantFiscal": "Tax identifier (IF)",
+      "phone": "Phone",
+      "email": "Email",
+      "publicationDirector": "Publication director",
+      "dataController": "Data controller",
+      "dataContactEmail": "Personal data contact",
+      "cndpReference": "CNDP declaration reference",
+      "dataRetention": "Retention period",
+      "dataTransfers": "Data location and transfers",
+      "hosting": "Hosting provider",
+      "emailProvider": "Email delivery service",
+      "photoCredits": "Photo credits"
+    }
   }
 }

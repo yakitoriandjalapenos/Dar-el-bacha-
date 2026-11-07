@@ -19,8 +19,14 @@ export const PAGES = [
   { id: 'contact',     slug: { fr: 'contact',        en: 'contact',   ar: 'contact' } },
 ];
 
+// Pages juridiques (pied de page) : hors navigation principale, mais traduites, indexables et dans le sitemap.
+export const LEGAL_PAGES = [
+  { id: 'confidentialite', slug: { fr: 'confidentialite', en: 'privacy', ar: 'privacy' } },
+  { id: 'mentions', slug: { fr: 'mentions-legales', en: 'legal-notice', ar: 'legal-notice' } },
+];
+
 export function pathFor(pageId, lang) {
-  const page = PAGES.find((p) => p.id === pageId);
+  const page = [...PAGES, ...LEGAL_PAGES].find((p) => p.id === pageId);
   if (!page) throw new Error(`Page inconnue : ${pageId}`);
   const slug = page.slug[lang];
   return slug ? `/${lang}/${slug}/` : `/${lang}/`;

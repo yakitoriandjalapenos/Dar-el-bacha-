@@ -88,6 +88,7 @@ section('Informations juridiques (à faire valider par un juriste)', [
   L('dataTransfers', 'Localisation des données et transferts éventuels hors du Maroc', '{ fr, en, ar }'),
   L('hosting', 'Hébergeur du site (nom, adresse)'),
   L('emailProvider', 'Prestataire d\'envoi d\'e-mails'),
+  L('photoCredits', 'Crédits photographiques'),
   item('Validation juridique des pages Mentions légales et Confidentialité', legal.validated === true, 'site.json › legal.validated', 'true après validation'),
 ]);
 

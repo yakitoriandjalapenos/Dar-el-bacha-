@@ -257,12 +257,18 @@
 .site-footer__langs li + li { margin-block-start: 0 !important; }
 .site-footer__langs a[aria-current="true"] { color: var(--accent-text); }
 .site-footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-l);
   margin-block-start: var(--space-xl);
   padding-block-start: var(--space-s);
   border-block-start: 1px solid var(--rule);
   color: var(--fg-muted);
-  max-width: none;
 }
+.site-footer__base p { max-width: none; }
+.site-footer__legal ul { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-m); }
+.site-footer__legal li + li { margin-block-start: 0 !important; }
 
 /* ---------- Barre de réservation (petits écrans) ---------- */
 

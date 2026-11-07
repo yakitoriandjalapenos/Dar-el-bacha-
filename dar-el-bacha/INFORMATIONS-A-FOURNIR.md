@@ -1,6 +1,6 @@
 # Informations et fichiers à fournir — DAR EL BACHA
 
-Document généré par `npm run contenus` à partir de l'état réel du projet. **0 élément(s) fourni(s) sur 56.**
+Document généré par `npm run contenus` à partir de l'état réel du projet. **0 élément(s) fourni(s) sur 57.**
 
 Aucune de ces informations n'est inventée sur le site : tant qu'un élément manque, le site affiche un repère `[À CONFIRMER]` ou un emplacement provisoire, et `npm run build:prod` refuse la mise en production.
 
@@ -70,6 +70,7 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 | ❌ | Localisation des données et transferts éventuels hors du Maroc | `site.json › legal.dataTransfers` | { fr, en, ar } |
 | ❌ | Hébergeur du site (nom, adresse) | `site.json › legal.hosting` | texte |
 | ❌ | Prestataire d'envoi d'e-mails | `site.json › legal.emailProvider` | texte |
+| ❌ | Crédits photographiques | `site.json › legal.photoCredits` | texte |
 | ❌ | Validation juridique des pages Mentions légales et Confidentialité | `site.json › legal.validated` | true après validation |
 
 ## Identité visuelle et photographies

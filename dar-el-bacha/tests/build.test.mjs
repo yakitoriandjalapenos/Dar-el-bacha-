@@ -38,11 +38,11 @@ after(async () => {
   await rm(dir, { recursive: true, force: true });
 });
 
-test('prévisualisation : 20 pages, noindex partout, aucune URL absolue sans domaine officiel', async () => {
+test('prévisualisation : 26 pages (6 principales et 2 juridiques × 3 langues, 404, racine), noindex partout, aucune URL absolue sans domaine officiel', async () => {
   const r = build();
   assert.equal(r.status, 0, r.stderr);
   const pages = await listHtml(path.join(dir, 'dist'));
-  assert.equal(pages.length, 20);
+  assert.equal(pages.length, 26);
   for (const p of pages) {
     const h = await html(p);
     assert.match(h, /<meta name="robots" content="noindex, nofollow">/, p);
@@ -64,6 +64,7 @@ test('production refusée tant que des informations sont à confirmer, dist/ inc
   assert.match(r.stderr, /reservation\.formEndpoint/);
   assert.match(r.stderr, /photographies provisoires/);
   assert.match(r.stderr, /plats « à valider »/);
+  assert.match(r.stderr, /pages juridiques non validées par un juriste/);
   assert.equal(await html('fr/index.html'), before);
   assert.equal(existsSync(path.join(dir, '.build-tmp')), false);
 });
@@ -83,7 +84,9 @@ test('production acceptée quand tous les contenus sont renseignés (données de
     whatsapp: { number: '212600000000' }, googleMapsUrl: 'https://maps.google.com/?q=test',
     social: { instagram: 'https://www.instagram.com/test', facebook: 'https://www.facebook.com/test', tripadvisor: 'https://www.tripadvisor.com/test' },
     reservation: { formEndpoint: '/api/reservation', bookingSystem: null, conditions: T('Conditions') },
+    legal: Object.fromEntries(['companyName', 'legalForm', 'shareCapital', 'registeredOffice', 'rc', 'ice', 'identifiantFiscal', 'publicationDirector', 'dataController', 'cndpReference', 'hosting', 'emailProvider', 'photoCredits'].map((k) => [k, `${k} (test)`])),
   });
+  Object.assign(site.legal, { dataContactEmail: 'donnees@domaine-de-test.ma', dataRetention: T('Durée'), dataTransfers: T('Transferts'), validated: true });
   await writeJSON('src/content/site.json', site);
 
   const menu = await readJSON('src/content/menu.json');
@@ -122,7 +125,9 @@ test('production acceptée quand tous les contenus sont renseignés (données de
   assert.match(await html('404.html'), /<meta name="robots" content="noindex">/);
 
   const sitemap = await html('sitemap.xml');
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 18);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, 24);
+  assert.match(sitemap, /<loc>https:\/\/www\.domaine-de-test\.ma\/fr\/confidentialite\/<\/loc>/);
+  assert.doesNotMatch(await html('fr/mentions-legales/index.html'), /data-provisional/);
   assert.match(await html('robots.txt'), /Sitemap: https:\/\/www\.domaine-de-test\.ma\/sitemap\.xml/);
   assert.doesNotMatch(await html('_headers'), /X-Robots-Tag/);
 });

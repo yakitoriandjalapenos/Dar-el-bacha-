@@ -423,3 +423,22 @@
 /* ---------- 404 ---------- */
 
 .not-found { min-height: 30vh; display: grid; align-content: center; }
+
+/* ---------- Pages juridiques ---------- */
+
+.legal__section { display: grid; gap: var(--space-s); padding-block-start: var(--space-m); border-block-start: 1px solid var(--rule); }
+.legal__section h2 { font-size: var(--step-3); }
+.legal-draft {
+  padding: var(--space-s) var(--space-m);
+  border-inline-start: 3px solid var(--c-gold);
+  background: var(--c-sand-100);
+  color: var(--c-walnut);
+  font-size: var(--step--1);
+  max-width: none;
+}
+.legal-fields { display: grid; gap: var(--space-xs); }
+.legal-fields > div { display: grid; gap: var(--space-3xs) var(--space-m); }
+@media (min-width: 40rem) { .legal-fields > div { grid-template-columns: 16rem 1fr; } }
+.legal-fields dt { font-size: var(--step--1); font-weight: 500; color: var(--accent-text); }
+.legal-list { display: grid; gap: var(--space-3xs); padding-inline-start: 1.2em; max-width: var(--measure); }
+.legal-fonts { font-size: var(--step--1); color: var(--fg-muted); }
