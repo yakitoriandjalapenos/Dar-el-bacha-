@@ -113,6 +113,7 @@
   overflow: hidden;
   background: var(--c-sand-200);
 }
+.media picture { display: block; width: 100%; height: 100%; }
 .media img {
   width: 100%;
   height: 100%;
@@ -377,6 +378,7 @@
 
 /* ---------- Aperçu de démonstration : bandeau, mention sur les photos d'illustration ---------- */
 .demo-banner {
+  max-width: none;
   margin: 0; padding: 0.45rem var(--gutter, 1rem); text-align: center;
   background: var(--c-walnut); color: var(--c-sand); font-size: var(--step--1); line-height: 1.5;
 }
@@ -385,8 +387,14 @@
   padding: 0.15em 0.6em; background: color-mix(in srgb, var(--c-emerald-950) 78%, transparent); color: var(--c-ivory);
   font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.6; pointer-events: none;
 }
+.media__illustration::before { content: attr(data-label); }
 .media__illustration:lang(ar), :lang(ar) .media__illustration { letter-spacing: 0; text-transform: none; font-size: 0.75rem; }
 /* Vignettes de la carte : trop petites pour la mention, signalée par la note de la carte et le bandeau d'aperçu */
 .dish__photo .media__illustration { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); padding: 0; }
 .photo-credits { font-size: var(--step--1); color: var(--fg-muted); padding-inline-start: 1.2em; }
 .photo-credits li + li { margin-block-start: 0.3em; }
+
+/* Dans une arche, la mention reste centrée en bas (jamais rognée par la forme) */
+.arch .media__illustration { left: 50%; right: auto; transform: translateX(-50%); inset-block-end: 0.8rem; white-space: nowrap; }
+.hours__time { text-align: end; }
+.hours__range { white-space: nowrap; }

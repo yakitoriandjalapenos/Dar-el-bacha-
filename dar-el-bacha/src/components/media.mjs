@@ -29,6 +29,8 @@ export function media(ctx, { image = null, alt = '', format = 'paysage', caption
   const pic = ctx.picture(img);
   // Photo d'illustration (banque d'images libre, aperçu) : toujours signalée, jamais présentée comme une photo du restaurant
   const illustration = typeof image === 'string' && image.startsWith('illustrations/');
+  // Mention visible cachée aux lecteurs d'écran, qui l'entendent dans le texte alternatif
+  if (illustration && alt) alt = `${alt} (${ctx.t('demo.illustration')})`;
   // Couleur dominante en fond pendant le chargement (aucun octet supplémentaire à télécharger)
   return html`<div class="${cls}"${img.color ? html` style="background-color:${img.color}"` : ''}>
     <picture>
@@ -43,6 +45,6 @@ export function media(ctx, { image = null, alt = '', format = 'paysage', caption
         fetchpriority: priority === 'high' ? 'high' : false,
       })}>
     </picture>
-    ${illustration && html`<span class="media__illustration" data-provisional="photo-illustration">${ctx.t('demo.illustration')}</span>`}
+    ${illustration && html`<span class="media__illustration" data-provisional="photo-illustration" data-label="${ctx.t('demo.illustration')}" aria-hidden="true"></span>`}
   </div>`;
 }

@@ -245,15 +245,19 @@
 
 .dish-list { display: grid; gap: var(--space-m); margin-block-start: var(--space-m); max-width: 46rem; }
 .dish { display: grid; gap: var(--space-s); }
-.dish--photo { grid-template-columns: 5.5rem 1fr; align-items: start; }
+.dish--photo { grid-template-columns: 5.5rem minmax(0, 1fr); align-items: start; }
+.dish__body { min-width: 0; }
 .dish__photo .arch { width: 5.5rem; }
 .dish__row { display: flex; align-items: baseline; gap: var(--space-xs); }
-.dish__name { font-family: var(--font-display); font-size: var(--step-2); color: var(--heading); }
+.dish__name { font-family: var(--font-display); font-size: var(--step-2); color: var(--heading); min-width: 0; overflow-wrap: anywhere; }
 .dish__leader { flex: 1; min-width: 1.5rem; border-block-end: 1px dotted var(--c-gold); transform: translateY(-0.3em); }
 .dish__price { font-size: var(--step--1); white-space: nowrap; }
 /* Très petits écrans : le repère de prix (long) peut passer à la ligne au lieu de déborder */
 @media (max-width: 22rem) {
   .dish__price .tbc { white-space: normal; display: inline-block; text-align: end; }
+  /* Vignette réduite : le nom, le filet et le prix gardent leur place sur une seule colonne étroite */
+  .dish--photo { grid-template-columns: 4rem minmax(0, 1fr); gap: var(--space-xs); }
+  .dish__photo .arch { width: 4rem; }
 }
 .dish__meta { margin-block-start: var(--space-3xs); }
 .dish__desc { margin-block-start: var(--space-3xs); color: var(--fg-muted); font-style: italic; }

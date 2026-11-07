@@ -44,7 +44,7 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.photo
         return html`<li class="gallery-item gallery-item--${item.format}"${reveal}>
           <figure>
             ${full
-              ? html`<a class="gallery-item__link" href="${full}" data-lightbox aria-label="${labels.open} : ${alt}">${picture}</a>`
+              ? html`<a class="gallery-item__link" href="${full}" data-lightbox aria-label="${labels.open} : ${alt}${typeof item.image === 'string' && item.image.startsWith('illustrations/') ? ` (${ctx.t('demo.illustration')})` : ''}">${picture}</a>`
               : picture}
             ${full && html`<figcaption class="gallery-item__caption">${theme}</figcaption>`}
           </figure>

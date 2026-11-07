@@ -1,0 +1,790 @@
+{
+  "illustrations/arche-brocart": {
+    "width": 1920,
+    "height": 2767,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#c8c8b8",
+    "source": "ressources/photos/illustrations/arche-brocart.jpg",
+    "hash": "c008eda6d15c8fb5"
+  },
+  "illustrations/arche-patio": {
+    "width": 1280,
+    "height": 1751,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#180808",
+    "source": "ressources/photos/illustrations/arche-patio.jpg",
+    "hash": "3ded0541fe904dd6"
+  },
+  "illustrations/briouates": {
+    "width": 1920,
+    "height": 1388,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#e8d8d8",
+    "source": "ressources/photos/illustrations/briouates.jpg",
+    "hash": "e175808dc3cf3422"
+  },
+  "illustrations/citronnade": {
+    "width": 1280,
+    "height": 1505,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#a8b8c8",
+    "source": "ressources/photos/illustrations/citronnade.jpg",
+    "hash": "65ac6494491cae1d"
+  },
+  "illustrations/cornes-gazelle": {
+    "width": 1920,
+    "height": 1280,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#281808",
+    "source": "ressources/photos/illustrations/cornes-gazelle.jpg",
+    "hash": "83147d0701b8bb8f"
+  },
+  "illustrations/cour-doree": {
+    "width": 1280,
+    "height": 1920,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#f8d898",
+    "source": "ressources/photos/illustrations/cour-doree.jpg",
+    "hash": "0c85f9761a0d44a3"
+  },
+  "illustrations/couscous-sept-legumes": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#f8f8f8",
+    "source": "ressources/photos/illustrations/couscous-sept-legumes.jpg",
+    "hash": "066f9718bccfcdc5"
+  },
+  "illustrations/epices": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#181818",
+    "source": "ressources/photos/illustrations/epices.jpg",
+    "hash": "142731ada14198d0"
+  },
+  "illustrations/harira": {
+    "width": 1920,
+    "height": 1130,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#4898a8",
+    "source": "ressources/photos/illustrations/harira.jpg",
+    "hash": "5aea20f14ec6b059"
+  },
+  "illustrations/infusion-verveine": {
+    "width": 1920,
+    "height": 1514,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#683818",
+    "source": "ressources/photos/illustrations/infusion-verveine.jpg",
+    "hash": "fcac64c8447a8d86"
+  },
+  "illustrations/jarres-tanjia": {
+    "width": 1920,
+    "height": 1280,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#181818",
+    "source": "ressources/photos/illustrations/jarres-tanjia.jpg",
+    "hash": "158caddb153a6a91"
+  },
+  "illustrations/jus-orange": {
+    "width": 1920,
+    "height": 1641,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#080808",
+    "source": "ressources/photos/illustrations/jus-orange.jpg",
+    "hash": "940ec7f649cd285a"
+  },
+  "illustrations/lait-amande": {
+    "width": 1920,
+    "height": 1280,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#e8e8e8",
+    "source": "ressources/photos/illustrations/lait-amande.jpg",
+    "hash": "9b6a09fceca18e1b"
+  },
+  "illustrations/lanterne-zellige": {
+    "width": 1280,
+    "height": 1920,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#181818",
+    "source": "ressources/photos/illustrations/lanterne-zellige.jpg",
+    "hash": "6806f1e35cef532b"
+  },
+  "illustrations/lanternes-dorees": {
+    "width": 1280,
+    "height": 1920,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#783808",
+    "source": "ressources/photos/illustrations/lanternes-dorees.jpg",
+    "hash": "ba9f7052f23f3aea"
+  },
+  "illustrations/mechoui": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#883818",
+    "source": "ressources/photos/illustrations/mechoui.jpg",
+    "hash": "9836a84ee147909d"
+  },
+  "illustrations/mrouzia": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#281818",
+    "source": "ressources/photos/illustrations/mrouzia.jpg",
+    "hash": "af53a6397c88ff8b"
+  },
+  "illustrations/oranges-cannelle": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#787878",
+    "source": "ressources/photos/illustrations/oranges-cannelle.jpg",
+    "hash": "c8f91c6953ec1bf3"
+  },
+  "illustrations/pastilla-lait": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#080808",
+    "source": "ressources/photos/illustrations/pastilla-lait.jpg",
+    "hash": "7dbacb80f1d2963b"
+  },
+  "illustrations/pastilla": {
+    "width": 1280,
+    "height": 720,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#a898a8",
+    "source": "ressources/photos/illustrations/pastilla.jpg",
+    "hash": "728233310a5c28f9"
+  },
+  "illustrations/patio-fontaine": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#281808",
+    "source": "ressources/photos/illustrations/patio-fontaine.jpg",
+    "hash": "899bc0aae92c7c49"
+  },
+  "illustrations/patisseries": {
+    "width": 1280,
+    "height": 960,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#887858",
+    "source": "ressources/photos/illustrations/patisseries.jpg",
+    "hash": "643a8330f46c2498"
+  },
+  "illustrations/plafond-cedre-lanterne": {
+    "width": 1280,
+    "height": 1920,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#382818",
+    "source": "ressources/photos/illustrations/plafond-cedre-lanterne.jpg",
+    "hash": "5f029d6ceac3237b"
+  },
+  "illustrations/plateau-the-tajine": {
+    "width": 1920,
+    "height": 1079,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#080808",
+    "source": "ressources/photos/illustrations/plateau-the-tajine.jpg",
+    "hash": "6ca3dc7dee30888e"
+  },
+  "illustrations/rfissa": {
+    "width": 1920,
+    "height": 1446,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#e8e8f8",
+    "source": "ressources/photos/illustrations/rfissa.jpg",
+    "hash": "a7c2fc2440ca4ec5"
+  },
+  "illustrations/salades-marocaines": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#b85838",
+    "source": "ressources/photos/illustrations/salades-marocaines.jpg",
+    "hash": "837b8d5fa5a67a7f"
+  },
+  "illustrations/salle-riad": {
+    "width": 1920,
+    "height": 1275,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#080808",
+    "source": "ressources/photos/illustrations/salle-riad.jpg",
+    "hash": "1c2ffda65ccf60b3"
+  },
+  "illustrations/salon-platre-cisele": {
+    "width": 1920,
+    "height": 2560,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#381808",
+    "source": "ressources/photos/illustrations/salon-platre-cisele.jpg",
+    "hash": "f4689dc6cad7a33f"
+  },
+  "illustrations/salon-vue-haute": {
+    "width": 1920,
+    "height": 1275,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#180808",
+    "source": "ressources/photos/illustrations/salon-vue-haute.jpg",
+    "hash": "9be7ab2ded704b52"
+  },
+  "illustrations/seffa-medfouna": {
+    "width": 1920,
+    "height": 1414,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#d8d8d8",
+    "source": "ressources/photos/illustrations/seffa-medfouna.jpg",
+    "hash": "173ed74da4131c11"
+  },
+  "illustrations/service-du-the": {
+    "width": 1920,
+    "height": 1446,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#f8f8f8",
+    "source": "ressources/photos/illustrations/service-du-the.jpg",
+    "hash": "c24df74ef045b0ff"
+  },
+  "illustrations/tajine-agneau-pruneaux": {
+    "width": 1920,
+    "height": 1280,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#080808",
+    "source": "ressources/photos/illustrations/tajine-agneau-pruneaux.jpg",
+    "hash": "a6be46a7e197f738"
+  },
+  "illustrations/tajine-kefta": {
+    "width": 1280,
+    "height": 1917,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#181818",
+    "source": "ressources/photos/illustrations/tajine-kefta.jpg",
+    "hash": "96c0762e26b03af5"
+  },
+  "illustrations/tajine-poisson": {
+    "width": 1920,
+    "height": 1358,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#181818",
+    "source": "ressources/photos/illustrations/tajine-poisson.jpg",
+    "hash": "86d938101855ab93"
+  },
+  "illustrations/tajine-poulet-citron": {
+    "width": 1280,
+    "height": 1486,
+    "widths": [
+      480,
+      800,
+      1200,
+      1280
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#682818",
+    "source": "ressources/photos/illustrations/tajine-poulet-citron.jpg",
+    "hash": "a798e1abcbd09a16"
+  },
+  "illustrations/tajine-table": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#080808",
+    "source": "ressources/photos/illustrations/tajine-table.jpg",
+    "hash": "2e6a2a43775df3c9"
+  },
+  "illustrations/taktouka": {
+    "width": 1920,
+    "height": 1273,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#a8b8b8",
+    "source": "ressources/photos/illustrations/taktouka.jpg",
+    "hash": "7439c0181b3a9f0a"
+  },
+  "illustrations/tanjia": {
+    "width": 1920,
+    "height": 2560,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#d8d8d8",
+    "source": "ressources/photos/illustrations/tanjia.jpg",
+    "hash": "3b1eaa18244a9f0c"
+  },
+  "illustrations/the-et-douceurs": {
+    "width": 1920,
+    "height": 1446,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#f8f8f8",
+    "source": "ressources/photos/illustrations/the-et-douceurs.jpg",
+    "hash": "688f101f52336deb"
+  },
+  "illustrations/the-marocain": {
+    "width": 1920,
+    "height": 2560,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#484848",
+    "source": "ressources/photos/illustrations/the-marocain.jpg",
+    "hash": "a621535e85bdaa98"
+  },
+  "illustrations/zaalouk": {
+    "width": 1920,
+    "height": 1440,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#f8f8f8",
+    "source": "ressources/photos/illustrations/zaalouk.jpg",
+    "hash": "e0c352179ffeed28"
+  },
+  "illustrations/zellige": {
+    "width": 1920,
+    "height": 1439,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "formats": [
+      "avif",
+      "webp",
+      "jpg"
+    ],
+    "color": "#c8c8c8",
+    "source": "ressources/photos/illustrations/zellige.jpg",
+    "hash": "592b3953b032fbcb"
+  }
+}

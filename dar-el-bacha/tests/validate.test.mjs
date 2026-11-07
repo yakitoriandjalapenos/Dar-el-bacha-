@@ -178,7 +178,9 @@ test('emplacements photo : structure, nom de photo, texte alternatif', () => {
   const m2 = clone(media);
   m2.home.hero.image = 'restaurant/salle';
   const refs = collectImageRefs({ media: m2, gallery, menu });
-  assert.deepEqual(refs.map((r) => r.ref), ['restaurant/salle']);
+  // Les emplacements renseignés sont tous relevés (indépendamment des photos d'illustration de l'aperçu), jamais les vides
+  assert.ok(refs.some((r) => r.ref === 'restaurant/salle' && r.where.includes('home.hero')));
+  assert.ok(refs.every((r) => r.ref !== null && r.ref !== undefined));
 });
 
 test('galerie : format et thème contrôlés', () => {

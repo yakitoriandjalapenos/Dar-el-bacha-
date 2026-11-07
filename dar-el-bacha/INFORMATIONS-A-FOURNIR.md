@@ -39,7 +39,7 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 | ✅ | Ingrédients ou particularités (si souhaités) | `menu.json › ingredients` | { fr, en, ar } |
 | ❌ | Prix en dirhams (DH) — prix indicatifs proposés pour l'aperçu, à valider | `menu.json › price, pricesStatus` | nombre, puis pricesStatus: valide |
 | ❌ | Plats emblématiques (4 au plus) | `menu.json › signature` | true sur les plats choisis |
-| ❌ | Photographies des plats | `menu.json › image + ressources/photos/gastronomie/` | originaux HD |
+| ❌ | Photographies des plats — photos d'illustration en place pour l'aperçu | `menu.json › image + ressources/photos/gastronomie/` | originaux HD |
 
 ## Réservation
 
@@ -86,7 +86,7 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 | ❌ | Logo monochrome | `ressources/logo/` | SVG |
 | ❌ | Favicon simplifié (arche seule) et icône d'application 1024 px | `src/static/favicon.svg, ressources/icones/` | SVG + PNG 1024 |
 | ❌ | Confirmation des codes couleur du logo | `ressources/logo/` | confirmation du graphiste |
-| ❌ | Photographies du restaurant et de la galerie (0/19 emplacements remplis) | `ressources/photos/ puis media.json, gallery.json` | originaux HD + droits d'utilisation |
+| ❌ | Photographies du restaurant et de la galerie (0/19 emplacements remplis ; 18 photo(s) d'illustration en attendant) | `ressources/photos/ puis media.json, gallery.json` | originaux HD + droits d'utilisation |
 | ❌ | Textes alternatifs des photos (FR, EN, AR) | `media.json, gallery.json › alt` | { fr, en, ar } |
 
 ## Témoignages

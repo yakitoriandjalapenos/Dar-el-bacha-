@@ -37,7 +37,7 @@ Autres commandes utiles :
 | `02-PHOTOS/` | Copie de chaque photo utilisée, rangée par section, et `CORRESPONDANCE.md` (photo ↔ section ↔ auteur ↔ licence) |
 | `03-CONTENUS/` | `CARTE.md` (les 25 propositions, trois langues, prix) et `INFORMATIONS-RESTAURANT.md` |
 | `04-AVIS-DEMO/` | `AVIS.md` (avis fictifs, trois langues) et copie de `reviews.json` |
-| `05-DOCUMENTATION/` | Ce guide |
+| `05-DOCUMENTATION/` | Ce guide et `CONTROLE-DIRECTION-ARTISTIQUE.md` (comparaison du résultat avec la direction artistique, écarts constatés) |
 
 ## 3. Où se trouvent les photos
 
