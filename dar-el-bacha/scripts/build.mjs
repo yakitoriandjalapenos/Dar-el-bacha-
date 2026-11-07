@@ -3,13 +3,18 @@
   DAR EL BACHA — générateur de site statique (Node ≥ 18, aucune dépendance).
 
   Usage :
-    node scripts/build.mjs            → génère dist/
+    node scripts/build.mjs           → prévisualisation : dist/ en noindex, contenus provisoires signalés
+    node scripts/build.mjs --prod    → production : refusée tant qu'il reste une information à confirmer
+                                       ou que l'URL officielle du site n'est pas configurée
     BASE=/sous-dossier node scripts/build.mjs   → site servi depuis un sous-dossier
 
-  Étapes : contrôles (carte, traductions) → CSS/JS empreintés → pages × langues
-           → sitemap, robots, 404, redirection racine → rapport des infos à confirmer.
+  Étapes : contrôles des contenus (carte, traductions, informations officielles)
+           → génération dans un dossier temporaire (CSS/JS empreintés, pages × langues,
+             sitemap, robots, 404, redirection racine)
+           → contrôle du site généré (référencement, liens, contenus provisoires)
+           → remplacement de dist/ uniquement si tout est conforme.
 */
-import { readFile, writeFile, mkdir, rm, cp, readdir, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, cp, readdir, stat, rename } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -17,18 +22,35 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { LANGS, DEFAULT_LANG, PAGES, pathFor } from '../src/routes.mjs';
 import { layout } from '../src/components/layout.mjs';
+import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite } from './lib/validate.mjs';
+import { checkOutput } from './lib/check-output.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
+const OUT = path.join(ROOT, '.build-tmp'); // génération ici, puis remplacement de dist/ si tout est conforme
 const BASE = (process.env.BASE || '').replace(/\/$/, '');
-const PLACEHOLDER_URL = 'https://dar-el-bacha.example';
+
+const args = process.argv.slice(2);
+const MODE = args.includes('--prod') || args.includes('--production') || process.env.BUILD_MODE === 'production' ? 'production' : 'preview';
+const PROD = MODE === 'production';
 
 const CSS_ORDER = ['tokens.css', 'base.css', 'layout.css', 'components.css', 'pages.css'];
 
-const readJSON = async (p) => JSON.parse(await readFile(p, 'utf8'));
 const hash = (s) => createHash('sha256').update(s).digest('hex').slice(0, 10);
 const kb = (n) => `${(n / 1024).toFixed(1)} ko`;
+const fail = (title, list) => {
+  console.error(`\n✗ ${title} :\n  - ${list.join('\n  - ')}\n`);
+  process.exit(1);
+};
+const readJSON = async (p) => {
+  const text = await readFile(p, 'utf8');
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    return fail('Build interrompu', [`${path.relative(ROOT, p)} : JSON invalide (${e.message}).`]);
+  }
+};
 
 /* ------------------------------------------------------------------ */
 /* Chargement                                                          */
@@ -40,49 +62,33 @@ const gallery = await readJSON(path.join(SRC, 'content/gallery.json'));
 const dict = Object.fromEntries(
   await Promise.all(LANGS.map(async (l) => [l.code, await readJSON(path.join(SRC, `i18n/${l.code}.json`))])),
 );
-const siteUrl = (site.siteUrl || PLACEHOLDER_URL).replace(/\/$/, '');
 
 /* ------------------------------------------------------------------ */
-/* Contrôles qualité (le build échoue plutôt que publier une erreur)   */
+/* Contrôles des contenus (le build échoue plutôt que publier une erreur) */
 /* ------------------------------------------------------------------ */
 
-const errors = [];
+// Les catégories et les limites de la carte viennent exclusivement de menu.json.
+const menuCheck = validateMenu(menu, dict, LANGS);
+const checks = [validateI18n(dict, LANGS, DEFAULT_LANG), menuCheck, validateGallery(gallery, dict, LANGS), validateSite(site, LANGS)];
+const errors = checks.flatMap((c) => c.errors);
+const warnings = checks.flatMap((c) => c.warnings);
+if (errors.length) fail('Build interrompu', errors);
+const total = menuCheck.total;
 
-// Carte : limites strictes par catégorie et au total
-const LIMITS = { entrees: 6, plats: 10, desserts: 4, boissons: 5 };
-let total = 0;
-for (const cat of menu.categories) {
-  const limit = LIMITS[cat.id];
-  if (limit === undefined) errors.push(`Carte : catégorie non prévue « ${cat.id} » (catégories autorisées : ${Object.keys(LIMITS).join(', ')}).`);
-  else if (cat.items.length > limit) errors.push(`Carte : ${cat.items.length} propositions en « ${cat.id} » (maximum ${limit}).`);
-  total += cat.items.length;
-  for (const item of cat.items) {
-    for (const l of LANGS) if (!item.name?.[l.code]) errors.push(`Carte : nom ${l.code} manquant pour « ${item.id} ».`);
-  }
-}
-if (total > 25) errors.push(`Carte : ${total} propositions au total (maximum 25).`);
+// URL officielle : jamais de domaine fictif. Sans URL, la prévisualisation omet les adresses absolues.
+const siteUrl = parseSiteUrl(site.siteUrl).url;
 
-// Traductions : mêmes clés dans toutes les langues
-const keys = (obj, prefix = '') =>
-  Object.entries(obj).flatMap(([k, v]) => (v && typeof v === 'object' ? keys(v, `${prefix}${k}.`) : [`${prefix}${k}`]));
-const refKeys = new Set(keys(dict[DEFAULT_LANG]));
-for (const l of LANGS) {
-  const k = new Set(keys(dict[l.code]));
-  for (const key of refKeys) if (!k.has(key)) errors.push(`Traduction ${l.code} : clé manquante « ${key} ».`);
-  for (const key of k) if (!refKeys.has(key)) errors.push(`Traduction ${l.code} : clé inconnue « ${key} ».`);
-}
-
-if (errors.length) {
-  console.error('\n✗ Build interrompu :\n  - ' + errors.join('\n  - ') + '\n');
-  process.exit(1);
-}
+// Blocages propres à la production, complétés après le contrôle du site généré
+const prodBlockers = [];
+if (PROD && !siteUrl) prodBlockers.push('siteUrl : URL officielle du site non configurée dans src/content/site.json.');
+if (PROD && !site.reservation?.formEndpoint) prodBlockers.push('reservation.formEndpoint : aucun service ne reçoit les demandes du formulaire de réservation.');
 
 /* ------------------------------------------------------------------ */
 /* Ressources : polices, CSS, JS, images                               */
 /* ------------------------------------------------------------------ */
 
-await rm(DIST, { recursive: true, force: true });
-await mkdir(path.join(DIST, 'assets'), { recursive: true });
+await rm(OUT, { recursive: true, force: true });
+await mkdir(path.join(OUT, 'assets'), { recursive: true });
 
 // Polices déclarées dans fonts.json et réellement présentes
 const fontsDir = path.join(SRC, 'assets/fonts');
@@ -95,20 +101,20 @@ const fontFaces = fontManifest
 const cssRaw = (await Promise.all(CSS_ORDER.map((f) => readFile(path.join(SRC, 'styles', f), 'utf8')))).join('\n');
 const css = fontFaces + minifyCss(cssRaw);
 const cssName = `site.${hash(css)}.css`;
-await writeFile(path.join(DIST, 'assets', cssName), css);
+await writeFile(path.join(OUT, 'assets', cssName), css);
 
 // JS
 const js = await readFile(path.join(SRC, 'scripts/main.js'), 'utf8');
 const jsName = `main.${hash(js)}.js`;
-await writeFile(path.join(DIST, 'assets', jsName), js);
+await writeFile(path.join(OUT, 'assets', jsName), js);
 
 // Images et polices copiées telles quelles ; fichiers statiques à la racine
-await cp(path.join(SRC, 'assets/img'), path.join(DIST, 'assets/img'), { recursive: true });
-await mkdir(path.join(DIST, 'assets/fonts'), { recursive: true });
-for (const f of fontManifest) await cp(path.join(fontsDir, f.file), path.join(DIST, 'assets/fonts', f.file));
+await cp(path.join(SRC, 'assets/img'), path.join(OUT, 'assets/img'), { recursive: true });
+await mkdir(path.join(OUT, 'assets/fonts'), { recursive: true });
+for (const f of fontManifest) await cp(path.join(fontsDir, f.file), path.join(OUT, 'assets/fonts', f.file));
 for (const f of await readdir(path.join(SRC, 'static'))) {
   if (f === 'robots.txt') continue;
-  await cp(path.join(SRC, 'static', f), path.join(DIST, f), { recursive: true });
+  await cp(path.join(SRC, 'static', f), path.join(OUT, f), { recursive: true });
 }
 
 // Index des images disponibles (pour <picture> : AVIF / WebP / JPEG, variantes nom-800.webp…)
@@ -137,6 +143,9 @@ function makeCtx(lang, pageId) {
     site,
     menu,
     gallery,
+    mode: MODE,
+    preview: !PROD,
+    siteUrl,
     year: new Date().getFullYear(),
     assets: { css: `${BASE}/assets/${cssName}`, js: `${BASE}/assets/${jsName}` },
     fontPreloads: lang === 'ar' ? [] : fontManifest.filter((f) => f.preload).map((f) => ({ href: `${BASE}/assets/fonts/${f.file}`, format: f.format })),
@@ -145,7 +154,8 @@ function makeCtx(lang, pageId) {
     tFor,
     tObj: (key) => get(dict[lang], key),
     path: (id, code = lang) => BASE + pathFor(id === '404' ? 'home' : id, code),
-    absUrl: (p) => siteUrl + (BASE && p.startsWith(BASE) ? p.slice(BASE.length) : p),
+    // Adresse absolue sur le domaine officiel ; null tant que siteUrl n'est pas configurée.
+    absUrl: (p) => (siteUrl ? siteUrl + (BASE && p.startsWith(BASE) ? p.slice(BASE.length) : p) : null),
     asset: (name) => `${BASE}/${name}`,
 
     address: () => {
@@ -192,17 +202,15 @@ function pictureSources(image) {
   return { sources, fallback };
 }
 
-/* Données structurées : uniquement les informations confirmées */
+/* Données structurées : uniquement les informations confirmées (et aucune adresse absolue sans URL officielle) */
 function restaurantSchema(ctx) {
   const a = site.address || {};
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
     name: site.name,
-    url: ctx.absUrl(ctx.path('home')),
     servesCuisine: 'Moroccan',
     acceptsReservations: true,
-    hasMenu: ctx.absUrl(ctx.path('carte')),
     address: {
       '@type': 'PostalAddress',
       addressLocality: site.city,
@@ -211,14 +219,18 @@ function restaurantSchema(ctx) {
       ...(a.postalCode && { postalCode: a.postalCode }),
     },
   };
+  if (siteUrl) {
+    data.url = ctx.absUrl(ctx.path('home'));
+    data.hasMenu = ctx.absUrl(ctx.path('carte'));
+  }
   if (site.phone) data.telephone = site.phone;
   if (site.email) data.email = site.email;
   if (site.geo?.latitude && site.geo?.longitude) data.geo = { '@type': 'GeoCoordinates', latitude: site.geo.latitude, longitude: site.geo.longitude };
   if (site.openingHoursSpecification) data.openingHoursSpecification = site.openingHoursSpecification;
   const sameAs = Object.values(site.social || {}).filter(Boolean);
   if (sameAs.length) data.sameAs = sameAs;
-  if (site.ogImage) data.image = ctx.absUrl(site.ogImage);
-  data.logo = ctx.absUrl(`${BASE}/assets/img/logo/logo-ivoire-or.png`);
+  if (siteUrl && site.ogImage) data.image = ctx.absUrl(site.ogImage);
+  if (siteUrl) data.logo = ctx.absUrl(`${BASE}/assets/img/logo/logo-ivoire-or.png`);
   return data;
 }
 
@@ -239,7 +251,13 @@ function menuSchema(ctx) {
     }))
     .filter((s) => s.hasMenuItem.length);
   if (!sections.length) return null;
-  return { '@context': 'https://schema.org', '@type': 'Menu', inLanguage: ctx.lang, url: ctx.absUrl(ctx.path('carte')), hasMenuSection: sections };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Menu',
+    inLanguage: ctx.lang,
+    ...(siteUrl && { url: ctx.absUrl(ctx.path('carte')) }),
+    hasMenuSection: sections,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -252,19 +270,29 @@ for (const p of [...PAGES.map((p) => p.id), '404']) {
 }
 
 const written = [];
+const textFiles = new Map(); // contenus texte publiés, pour le contrôle final
 async function writePage(relPath, content) {
-  const out = path.join(DIST, relPath);
+  const out = path.join(OUT, relPath);
   await mkdir(path.dirname(out), { recursive: true });
   await writeFile(out, content);
   written.push({ relPath, size: Buffer.byteLength(content) });
+  textFiles.set(relPath.split(path.sep).join('/'), content);
 }
+
+const pageChecks = [];
+const alternatesFor = (id) => [
+  ...LANGS.map((a) => ({ hreflang: a.hreflang, path: pathFor(id, a.code) })),
+  { hreflang: 'x-default', path: pathFor(id, DEFAULT_LANG) },
+];
 
 for (const l of LANGS) {
   for (const page of PAGES) {
     const ctx = makeCtx(l.code, page.id);
     const result = pageModules[page.id].render(ctx);
     const doc = layout(ctx, { ...result, jsonLd: (result.jsonLd || []).filter(Boolean) }).toString();
-    await writePage(path.join(pathFor(page.id, l.code), 'index.html'), doc);
+    const file = path.posix.join(pathFor(page.id, l.code).slice(1), 'index.html');
+    await writePage(file, doc);
+    pageChecks.push({ file, lang: l.code, dir: l.dir, path: pathFor(page.id, l.code), indexable: !result.noindex, alternates: alternatesFor(page.id) });
   }
 }
 
@@ -273,22 +301,35 @@ for (const l of LANGS) {
   const ctx = makeCtx(DEFAULT_LANG, '404');
   const result = pageModules['404'].render(ctx);
   await writePage('404.html', layout(ctx, result).toString());
+  pageChecks.push({ file: '404.html', lang: DEFAULT_LANG, dir: LANGS.find((l) => l.code === DEFAULT_LANG).dir, path: null, indexable: false, alternates: [] });
 }
 
 // Racine : redirection vers la langue par défaut (à doubler d'une redirection 301 côté hébergeur)
 const home = `${BASE}${pathFor('home', DEFAULT_LANG)}`;
-await writePage('index.html', `<!doctype html><html lang="${DEFAULT_LANG}"><head><meta charset="utf-8"><title>${site.name}</title><meta http-equiv="refresh" content="0; url=${home}"><link rel="canonical" href="${siteUrl}${pathFor('home', DEFAULT_LANG)}"></head><body><a href="${home}">${site.name}</a></body></html>\n`);
+const rootHead = [
+  `<meta charset="utf-8">`,
+  `<title>${site.name}</title>`,
+  !PROD && `<meta name="robots" content="noindex, nofollow">`,
+  `<meta http-equiv="refresh" content="0; url=${home}">`,
+  siteUrl && `<link rel="canonical" href="${siteUrl}${pathFor('home', DEFAULT_LANG)}">`,
+].filter(Boolean).join('');
+await writePage('index.html', `<!doctype html><html lang="${DEFAULT_LANG}"><head>${rootHead}</head><body><a href="${home}">${site.name}</a></body></html>\n`);
 
-// Sitemap avec alternatives linguistiques
-const urls = PAGES.flatMap((page) =>
-  LANGS.map((l) => {
-    const alts = LANGS.map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${siteUrl}${pathFor(page.id, a.code)}"/>`).join('\n');
-    return `  <url>\n    <loc>${siteUrl}${pathFor(page.id, l.code)}</loc>\n${alts}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${pathFor(page.id, DEFAULT_LANG)}"/>\n  </url>`;
-  }),
-);
-await writePage('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`);
+// Sitemap avec alternatives linguistiques (uniquement sur le domaine officiel)
+if (siteUrl) {
+  const urls = PAGES.flatMap((page) =>
+    LANGS.map((l) => {
+      const alts = alternatesFor(page.id).map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${siteUrl}${a.path}"/>`).join('\n');
+      return `  <url>\n    <loc>${siteUrl}${pathFor(page.id, l.code)}</loc>\n${alts}\n  </url>`;
+    }),
+  );
+  await writePage('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`);
+}
 
-const robots = (await readFile(path.join(SRC, 'static/robots.txt'), 'utf8')).replace('{{SITE_URL}}', siteUrl);
+// robots.txt : tout est bloqué en prévisualisation
+const robots = PROD
+  ? (await readFile(path.join(SRC, 'static/robots.txt'), 'utf8')).replace('{{SITE_URL}}', siteUrl)
+  : 'User-agent: *\nDisallow: /\n';
 await writePage('robots.txt', robots);
 
 // En-têtes HTTP (format Netlify / Cloudflare Pages ; à adapter selon l'hébergeur)
@@ -299,7 +340,44 @@ await writePage('_headers', `/assets/*
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-Frame-Options: SAMEORIGIN
-`);
+${PROD ? '' : '  X-Robots-Tag: noindex, nofollow\n'}`);
+
+/* ------------------------------------------------------------------ */
+/* Contrôle du site généré                                             */
+/* ------------------------------------------------------------------ */
+
+const PROVISIONAL_LABELS = {
+  address: 'adresse', phone: 'téléphone', email: 'e-mail', hours: 'horaires', whatsapp: 'numéro WhatsApp',
+  price: 'prix', social: 'réseaux sociaux', map: 'localisation', story: "présentation et histoire",
+  photo: 'photographies provisoires', 'dish-pending': 'plats « à valider »', 'menu-empty': 'catégories de la carte vides',
+  'menu-notice': 'mention « carte en cours de validation »', 'signature-pending': 'texte d\'attente des plats emblématiques',
+  'form-endpoint': 'formulaire de réservation non relié',
+};
+const forbiddenTexts = LANGS.flatMap((l) => [...Object.values(dict[l.code].tbc || {}), get(dict[l.code], 'pages.carte.pending')]);
+const allFiles = new Set(await listFiles(OUT));
+const output = checkOutput({ files: textFiles, allFiles, pages: pageChecks, mode: MODE, siteUrl, base: BASE, forbiddenTexts });
+
+const provisionalLines = [...output.provisional].map(
+  ([type, { count, files }]) => `${PROVISIONAL_LABELS[type] || type} : ${count} repère${count > 1 ? 's' : ''} sur ${files.size} page${files.size > 1 ? 's' : ''}`,
+);
+const strayLines = [...output.stray].map(([text, files]) => `texte provisoire ou interdit « ${text} » hors balisage : ${[...files].slice(0, 3).join(', ')}${files.size > 3 ? '…' : ''}`);
+
+if (output.errors.length) {
+  await rm(OUT, { recursive: true, force: true });
+  fail('Site généré non conforme (dist/ inchangé)', output.errors);
+}
+if (PROD) {
+  if (provisionalLines.length) prodBlockers.push(`Contenus provisoires encore affichés :\n      ${provisionalLines.join('\n      ')}`);
+  prodBlockers.push(...strayLines);
+  if (prodBlockers.length) {
+    await rm(OUT, { recursive: true, force: true });
+    fail('Production refusée (dist/ inchangé)', prodBlockers);
+  }
+}
+
+// Tout est conforme : le nouveau site remplace dist/
+await rm(DIST, { recursive: true, force: true });
+await rename(OUT, DIST);
 
 /* ------------------------------------------------------------------ */
 /* Rapport                                                             */
@@ -319,16 +397,23 @@ const prices = menu.categories.flatMap((c) => c.items.filter((i) => i.price == n
 const photos = gallery.items.filter((i) => !i.image).length;
 
 const htmlPages = written.filter((w) => w.relPath.endsWith('.html'));
-console.log(`\n✓ Build terminé → dist/  (${htmlPages.length} pages HTML, ${LANGS.length} langues)`);
+console.log(`\n✓ Build ${PROD ? 'de PRODUCTION' : 'de prévisualisation (noindex)'} terminé → dist/  (${htmlPages.length} pages HTML, ${LANGS.length} langues)`);
 console.log(`  CSS ${cssName} : ${kb(Buffer.byteLength(css))}   JS ${jsName} : ${kb(Buffer.byteLength(js))}`);
 console.log(`  Polices : ${fontManifest.map((f) => f.file).join(', ') || 'aucune (polices système)'}`);
-console.log(`  Carte : ${total}/25 propositions (${menu.categories.map((c) => `${c.id} ${c.items.length}/${LIMITS[c.id]}`).join(', ')})`);
-console.log(`\n⚠ À confirmer avant mise en ligne :`);
-console.log(`  - site.json : ${missing.join(', ')}`);
-if (pendingDishes.length) console.log(`  - Plats à valider : ${pendingDishes.join(', ')}`);
-if (prices.length) console.log(`  - Prix manquants : ${prices.length}`);
-if (photos) console.log(`  - Photos de galerie manquantes : ${photos}`);
-if (!site.siteUrl) console.log(`  - Nom de domaine : URL provisoire ${PLACEHOLDER_URL} utilisée pour canonical, sitemap et Open Graph`);
+console.log(`  Carte : ${total}/${menu.maxTotal} propositions (${menu.categories.map((c) => `${c.id} ${c.items.length}/${c.max}`).join(', ')})`);
+console.log(`  Contrôles : ${pageChecks.length} pages vérifiées (langue, titres, liens, canonical, hreflang, Open Graph, sitemap, indexation)`);
+if (warnings.length) console.log(`\n⚠ Avertissements :\n  - ${warnings.join('\n  - ')}`);
+
+if (!PROD) {
+  console.log(`\n⚠ À confirmer avant mise en ligne (bloquant pour npm run build:prod) :`);
+  if (missing.length) console.log(`  - site.json : ${missing.join(', ')}`);
+  if (pendingDishes.length) console.log(`  - Plats à valider : ${pendingDishes.join(', ')}`);
+  if (prices.length) console.log(`  - Prix manquants : ${prices.length}`);
+  if (photos) console.log(`  - Photos de galerie manquantes : ${photos}`);
+  if (!siteUrl) console.log(`  - URL officielle (siteUrl) non configurée : canonical, hreflang, Open Graph et sitemap sont omis`);
+  if (provisionalLines.length) console.log(`  - Repères provisoires affichés :\n      ${provisionalLines.join('\n      ')}`);
+  if (strayLines.length) console.log(`  - ${strayLines.join('\n  - ')}`);
+}
 console.log('');
 
 /* ------------------------------------------------------------------ */

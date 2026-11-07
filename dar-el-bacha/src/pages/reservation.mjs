@@ -61,7 +61,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
         <h2 id="form-title">${f('title')}</h2>
         <p>${f('text')}</p>
         <form id="reservation-form" novalidate
-          data-endpoint="${site.reservation?.formEndpoint || ''}"
+          data-endpoint="${site.reservation?.formEndpoint || ''}"${site.reservation?.formEndpoint ? '' : html` data-provisional="form-endpoint"`}
           data-messages="${JSON.stringify(messages)}">
           <div class="form-grid">
             ${field({ id: 'name', autocomplete: 'name', full: true, extra: html` maxlength="120"` })}

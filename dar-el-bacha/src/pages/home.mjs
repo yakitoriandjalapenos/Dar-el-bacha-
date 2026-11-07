@@ -11,6 +11,8 @@ const PHILOSOPHY_IMAGE = null;
 
 export function render(ctx) {
   const p = (key) => ctx.t(`pages.home.${key}`);
+  // Le texte « présentée ici dès que… » n'a de sens que tant que les plats emblématiques ne sont pas illustrés.
+  const signaturePending = SIGNATURE.some((s) => !s.image);
 
   const body = html`
 <section class="hero theme-dark" aria-labelledby="hero-title">
@@ -57,7 +59,7 @@ export function render(ctx) {
     <div class="section-head">
       <div>
         <h2 id="signature-title">${p('signature.title')}</h2>
-        <p>${p('signature.text')}</p>
+        ${signaturePending && html`<p data-provisional="signature-pending">${p('signature.text')}</p>`}
       </div>
       <a class="text-link" href="${ctx.path('carte')}">${ctx.t('cta.viewMenu')}</a>
     </div>

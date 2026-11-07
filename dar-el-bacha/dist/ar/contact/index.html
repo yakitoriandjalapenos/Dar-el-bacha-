@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>اتصل بنا والوصول — دار الباشا، الدار البيضاء</title>
 <meta name="description" content="العنوان والهاتف وأوقات العمل والاتجاهات للوصول إلى دار الباشا، مطعم مغربي راقٍ في الدار البيضاء.">
-<link rel="canonical" href="https://dar-el-bacha.example/ar/contact/">
-<link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/contact/"><link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/contact/"><link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/contact/">
-<link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/contact/">
+<meta name="robots" content="noindex, nofollow">
+
+
+
 <meta name="theme-color" content="#12372b">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -20,14 +21,12 @@
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="اتصل بنا والوصول — دار الباشا، الدار البيضاء">
 <meta property="og:description" content="العنوان والهاتف وأوقات العمل والاتجاهات للوصول إلى دار الباشا، مطعم مغربي راقٍ في الدار البيضاء.">
-<meta property="og:url" content="https://dar-el-bacha.example/ar/contact/">
+
 <meta property="og:locale" content="ar_MA">
 <meta property="og:locale:alternate" content="fr_MA"><meta property="og:locale:alternate" content="en_US">
-<meta property="og:image" content="https://dar-el-bacha.example/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"DAR EL BACHA","url":"https://dar-el-bacha.example/ar/","servesCuisine":"Moroccan","acceptsReservations":true,"hasMenu":"https://dar-el-bacha.example/ar/menu/","address":{"@type":"PostalAddress","addressLocality":"Casablanca","addressCountry":"MA"},"image":"https://dar-el-bacha.example/og-image.jpg","logo":"https://dar-el-bacha.example/assets/img/logo/logo-ivoire-or.png"}</script>
+
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"DAR EL BACHA","servesCuisine":"Moroccan","acceptsReservations":true,"address":{"@type":"PostalAddress","addressLocality":"Casablanca","addressCountry":"MA"}}</script>
 </head>
 <body>
 <a class="skip-link" href="#contenu">الانتقال إلى المحتوى</a>
@@ -89,17 +88,17 @@
 <section class="section">
   <div class="wrap contact-grid">
     <dl class="info-list">
-      <div><dt>العنوان</dt><dd><span class="tbc">[العنوان قيد التأكيد]</span></dd></div>
-      <div><dt>الهاتف</dt><dd><span class="tbc">[رقم الهاتف قيد التأكيد]</span></dd></div>
-      <div><dt>البريد الإلكتروني</dt><dd><span class="tbc">[البريد الإلكتروني قيد التأكيد]</span></dd></div>
-      <div><dt>أوقات العمل</dt><dd><span class="tbc">[أوقات العمل قيد التأكيد]</span></dd></div>
-      <div><dt>واتساب</dt><dd><span class="tbc">[رقم واتساب قيد التأكيد]</span></dd></div>
-      <div><dt>مواقع التواصل الاجتماعي</dt><dd><span class="tbc">[حسابات التواصل الاجتماعي قيد التأكيد]</span></dd></div>
+      <div><dt>العنوان</dt><dd><span class="tbc" data-provisional="address">[العنوان قيد التأكيد]</span></dd></div>
+      <div><dt>الهاتف</dt><dd><span class="tbc" data-provisional="phone">[رقم الهاتف قيد التأكيد]</span></dd></div>
+      <div><dt>البريد الإلكتروني</dt><dd><span class="tbc" data-provisional="email">[البريد الإلكتروني قيد التأكيد]</span></dd></div>
+      <div><dt>أوقات العمل</dt><dd><span class="tbc" data-provisional="hours">[أوقات العمل قيد التأكيد]</span></dd></div>
+      <div><dt>واتساب</dt><dd><span class="tbc" data-provisional="whatsapp">[رقم واتساب قيد التأكيد]</span></dd></div>
+      <div><dt>مواقع التواصل الاجتماعي</dt><dd><span class="tbc" data-provisional="social">[حسابات التواصل الاجتماعي قيد التأكيد]</span></dd></div>
     </dl>
 
     <div class="contact-map">
       <h2 class="visually-hidden">خريطة الوصول</h2>
-      <div class="media media--paysage media--placeholder" role="img" aria-label="[الموقع قيد التأكيد]">
+      <div class="media media--paysage media--placeholder" role="img" aria-label="[الموقع قيد التأكيد]" data-provisional="photo">
       <span class="media__caption" aria-hidden="true">[الموقع قيد التأكيد]</span>
     </div>
       <div class="actions">
@@ -125,9 +124,9 @@
         <div>
           <h2>موقعنا</h2>
           <address class="stack" style="--stack-gap: var(--space-3xs)">
-            <p><span class="tbc">[العنوان قيد التأكيد]</span></p>
-            <p><span class="tbc">[رقم الهاتف قيد التأكيد]</span></p>
-            <p><span class="tbc">[أوقات العمل قيد التأكيد]</span></p>
+            <p><span class="tbc" data-provisional="address">[العنوان قيد التأكيد]</span></p>
+            <p><span class="tbc" data-provisional="phone">[رقم الهاتف قيد التأكيد]</span></p>
+            <p><span class="tbc" data-provisional="hours">[أوقات العمل قيد التأكيد]</span></p>
           </address>
         </div>
 
@@ -140,7 +139,7 @@
 
         <div>
           <h2>تابعونا</h2>
-          <p><span class="tbc">[حسابات التواصل الاجتماعي قيد التأكيد]</span></p>
+          <p><span class="tbc" data-provisional="social">[حسابات التواصل الاجتماعي قيد التأكيد]</span></p>
         </div>
       </div>
 

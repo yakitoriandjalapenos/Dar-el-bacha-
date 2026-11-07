@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Réservation — Dar el Bacha, Casablanca</title>
 <meta name="description" content="Réservez votre table chez Dar el Bacha à Casablanca : demande en ligne ou message WhatsApp. Chaque réservation est confirmée par le restaurant.">
-<link rel="canonical" href="https://dar-el-bacha.example/fr/reservation/">
-<link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/reservation/"><link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/reservations/"><link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/reservations/">
-<link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/reservation/">
+<meta name="robots" content="noindex, nofollow">
+
+
+
 <meta name="theme-color" content="#12372b">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -20,13 +21,11 @@
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="Réservation — Dar el Bacha, Casablanca">
 <meta property="og:description" content="Réservez votre table chez Dar el Bacha à Casablanca : demande en ligne ou message WhatsApp. Chaque réservation est confirmée par le restaurant.">
-<meta property="og:url" content="https://dar-el-bacha.example/fr/reservation/">
+
 <meta property="og:locale" content="fr_MA">
 <meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="ar_MA">
-<meta property="og:image" content="https://dar-el-bacha.example/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:card" content="summary">
 
 </head>
 <body>
@@ -96,7 +95,7 @@
         <h2 id="form-title">Demande en ligne</h2>
         <p>Remplissez le formulaire. Le restaurant vous recontacte pour confirmer votre table.</p>
         <form id="reservation-form" novalidate
-          data-endpoint=""
+          data-endpoint="" data-provisional="form-endpoint"
           data-messages="{&quot;sending&quot;:&quot;Envoi en cours…&quot;,&quot;success&quot;:&quot;Demande envoyée. Elle est en attente de confirmation par le restaurant.&quot;,&quot;error&quot;:&quot;La demande n&#39;a pas pu être envoyée. Vérifiez votre connexion et réessayez, ou contactez le restaurant par téléphone.&quot;,&quot;invalid&quot;:&quot;Certains champs sont à compléter ou à corriger.&quot;,&quot;notConfigured&quot;:&quot;L&#39;envoi en ligne n&#39;est pas encore activé. Contactez le restaurant par WhatsApp ou par téléphone.&quot;,&quot;errors&quot;:{&quot;required&quot;:&quot;Ce champ est obligatoire.&quot;,&quot;email&quot;:&quot;Saisissez une adresse e-mail valide, par exemple nom@domaine.com.&quot;,&quot;phone&quot;:&quot;Saisissez un numéro de téléphone valide.&quot;,&quot;date&quot;:&quot;Choisissez une date à partir d&#39;aujourd&#39;hui.&quot;},&quot;whatsapp&quot;:{&quot;intro&quot;:&quot;Bonjour, je souhaite réserver une table chez Dar el Bacha.&quot;,&quot;fields&quot;:{&quot;name&quot;:&quot;Nom&quot;,&quot;date&quot;:&quot;Date&quot;,&quot;time&quot;:&quot;Heure&quot;,&quot;guests&quot;:&quot;Personnes&quot;}}}">
           <div class="form-grid">
             
@@ -162,7 +161,7 @@
         <h2 id="wa-title">Par WhatsApp</h2>
         <p>Ouvrez une conversation avec un message déjà rédigé. Vous le relisez, le complétez si besoin et l&#39;envoyez vous-même.</p>
         <span class="btn" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"/></svg>Écrire sur WhatsApp</span>
-        <p><span class="tbc">[NUMÉRO WHATSAPP À CONFIRMER]</span></p>
+        <p><span class="tbc" data-provisional="whatsapp">[NUMÉRO WHATSAPP À CONFIRMER]</span></p>
         <p class="note">Les informations saisies dans le formulaire sont reprises dans le message.</p>
         <p class="note">Le restaurant vous répond sur WhatsApp pour confirmer la réservation.</p>
       </aside>
@@ -185,9 +184,9 @@
         <div>
           <h2>Nous trouver</h2>
           <address class="stack" style="--stack-gap: var(--space-3xs)">
-            <p><span class="tbc">[ADRESSE À CONFIRMER]</span></p>
-            <p><span class="tbc">[TÉLÉPHONE À CONFIRMER]</span></p>
-            <p><span class="tbc">[HORAIRES À CONFIRMER]</span></p>
+            <p><span class="tbc" data-provisional="address">[ADRESSE À CONFIRMER]</span></p>
+            <p><span class="tbc" data-provisional="phone">[TÉLÉPHONE À CONFIRMER]</span></p>
+            <p><span class="tbc" data-provisional="hours">[HORAIRES À CONFIRMER]</span></p>
           </address>
         </div>
 
@@ -200,7 +199,7 @@
 
         <div>
           <h2>Nous suivre</h2>
-          <p><span class="tbc">[RÉSEAUX SOCIAUX À CONFIRMER]</span></p>
+          <p><span class="tbc" data-provisional="social">[RÉSEAUX SOCIAUX À CONFIRMER]</span></p>
         </div>
       </div>
 

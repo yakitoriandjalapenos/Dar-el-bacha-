@@ -19,7 +19,7 @@ export function button({ href, label, variant = 'primary', small = false, icon =
 /** Valeur officielle ou repère « À CONFIRMER » localisé. */
 export function info(ctx, value, tbcKey) {
   if (value === null || value === undefined || value === '') {
-    return html`<span class="tbc">${ctx.t(`tbc.${tbcKey}`)}</span>`;
+    return html`<span class="tbc" data-provisional="${tbcKey}">${ctx.t(`tbc.${tbcKey}`)}</span>`;
   }
   return html`${value}`;
 }

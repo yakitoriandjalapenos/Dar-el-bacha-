@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>الحجز — دار الباشا، الدار البيضاء</title>
 <meta name="description" content="احجز طاولتك في دار الباشا بالدار البيضاء: طلب عبر الموقع أو رسالة واتساب. يؤكّد المطعم كل حجز.">
-<link rel="canonical" href="https://dar-el-bacha.example/ar/reservations/">
-<link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/reservation/"><link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/reservations/"><link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/reservations/">
-<link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/reservation/">
+<meta name="robots" content="noindex, nofollow">
+
+
+
 <meta name="theme-color" content="#12372b">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -20,13 +21,11 @@
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="الحجز — دار الباشا، الدار البيضاء">
 <meta property="og:description" content="احجز طاولتك في دار الباشا بالدار البيضاء: طلب عبر الموقع أو رسالة واتساب. يؤكّد المطعم كل حجز.">
-<meta property="og:url" content="https://dar-el-bacha.example/ar/reservations/">
+
 <meta property="og:locale" content="ar_MA">
 <meta property="og:locale:alternate" content="fr_MA"><meta property="og:locale:alternate" content="en_US">
-<meta property="og:image" content="https://dar-el-bacha.example/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:card" content="summary">
 
 </head>
 <body>
@@ -96,7 +95,7 @@
         <h2 id="form-title">طلب عبر الموقع</h2>
         <p>املأ الاستمارة. سيتواصل معك المطعم لتأكيد طاولتك.</p>
         <form id="reservation-form" novalidate
-          data-endpoint=""
+          data-endpoint="" data-provisional="form-endpoint"
           data-messages="{&quot;sending&quot;:&quot;جارٍ الإرسال…&quot;,&quot;success&quot;:&quot;تم إرسال الطلب. وهو في انتظار تأكيد المطعم.&quot;,&quot;error&quot;:&quot;تعذّر إرسال الطلب. تحقّق من اتصالك وأعد المحاولة، أو اتصل بالمطعم هاتفيًا.&quot;,&quot;invalid&quot;:&quot;بعض الحقول تحتاج إلى إكمال أو تصحيح.&quot;,&quot;notConfigured&quot;:&quot;الطلب عبر الموقع غير مفعّل بعد. يُرجى التواصل مع المطعم عبر واتساب أو الهاتف.&quot;,&quot;errors&quot;:{&quot;required&quot;:&quot;هذا الحقل إلزامي.&quot;,&quot;email&quot;:&quot;أدخل بريدًا إلكترونيًا صالحًا، مثل name@domain.com.&quot;,&quot;phone&quot;:&quot;أدخل رقم هاتف صالحًا.&quot;,&quot;date&quot;:&quot;اختر تاريخًا ابتداءً من اليوم.&quot;},&quot;whatsapp&quot;:{&quot;intro&quot;:&quot;مرحبًا، أودّ حجز طاولة في دار الباشا.&quot;,&quot;fields&quot;:{&quot;name&quot;:&quot;الاسم&quot;,&quot;date&quot;:&quot;التاريخ&quot;,&quot;time&quot;:&quot;الساعة&quot;,&quot;guests&quot;:&quot;عدد الأشخاص&quot;}}}">
           <div class="form-grid">
             
@@ -162,7 +161,7 @@
         <h2 id="wa-title">عبر واتساب</h2>
         <p>افتح محادثة برسالة جاهزة. راجعها، وأكملها إن لزم، ثم أرسلها بنفسك.</p>
         <span class="btn" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"/></svg>راسلنا عبر واتساب</span>
-        <p><span class="tbc">[رقم واتساب قيد التأكيد]</span></p>
+        <p><span class="tbc" data-provisional="whatsapp">[رقم واتساب قيد التأكيد]</span></p>
         <p class="note">تُضاف المعلومات المُدخلة في الاستمارة إلى الرسالة.</p>
         <p class="note">يردّ المطعم عبر واتساب لتأكيد الحجز.</p>
       </aside>
@@ -185,9 +184,9 @@
         <div>
           <h2>موقعنا</h2>
           <address class="stack" style="--stack-gap: var(--space-3xs)">
-            <p><span class="tbc">[العنوان قيد التأكيد]</span></p>
-            <p><span class="tbc">[رقم الهاتف قيد التأكيد]</span></p>
-            <p><span class="tbc">[أوقات العمل قيد التأكيد]</span></p>
+            <p><span class="tbc" data-provisional="address">[العنوان قيد التأكيد]</span></p>
+            <p><span class="tbc" data-provisional="phone">[رقم الهاتف قيد التأكيد]</span></p>
+            <p><span class="tbc" data-provisional="hours">[أوقات العمل قيد التأكيد]</span></p>
           </address>
         </div>
 
@@ -200,7 +199,7 @@
 
         <div>
           <h2>تابعونا</h2>
-          <p><span class="tbc">[حسابات التواصل الاجتماعي قيد التأكيد]</span></p>
+          <p><span class="tbc" data-provisional="social">[حسابات التواصل الاجتماعي قيد التأكيد]</span></p>
         </div>
       </div>
 

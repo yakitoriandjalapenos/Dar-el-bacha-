@@ -11,7 +11,7 @@ export function media(ctx, { image = null, alt = '', format = 'paysage', caption
   const cls = ['media', format && `media--${format}`, className].filter(Boolean).join(' ');
 
   if (!image) {
-    return html`<div class="${cls} media--placeholder${dark ? ' is-dark' : ''}" role="img" aria-label="${caption || ctx.t('tbc.photo')}">
+    return html`<div class="${cls} media--placeholder${dark ? ' is-dark' : ''}" role="img" aria-label="${caption || ctx.t('tbc.photo')}" data-provisional="photo">
       <span class="media__caption" aria-hidden="true">${caption || ctx.t('tbc.photo')}</span>
     </div>`;
   }

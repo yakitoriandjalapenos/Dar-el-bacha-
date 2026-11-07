@@ -34,6 +34,9 @@
 
   "hours": null,
 
+  "_story": "Présentation et histoire du restaurant (page Notre histoire), fournies par le restaurant : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
+  "story": null,
+
   "googleMapsUrl": null,
 
   "social": {

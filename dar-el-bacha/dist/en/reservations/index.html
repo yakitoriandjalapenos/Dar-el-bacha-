@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reservations — Dar el Bacha, Casablanca</title>
 <meta name="description" content="Book your table at Dar el Bacha in Casablanca: online request or WhatsApp message. Every reservation is confirmed by the restaurant.">
-<link rel="canonical" href="https://dar-el-bacha.example/en/reservations/">
-<link rel="alternate" hreflang="fr" href="https://dar-el-bacha.example/fr/reservation/"><link rel="alternate" hreflang="en" href="https://dar-el-bacha.example/en/reservations/"><link rel="alternate" hreflang="ar" href="https://dar-el-bacha.example/ar/reservations/">
-<link rel="alternate" hreflang="x-default" href="https://dar-el-bacha.example/fr/reservation/">
+<meta name="robots" content="noindex, nofollow">
+
+
+
 <meta name="theme-color" content="#12372b">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -20,13 +21,11 @@
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="Reservations — Dar el Bacha, Casablanca">
 <meta property="og:description" content="Book your table at Dar el Bacha in Casablanca: online request or WhatsApp message. Every reservation is confirmed by the restaurant.">
-<meta property="og:url" content="https://dar-el-bacha.example/en/reservations/">
+
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_MA"><meta property="og:locale:alternate" content="ar_MA">
-<meta property="og:image" content="https://dar-el-bacha.example/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:card" content="summary">
 
 </head>
 <body>
@@ -96,7 +95,7 @@
         <h2 id="form-title">Online request</h2>
         <p>Fill in the form. The restaurant will contact you to confirm your table.</p>
         <form id="reservation-form" novalidate
-          data-endpoint=""
+          data-endpoint="" data-provisional="form-endpoint"
           data-messages="{&quot;sending&quot;:&quot;Sending…&quot;,&quot;success&quot;:&quot;Request sent. It is awaiting confirmation from the restaurant.&quot;,&quot;error&quot;:&quot;Your request could not be sent. Check your connection and try again, or call the restaurant.&quot;,&quot;invalid&quot;:&quot;Some fields need to be completed or corrected.&quot;,&quot;notConfigured&quot;:&quot;Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone.&quot;,&quot;errors&quot;:{&quot;required&quot;:&quot;This field is required.&quot;,&quot;email&quot;:&quot;Enter a valid email address, for example name@domain.com.&quot;,&quot;phone&quot;:&quot;Enter a valid phone number.&quot;,&quot;date&quot;:&quot;Choose a date from today onwards.&quot;},&quot;whatsapp&quot;:{&quot;intro&quot;:&quot;Hello, I would like to book a table at Dar el Bacha.&quot;,&quot;fields&quot;:{&quot;name&quot;:&quot;Name&quot;,&quot;date&quot;:&quot;Date&quot;,&quot;time&quot;:&quot;Time&quot;,&quot;guests&quot;:&quot;Guests&quot;}}}">
           <div class="form-grid">
             
@@ -162,7 +161,7 @@
         <h2 id="wa-title">Via WhatsApp</h2>
         <p>Open a conversation with a pre-written message. You review it, complete it if needed and send it yourself.</p>
         <span class="btn" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"/></svg>Message us on WhatsApp</span>
-        <p><span class="tbc">[WHATSAPP NUMBER TO BE CONFIRMED]</span></p>
+        <p><span class="tbc" data-provisional="whatsapp">[WHATSAPP NUMBER TO BE CONFIRMED]</span></p>
         <p class="note">Details entered in the form are included in the message.</p>
         <p class="note">The restaurant replies on WhatsApp to confirm your reservation.</p>
       </aside>
@@ -185,9 +184,9 @@
         <div>
           <h2>Find us</h2>
           <address class="stack" style="--stack-gap: var(--space-3xs)">
-            <p><span class="tbc">[ADDRESS TO BE CONFIRMED]</span></p>
-            <p><span class="tbc">[PHONE TO BE CONFIRMED]</span></p>
-            <p><span class="tbc">[OPENING HOURS TO BE CONFIRMED]</span></p>
+            <p><span class="tbc" data-provisional="address">[ADDRESS TO BE CONFIRMED]</span></p>
+            <p><span class="tbc" data-provisional="phone">[PHONE TO BE CONFIRMED]</span></p>
+            <p><span class="tbc" data-provisional="hours">[OPENING HOURS TO BE CONFIRMED]</span></p>
           </address>
         </div>
 
@@ -200,7 +199,7 @@
 
         <div>
           <h2>Follow us</h2>
-          <p><span class="tbc">[SOCIAL ACCOUNTS TO BE CONFIRMED]</span></p>
+          <p><span class="tbc" data-provisional="social">[SOCIAL ACCOUNTS TO BE CONFIRMED]</span></p>
         </div>
       </div>
 
