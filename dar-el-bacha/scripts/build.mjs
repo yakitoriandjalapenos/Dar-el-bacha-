@@ -164,6 +164,8 @@ function makeCtx(lang, pageId) {
       .filter((f) => (Array.isArray(f.preload) ? f.preload.includes(lang) : f.preload === true && lang !== 'ar'))
       .map((f) => ({ href: `${BASE}/assets/fonts/${f.file}`, format: f.format })),
 
+    // Nom de la maison dans l'écriture de la page (jamais de latin isolé dans une page arabe)
+    siteName: lang === 'ar' ? site.nameAr : site.name,
     t: (key, vars) => tFor(lang, key, vars),
     tFor,
     tObj: (key) => get(dict[lang], key),

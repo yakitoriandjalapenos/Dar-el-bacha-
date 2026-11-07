@@ -249,7 +249,8 @@
       "map": "Getting here",
       "mapLoad": "Show the interactive map",
       "mapNote": "Map provided by Google Maps, loaded only when you ask for it.",
-      "mapTitle": "Map — Dar el Bacha"
+      "mapTitle": "Map — Dar el Bacha",
+      "kicker": "Casablanca"
     },
     "notFound": {
       "seoTitle": "Page not found — Dar el Bacha",

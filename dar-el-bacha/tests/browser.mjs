@@ -272,6 +272,30 @@ try {
     await ctx.close();
   }
 
+  /* ---------- 10. Cohérence linguistique : aucun texte latin visible dans les pages arabes ---------- */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    const ALLOWED = new Set(['English', 'Français', 'Google', 'JavaScript', 'WhatsApp', 'Instagram', 'Facebook', 'Tripadvisor']);
+    const leaks = [];
+    for (const p of PAGES) {
+      await page.goto(BASE + pathFor(p.id, 'ar'));
+      const words = await page.evaluate(() => {
+        const out = [];
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          const el = walker.currentNode.parentElement;
+          if (!el || el.closest('script, style, [aria-hidden="true"], .visually-hidden, [dir="ltr"], [lang]:not(html)')) continue;
+          out.push(...(walker.currentNode.textContent.match(/[A-Za-zÀ-ÿ]{3,}/g) || []));
+        }
+        return out;
+      });
+      words.filter((w) => !ALLOWED.has(w)).forEach((w) => leaks.push(`${pathFor(p.id, 'ar')} : ${w}`));
+    }
+    check('Arabe : aucun texte latin visible hors noms de marque et de langues (cahier des charges, section 7)', !leaks.length, leaks.join(', '));
+    await ctx.close();
+  }
+
   /* ---------- 9. Copie de test avec photos, adresse et système connecté (données de test, hors projet) ---------- */
   const tmp = mkdtempSync(path.join(os.tmpdir(), 'dar-el-bacha-navigateur-'));
   let fxServer;

@@ -1,6 +1,6 @@
 # DAR EL BACHA — site gastronomique
 
-Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : socle technique consolidé (phase 1) ; l'identité visuelle définitive viendra ensuite.
+Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : phase 2 terminée — identité « patrimoine marocain revisité » et expérience premium, en attente des contenus officiels du restaurant.
 
 ## Démarrer
 
@@ -84,16 +84,24 @@ Les propositions déjà présentes (zaalouk, taktouka, pastilla, briouates, thé
 
 ## Logo
 
-Le logo est découpé dans la planche d'identité visuelle fournie (version ivoire et or, fond rendu transparent) :
+Règles d'usage validées (`src/components/logo.mjs`) :
 
-- `src/assets/img/logo/symbole-ivoire-or-112.*` : la porte seule, dans l'en-tête, à côté du nom écrit en texte (net à toutes les tailles et traduit en arabe).
-- `src/assets/img/logo/logo-ivoire-or.*` : le logo complet, dans le pied de page.
-- `src/static/favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png` : icônes d'onglet et d'écran d'accueil (porte centrale seule).
-- `src/static/og-image.jpg` : image de partage sur les réseaux sociaux (1200 × 630).
+| Version | Usage | Fichier (`src/assets/img/logo/`) |
+|---|---|---|
+| Vert et or **avec couronne** | Signature principale en grand format, sur fond clair (accueil, section « La maison ») | `logo-vert-or-couronne.*` |
+| Vert et or **sans couronne** (compacte) | Fond clair, lorsque l'espace est limité | `logo-vert-or.*` |
+| Ivoire et or | Fond émeraude (pied de page) | `logo-ivoire-or.*` |
+| Porte seule ivoire et or | En-tête, à côté du nom écrit en texte (traduit en arabe) | `symbole-ivoire-or-112.*` |
+| Arche seule | Favicons 16 et 32 px | `src/static/favicon.ico`, `favicon-32.png` |
 
-Pour afficher le logo complet dans l'en-tête au lieu de la porte + le nom : `"logo": { "header": "complet" }` dans `site.json`.
+Toutes les versions actuelles sont **découpées dans la planche officielle** (`ressources/logo/planche-identite-officielle-reference.jpg`,
+référence visuelle et non fichier source), à leur taille d'origine, sans redessin ni changement de couleur. Pour ne jamais les agrandir
+artificiellement, une découpe s'affiche au plus à **la moitié de sa largeur réelle** (netteté sur écran haute densité).
 
-La planche est une image JPEG de basse définition : le découpage convient pour avancer, mais il faudra le remplacer par les fichiers originaux du logo (SVG de préférence, sinon PNG transparent haute définition) avant la mise en ligne. Il suffit de garder les mêmes noms de fichiers.
+**Fichiers SVG définitifs** : déposer `<nom>.svg` à côté du fichier actuel (ex. `logo-vert-or-couronne.svg`) ; le composant l'utilise
+automatiquement, sans limite de taille. La planche ne contient pas de version ivoire et or *avec* couronne : elle viendra avec les SVG.
+Les icônes d'écran d'accueil (180 et 512 px) restent celles de la phase 1 : les icônes miniatures de la planche (168 px) ne peuvent pas
+être portées à ces tailles sans agrandissement.
 
 ## Photos
 
@@ -109,51 +117,80 @@ Le build crée la balise `<picture>` (AVIF, puis WebP, puis JPEG), avec `srcset`
 
 ## Direction artistique
 
-- **Palette** : émeraude `#12372B`, or `#B08D57` (filets, détails) / or clair `#CDB07A` (sur fond émeraude), sable `#D9C7A6`, ivoire `#F5F0E6`, brun `#5B3A26`, noir doux `#1E1C19`. Contrastes texte vérifiés (≥ 6,2:1).
-- **Motif signature** : l'arc outrepassé brisé (`src/assets/img/arch.svg`), utilisé comme cadre photo, en écho dans les en-têtes de page et dans l'arcade des plats emblématiques. Le zellige (étoile à huit branches) reste discret, réservé aux emplacements photo et aux ornements.
-- **Typographie** : titres en serif (Lora, police provisoire auto-hébergée, 42 ko), texte courant en police système (0 ko). Voir `src/assets/fonts/README.md` pour installer la police de titres définitive et une police arabe.
-- **Mouvement** : un seul moment chorégraphié (l'arche du hero se dessine au chargement), plus une apparition discrète de l'arcade. Tout est coupé si l'utilisateur a demandé la réduction des animations.
+« Patrimoine marocain revisité » : une demeure marocaine prestigieuse, entre héritage et élégance contemporaine.
+
+- **Palette** (`src/styles/tokens.css`) : émeraude `#123D32`, or patiné `#B99A62`, sable `#E9DFCC`, ivoire `#F7F3EA`, noyer `#38291F`.
+  L'or patiné est réservé aux filets, ornements et détails (2,4:1 sur ivoire : jamais de texte). Deux nuances dérivées servent au petit
+  texte doré : `#CDB385` sur émeraude (6,0:1), `#6E5730` sur fond clair (6,2:1). Contrastes vérifiés par `tests/tokens.test.mjs`.
+- **Typographie** : Cormorant Garamond (titres, écho au lettrage romain du logo), Jost (texte), Noto Kufi Arabic (titres arabes,
+  écho aux inscriptions architecturales) et Noto Naskh Arabic (texte arabe). WOFF2, licence OFL, découpées par alphabet : une page
+  française ne télécharge aucune police arabe. Détails : `src/assets/fonts/README.md`.
+- **Motifs** (un seul par section) : arche outrepassée (cadres photo, hero, en-têtes), treillis de moucharabieh (sections émeraude),
+  grain de tadelakt (sections sable), frise de bois sculpté (séparateurs), étoile du zellige (ornements). Dessinés pour le site, en SVG de
+  quelques centaines d'octets.
+- **Emplacements photo provisoires** : tadelakt, treillis et arche, avec la mention « Photographie officielle à venir » ; ils n'imitent
+  jamais une photographie et sont balisés comme provisoires (production refusée tant qu'il en reste).
+- **Mouvement** : transitions entre pages (View Transitions, CSS seul), apparitions progressives au défilement, arche du hero qui se
+  dessine, effets de survol et micro-interactions sur les boutons, fondu des photos différées. Uniquement `transform` et `opacity` ;
+  tout est coupé avec `prefers-reduced-motion`. Sans JavaScript (ou s'il échoue), tout le contenu reste visible et utilisable.
+
+### Fonctions par page
+
+- **Accueil** : hero photographique plein écran ; « La maison » avec la signature à couronne ; philosophie ; art de recevoir ;
+  saveurs de la carte (catégories réelles de `menu.json`) ; **plats emblématiques = propositions de `menu.json` marquées
+  `"signature": true`** (4 au plus, choix du restaurant ; emplacement provisoire tant qu'aucune n'est désignée) ; galerie ; réservation.
+- **Notre histoire** : présentation (texte `site.json › story`) et cinq chapitres ; aucune information historique inventée.
+- **La carte** : navigation par catégorie, lignes de carte avec description, **ingrédients ou particularités** (`ingredients`),
+  prix et photo, chacun seulement s'il est fourni. Ancres `#plat-<id>`.
+- **Galerie** : sept thèmes, composition variée ; agrandissement accessible (`<dialog>` : flèches, Échap, retour du focus,
+  glissement au doigt, sens inversé en arabe) ; sans JavaScript, chaque photo est un lien vers sa grande version.
+- **Réservation** : parcours présentés (formulaire, WhatsApp, et système connecté **seulement s'il est configuré**,
+  `bookingSystem.url` et `embedUrl` chargé à la demande) ; conditions de réservation (`reservation.conditions`).
+- **Contact** : coordonnées, itinéraire, plan Google Maps **chargé uniquement au clic** (aucune requête avant), proposé seulement
+  si l'adresse ou les coordonnées sont confirmées.
 
 ## Performance et accessibilité
 
-**Objectifs** : LCP < 2 s, CLS < 0,05, INP < 200 ms, JavaScript initial ≤ 15 ko, Lighthouse ≥ 95.
+**Objectifs** : LCP ≤ 2,5 s (cahier des charges ; objectif interne < 2 s), CLS ≤ 0,1, INP ≤ 200 ms, JavaScript initial ≤ 15 ko, Lighthouse élevé.
 
-**Conditions de mesure (phase 1, novembre 2026)** : Lighthouse 12.6.1, Chromium 1243 sans interface, profil mobile par défaut
-(Moto G Power émulé, processeur ralenti ×4, réseau simulé : 150 ms de latence, 1,6 Mbit/s), 3 passages par page (médiane),
-site servi localement avec compression Brotli et en-têtes de cache comme chez un hébergeur statique.
-Les mesures de laboratoire ne remplacent pas les données réelles des visiteurs (Chrome UX Report) après la mise en ligne.
+**Conditions de mesure (phase 2, novembre 2026)** : Lighthouse 12.6.1, Chromium 1243 sans interface, profil mobile par défaut
+(Moto G Power émulé, processeur ralenti ×4, 150 ms de latence, 1,6 Mbit/s), 3 passages par page (médiane), site servi localement
+avec compression Brotli et en-têtes de cache. Les mesures de laboratoire ne remplacent pas les données réelles des visiteurs.
 
 | Page (mobile) | Performance | Accessibilité | Bonnes pratiques | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|
-| Accueil FR | 100 | 100 | 100 | 1,51 s | 0 | 0 ms |
-| Accueil AR | 100 | 100 | 100 | 1,22 s | 0 | 0 ms |
-| La carte FR / EN | 100 | 100 | 100 | 1,59 s | 0 | 0 ms |
-| Réservation FR / AR | 100 | 100 | 100 | 1,52 / 1,16 s | 0 | 0 ms |
-| Galerie EN | 100 | 100 | 100 | 1,52 s | 0 | 0 ms |
-| Notre histoire FR | 100 | 100 | 100 | 1,51 s | 0 | 0 ms |
-| Contact AR | 100 | 100 | 100 | 1,14 s | 0 | 0 ms |
-| Accueil FR (profil ordinateur) | 100 | 100 | 100 | 0,37 s | 0 | 0 ms |
+| Accueil FR | 100 | 100 | 100 | 1,63 s | 0,008 | 0 ms |
+| Accueil AR | 99 | 100 | 100 | 1,90 s | 0,001 | 0 ms |
+| Notre histoire FR | 100 | 100 | 100 | 1,61 s | 0 | 0 ms |
+| La carte EN | 100 | 100 | 100 | 1,67 s | 0,001 | 0 ms |
+| Galerie FR | 100 | 100 | 100 | 1,66 s | 0 | 0 ms |
+| Réservation AR | 99 | 100 | 100 | 1,89 s | 0 | 0 ms |
+| Contact EN | 100 | 100 | 100 | 1,74 s | 0 | 0 ms |
+| Accueil FR (ordinateur) | 100 | 100 | 100 | 0,40 s | 0,002 | 0 ms |
 
-- **SEO** : 66 en prévisualisation, **par construction** (pages en `noindex`). Sur une copie compilée en production avec des données de test : 100.
-- **Avec une photo principale** (copie de test, images synthétiques préparées par `npm run images`) : Accueil FR mobile 100, LCP 1,58 s ; Galerie FR mobile 100, LCP 1,58 s.
-- **INP** (laboratoire, Chromium, processeur ralenti ×4, Event Timing) : 24 ms pour la pire interaction mesurée (menu mobile, validation du formulaire, saisie, sélecteur, navigation dans la carte).
-- **Poids** : JavaScript 7,3 ko (2,4 ko compressé) + 179 octets en ligne ; CSS 22 ko (4,9 ko compressé) ; HTML 10 à 13 ko (2 à 3 ko compressé). Page d'accueil complète : 73 ko transférés (police comprise).
+- **Avec une photo dans le hero** (copie de test, image synthétique) : LCP mobile 1,62 s (FR) et 1,84 s (AR), l'image étant l'élément LCP.
+- **SEO** : 66 en prévisualisation **par construction** (`noindex`) ; 100 en production (copie de test, phase 1).
+- **INP** (Chromium, processeur ralenti ×4, Event Timing) : 56 ms pour la pire interaction (ouverture d'une photo en grand) ;
+  menu, formulaire, carte et galerie entre 16 et 32 ms.
+- **Poids** : JavaScript 12,9 ko (3,8 ko compressé) ; CSS 42,6 ko (7,9 ko compressé) ; accueil complet 141 ko transférés (FR, polices
+  comprises), 173 ko en arabe (deux polices arabes).
 
-Points relevés par Lighthouse, sans effet sur les scores : la feuille de style bloque le premier affichage (5 ko compressés, environ 150 ms estimés ;
-conservée en fichier séparé pour profiter du cache entre les pages) ; le symbole du logo (171 × 112 px, 17 ko) est plus grand que son affichage : le logo vectoriel définitif réglera ce point.
+Accessibilité : Lighthouse 100 sur les pages mesurées ; navigation au clavier (menu, galerie), focus visibles, contrastes vérifiés
+automatiquement, textes alternatifs, libellés, `prefers-reduced-motion`, RTL complet. Les pages arabes ne contiennent aucun texte
+latin visible hors noms de marque et de langues (test automatique).
 
-Accessibilité : lien d'évitement, navigation au clavier (le bouton du menu mobile précède le menu, Tab mène à ses liens), focus visible,
-libellés de formulaire, messages d'erreur reliés aux champs, menu mobile fermé par Échap, par un clic en dehors ou quand le focus le quitte,
-`prefers-reduced-motion` respecté, interface arabe en RTL complète (propriétés logiques CSS). Sans JavaScript (désactivé, fichier absent ou en erreur),
-le site revient automatiquement à un mode entièrement utilisable.
+## Avant la mise en ligne (plan des travaux)
 
-## Étapes suivantes
+Ces points ne sont **pas** opérationnels aujourd'hui et doivent être finalisés avant toute mise en production :
 
-- Service d'envoi du formulaire (fonction serveur avec validation côté serveur, anti-spam et e-mail au restaurant), puis renseigner `formEndpoint`.
-  Il devra accepter aussi les envois classiques (sans JavaScript) : le formulaire les lui adresse dès que `formEndpoint` est renseigné.
-- Politique de confidentialité et mentions légales (données du formulaire, loi 09-08).
-- Contenus officiels : carte, prix, histoire, photographies, coordonnées.
-- Galerie : agrandissement des photos (lightbox) et légendes.
-- Plan Google Maps chargé au clic (pour ne pas alourdir la page).
-- Police de titres définitive en WOFF2, police arabe auto-hébergée.
-- Fichiers originaux du logo en haute définition (SVG), favicon simplifié, icône d'application.
+- **Formulaire** : service d'envoi avec **validation côté serveur**, **protection anti-robots côté serveur** (le piège actuel n'agit
+  que dans le navigateur), e-mail au restaurant, puis renseigner `formEndpoint` (il devra accepter aussi les envois sans JavaScript).
+- **Données personnelles** : **politique de confidentialité**, **mentions légales**, **consentement** au traitement des données du
+  formulaire, conformité à la **loi marocaine 09-08** (CNDP) ; consentement également à prévoir pour le plan Google Maps si nécessaire.
+- **En-têtes de sécurité** : **CSP** (le script en ligne de repli devra être autorisé par empreinte) et **HSTS**, chez l'hébergeur retenu.
+- **Contenus officiels** : coordonnées, horaires, carte validée et prix, plats emblématiques, conditions de réservation, histoire,
+  photographies et textes alternatifs, réseaux sociaux, domaine (`siteUrl`).
+- **Logo** : fichiers SVG définitifs ; icônes d'application.
+- Hébergement, redirection 301 de la racine, mesure avec PageSpeed Insights une fois en ligne, tests sur Safari et Firefox.
+
+`npm run build:prod` refuse la production tant que les contenus provisoires ou le formulaire non relié subsistent.

@@ -33,7 +33,7 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.intro
       ${arch(media(ctx, { image: slots.presentation.image, alt: alt(slots.presentation), format: null, sizes: '(min-width: 56rem) 26rem, 86vw', eager: true }))}
     </div>
     <div class="editorial__text stack stack-l" data-reveal style="--reveal-i:1">
-      ${eyebrow(ctx.site.name)}
+      ${eyebrow(ctx.siteName)}
       <h2 id="presentation-title">${p('sections.presentation.title')}</h2>
       <p class="lead">${info(ctx, presentationText, 'story')}</p>
       ${ornament()}

@@ -249,7 +249,8 @@
       "map": "Plan d'accès",
       "mapLoad": "Afficher le plan interactif",
       "mapNote": "Plan fourni par Google Maps, chargé uniquement à votre demande.",
-      "mapTitle": "Plan d'accès — Dar el Bacha"
+      "mapTitle": "Plan d'accès — Dar el Bacha",
+      "kicker": "Casablanca"
     },
     "notFound": {
       "seoTitle": "Page introuvable — Dar el Bacha",

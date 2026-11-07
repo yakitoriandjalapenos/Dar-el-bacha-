@@ -23,12 +23,12 @@ export function render(ctx) {
   const mapSlot = ctx.media.contact.map;
 
   const body = html`
-${pageHead({ title: p('title'), lead: p('lead'), kicker: site.city })}
+${pageHead({ title: p('title'), lead: p('lead'), kicker: p('kicker') })}
 
 <section class="section">
   <div class="wrap contact-grid">
     <div class="stack stack-l">
-      ${eyebrow(site.name)}
+      ${eyebrow(ctx.siteName)}
       <dl class="info-list">
         <div><dt>${p('address')}</dt><dd>${info(ctx, ctx.address(), 'address')}</dd></div>
         <div><dt>${p('phone')}</dt><dd>${site.phone ? html`<a href="tel:${site.phone.replace(/\s+/g, '')}" dir="ltr">${site.phone}</a>` : info(ctx, null, 'phone')}</dd></div>

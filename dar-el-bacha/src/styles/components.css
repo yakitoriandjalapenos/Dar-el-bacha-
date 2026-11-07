@@ -76,7 +76,9 @@
 }
 .lang-switch a:hover { color: var(--fg); }
 .lang-switch a[aria-current="true"] { color: var(--fg); border-block-end-color: var(--accent); }
-.lang-switch a:lang(ar) { font-family: "Dar Text Arabic", "Noto Naskh Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif; letter-spacing: 0; }
+/* Libellé « عربي » sur les pages française et anglaise : polices arabes du système (aucune police web arabe téléchargée) */
+.lang-switch a:lang(ar) { font-family: "Geeza Pro", "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif; letter-spacing: 0; }
+:root:lang(ar) .lang-switch a:lang(ar) { font-family: var(--font-text); }
 
 /* ---------- Arche marocaine ----------
    Forme commune : arc outrepassé brisé (SVG en masque). */

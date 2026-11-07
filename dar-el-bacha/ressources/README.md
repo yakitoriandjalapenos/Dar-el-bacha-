@@ -11,22 +11,24 @@ le site affiche un emplacement clairement signalé et le build la liste à chaqu
 
 | Ressource | Dossier source | Utilisée sur le site depuis | État |
 |---|---|---|---|
-| Logo principal (vectoriel) | `logo/` | `src/assets/img/logo/` | ❌ **Manquant**. Le site utilise une découpe provisoire de 300 px tirée d'une planche JPEG basse définition. |
-| Logo pour fonds sombres (ivoire et or) | `logo/` | `src/assets/img/logo/` | ⚠️ Provisoire (même découpe, PNG/WebP 300 px) |
-| Logo pour fonds clairs (émeraude et or, ou brun) | `logo/` | `src/assets/img/logo/` | ❌ **Manquant** |
-| Logo monochrome (une couleur, pour impressions et tampons) | `logo/` | — | ❌ **Manquant** |
-| Favicon (symbole simplifié, lisible à 16 px) | `icones/` | `src/static/favicon.ico`, `favicon-32.png` | ⚠️ Provisoire (porte du logo réduite, peu lisible à 16 px) |
-| Icône d'application (1024 × 1024, marges de sécurité) | `icones/` | `src/static/apple-touch-icon.png`, `icon-512.png` | ⚠️ Provisoire (logo petit au centre) |
+| Planche d'identité officielle | `logo/planche-identite-officielle-reference.jpg` | — | ✅ Reçue (JPEG 1408 × 768) : **référence visuelle**, pas un fichier source |
+| Logo vert et or avec couronne (signature, fond clair) | `logo/` | `src/assets/img/logo/logo-vert-or-couronne.*` | ⚠️ Découpe de la planche (304 × 332 px, affichée à mi-taille) — **SVG manquant** |
+| Logo vert et or sans couronne (compact, fond clair) | `logo/` | `src/assets/img/logo/logo-vert-or.*` | ⚠️ Découpe de la planche (333 × 313 px) — **SVG manquant** |
+| Logo ivoire et or (fond émeraude) | `logo/` | `src/assets/img/logo/logo-ivoire-or.*` | ⚠️ Découpe de la planche (300 px) — **SVG manquant** ; version avec couronne absente de la planche |
+| Logo monochrome (impressions, tampons) | `logo/` | — | ❌ **Manquant** |
+| Favicon 16 et 32 px (arche seule) | `icones/` | `src/static/favicon.ico`, `favicon-32.png` | ⚠️ Provisoire (porte du logo réduite) — SVG simplifié souhaité |
+| Icône d'application (1024 × 1024, arche et nom) | `icones/` | `src/static/apple-touch-icon.png`, `icon-512.png` | ⚠️ Provisoire — les icônes miniatures de la planche (168 px) ne peuvent pas être agrandies |
 | Image de partage réseaux sociaux (1200 × 630) | `icones/` | `src/static/og-image.jpg` | ⚠️ Provisoire (logo sur fond émeraude) |
-| Police de titres latine | `polices/latin/` | `src/assets/fonts/` + `fonts.json` | ⚠️ Provisoire : Lora (licence OFL), en WOFF |
-| Police de texte latine | `polices/latin/` | — | Polices du système (choix volontaire, 0 ko) |
-| Police arabe (titres et texte) | `polices/arabe/` | `src/assets/fonts/` + `fonts.json` | ❌ **Manquante** : polices arabes du système, rendu variable selon l'appareil |
+| Police de titres latine | `polices/latin/` | `src/assets/fonts/` + `fonts.json` | ✅ Cormorant Garamond 500 (OFL), WOFF2 |
+| Police de texte latine | `polices/latin/` | `src/assets/fonts/` | ✅ Jost 400 et 500 (OFL), WOFF2 |
+| Police arabe (titres et texte) | `polices/arabe/` | `src/assets/fonts/` | ✅ Noto Kufi Arabic 500 et Noto Naskh Arabic 400 (OFL), WOFF2 |
 | Photographies du restaurant (salle, architecture, décoration, ambiance, accueil) | `photos/restaurant/` | `src/assets/img/photos/restaurant/` | ❌ **Aucune** |
 | Photographies gastronomiques (plats, détails culinaires) | `photos/gastronomie/` | `src/assets/img/photos/gastronomie/` | ❌ **Aucune** |
-| Illustrations et éléments décoratifs | `illustrations/` | `src/assets/img/` | ✅ Arche (`arch.svg`) et zellige (`zellige.svg`), dessinés pour le site ; à remplacer si une charte en fournit d'autres. |
+| Illustrations et éléments décoratifs | `illustrations/` | `src/assets/img/` | ✅ Arche, zellige, moucharabieh, frise de bois sculpté (SVG dessinés pour le site) et grain de tadelakt (CSS) ; à remplacer si une charte en fournit d'autres. |
 
-Emplacements photo à remplir : 1 image principale, 1 philosophie, 3 plats emblématiques et 3 images de mosaïque sur l'accueil ;
-6 sur Notre histoire ; 1 plan d'accès sur Contact ; 7 dans la galerie (`src/content/media.json`, `src/content/gallery.json`).
+Emplacements photo à remplir : 1 image principale, 1 philosophie et 3 images de mosaïque sur l'accueil ; 6 sur Notre histoire ;
+1 plan d'accès sur Contact ; 7 dans la galerie (`src/content/media.json`, `src/content/gallery.json`). Les plats emblématiques
+utilisent les photos des plats de la carte (`src/content/menu.json`, champ `image`).
 
 ## Formats attendus
 
