@@ -81,7 +81,7 @@ test('production acceptée quand tous les contenus sont renseignés (données de
     phone: '+212 500 000 000', email: 'contact@domaine-de-test.ma', hours: T('Horaires'), story: T('Présentation'),
     whatsapp: { number: '212600000000' }, googleMapsUrl: 'https://maps.google.com/?q=test',
     social: { instagram: 'https://www.instagram.com/test', facebook: 'https://www.facebook.com/test', tripadvisor: 'https://www.tripadvisor.com/test' },
-    reservation: { formEndpoint: '/api/reservation', bookingSystem: null },
+    reservation: { formEndpoint: '/api/reservation', bookingSystem: null, conditions: T('Conditions') },
   });
   await writeJSON('src/content/site.json', site);
 

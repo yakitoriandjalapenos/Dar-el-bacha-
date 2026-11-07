@@ -41,7 +41,8 @@
     "social": "[RÉSEAUX SOCIAUX À CONFIRMER]",
     "map": "[LOCALISATION À CONFIRMER]",
     "story": "[PRÉSENTATION ET HISTOIRE DU RESTAURANT À CONFIRMER]",
-    "photo": "Photographie officielle à venir"
+    "photo": "Photographie officielle à venir",
+    "conditions": "[CONDITIONS DE RÉSERVATION À CONFIRMER]"
   },
   "footer": {
     "tagline": "Gastronomie marocaine à Casablanca",
@@ -161,6 +162,14 @@
         "decoration": "La décoration",
         "ambiance": "L'ambiance",
         "accueil": "L'art de recevoir"
+      },
+      "lightbox": {
+        "open": "Agrandir la photo",
+        "close": "Fermer",
+        "prev": "Photo précédente",
+        "next": "Photo suivante",
+        "counter": "Photo {n} sur {total}",
+        "dialog": "Galerie photographique"
       }
     },
     "reservation": {
@@ -212,7 +221,18 @@
       },
       "system": {
         "title": "Réservation en ligne",
-        "text": "Choisissez un créneau parmi les disponibilités réelles du restaurant."
+        "text": "Choisissez un créneau parmi les disponibilités réelles du restaurant.",
+        "load": "Afficher le module de réservation",
+        "frameTitle": "Module de réservation en ligne"
+      },
+      "paths": {
+        "title": "Les façons de réserver",
+        "form": "Envoyer une demande, confirmée ensuite par le restaurant",
+        "whatsapp": "Écrire directement au restaurant",
+        "system": "Réserver selon les disponibilités réelles"
+      },
+      "conditions": {
+        "title": "Conditions de réservation"
       }
     },
     "contact": {
@@ -226,7 +246,10 @@
       "hours": "Horaires",
       "whatsapp": "WhatsApp",
       "social": "Réseaux sociaux",
-      "map": "Plan d'accès"
+      "map": "Plan d'accès",
+      "mapLoad": "Afficher le plan interactif",
+      "mapNote": "Plan fourni par Google Maps, chargé uniquement à votre demande.",
+      "mapTitle": "Plan d'accès — Dar el Bacha"
     },
     "notFound": {
       "seoTitle": "Page introuvable — Dar el Bacha",

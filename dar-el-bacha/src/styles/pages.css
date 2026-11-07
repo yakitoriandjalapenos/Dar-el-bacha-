@@ -276,6 +276,76 @@
 .gallery-grid .media { height: 100%; aspect-ratio: auto; }
 .gallery-item--portrait { grid-row: span 2; }
 .gallery-item--paysage { grid-column: span 2; }
+.gallery-item figure { position: relative; height: 100%; }
+.gallery-item__link { display: block; height: 100%; color: inherit; }
+.gallery-item__link:hover img, .gallery-item__link:focus-visible img { transform: scale(1.04); }
+.gallery-item__link:focus-visible { outline-offset: -3px; }
+.gallery-item__caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: var(--space-l) var(--space-s) var(--space-xs);
+  background: linear-gradient(to top, color-mix(in srgb, var(--c-emerald-950) 80%, transparent), transparent);
+  color: var(--c-ivory);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.gallery-item__caption:lang(ar), :lang(ar) .gallery-item__caption { letter-spacing: 0; text-transform: none; font-size: var(--step--1); }
+@media (hover: hover) {
+  .gallery-item__caption { opacity: 0; }
+  .gallery-item figure:hover .gallery-item__caption,
+  .gallery-item figure:focus-within .gallery-item__caption { opacity: 1; }
+}
+
+/* Fenêtre d'agrandissement (créée par main.js) */
+.lightbox {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--space-l) var(--space-m);
+  border: 0;
+  background: color-mix(in srgb, var(--c-emerald-950) 96%, transparent);
+  color: var(--c-ivory);
+  touch-action: pan-y;
+}
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox[open] { animation: lightbox-in var(--dur-base) var(--ease-out); }
+}
+@keyframes lightbox-in { from { opacity: 0; } }
+.lightbox__figure { display: grid; gap: var(--space-s); justify-items: center; max-width: 100%; }
+.lightbox__frame img { user-select: none; -webkit-user-drag: none; width: auto; max-width: min(100%, 72rem); max-height: 78vh; object-fit: contain; }
+.lightbox__caption { color: var(--c-ivory-soft); font-size: var(--step--1); text-align: center; }
+.lightbox__counter { position: absolute; inset-block-start: var(--space-m); inset-inline-start: var(--space-m); font-size: var(--step--1); color: var(--c-ivory-soft); }
+.lightbox__btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid color-mix(in srgb, var(--c-gold) 70%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c-emerald-950) 60%, transparent);
+  color: var(--c-ivory);
+  font-size: 1.6rem;
+  line-height: 1;
+  transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+.lightbox__btn:hover { background: var(--c-emerald-700); border-color: var(--c-gold); }
+.lightbox__btn:focus-visible { outline-color: var(--c-gold-300); }
+.lightbox__close { inset-block-start: var(--space-s); inset-inline-end: var(--space-s); }
+.lightbox__prev, .lightbox__next { inset-block-start: 50%; transform: translateY(-50%); }
+.lightbox__prev { inset-inline-start: var(--space-s); }
+.lightbox__next { inset-inline-end: var(--space-s); }
+:root[dir="rtl"] .lightbox__prev span, :root[dir="rtl"] .lightbox__next span { display: inline-block; transform: scaleX(-1); }
+:root.lightbox-open { overflow: hidden; }
 
 /* ---------- Réservation ---------- */
 
@@ -300,12 +370,56 @@
 
 .booking-system { margin-block-end: var(--space-l); }
 
+/* Parcours de réservation */
+.paths-section { padding-block-end: 0; }
+.paths { display: grid; gap: var(--space-s); counter-reset: none; }
+@media (min-width: 48rem) { .paths { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
+.path__link {
+  display: grid;
+  gap: var(--space-3xs);
+  height: 100%;
+  padding: var(--space-m);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-m);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) ease, transform var(--dur-fast) var(--ease-out);
+}
+.path__link:hover { background: var(--c-sand-100); border-color: var(--accent); transform: translateY(-2px); }
+.path__number { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--accent-text); }
+.path__title { font-family: var(--font-display); font-size: var(--step-2); color: var(--heading); line-height: 1.2; }
+.path__text { font-size: var(--step--1); color: var(--fg-muted); }
+.panel .eyebrow { max-width: none; }
+
+.conditions {
+  margin-block-start: var(--space-xl);
+  padding-block-start: var(--space-l);
+  border-block-start: 1px solid var(--rule);
+  display: grid;
+  gap: var(--space-s);
+}
+.conditions h2 { font-size: var(--step-3); }
+
+.embed-frame { margin-block-start: var(--space-m); }
+.embed-frame__iframe { display: block; width: 100%; min-height: 34rem; border: 0; background: var(--c-ivory-50); }
+
 /* ---------- Contact ---------- */
 
 .contact-grid { display: grid; gap: var(--space-xl); }
 @media (min-width: 56rem) { .contact-grid { grid-template-columns: 5fr 6fr; } }
 .contact-map > * + * { margin-block-start: var(--space-s); }
+.map-frame { position: relative; }
+.map-frame__load { position: absolute; inset-block-end: var(--space-m); inset-inline-start: 50%; transform: translateX(-50%); z-index: 2; box-shadow: var(--shadow-soft); }
+:root[dir="rtl"] .map-frame__load { transform: translateX(50%); }
+.map-frame__load:hover { transform: translateX(-50%) translateY(-1px); }
+:root[dir="rtl"] .map-frame__load:hover { transform: translateX(50%) translateY(-1px); }
+.map-frame.is-loaded .embed-frame__iframe, .map-frame .embed-frame__iframe { aspect-ratio: 3 / 2; min-height: 0; height: auto; }
+
+/* ---------- Notre histoire : chapitres ---------- */
+
+.chapter__number { font-family: var(--font-display); font-style: italic; font-size: var(--step-4); line-height: 1; color: var(--accent-text); }
+.chapter.theme-dark .chapter__number { color: var(--c-gold-300); }
 
 /* ---------- 404 ---------- */
 
-.not-found { min-height: 50vh; display: grid; align-content: center; }
+.not-found { min-height: 30vh; display: grid; align-content: center; }

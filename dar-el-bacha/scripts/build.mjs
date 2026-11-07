@@ -377,6 +377,7 @@ const PROVISIONAL_LABELS = {
   photo: 'photographies provisoires', 'dish-pending': 'plats « à valider »', 'menu-empty': 'catégories de la carte vides',
   'menu-notice': 'mention « carte en cours de validation »', 'signature-pending': 'texte d\'attente des plats emblématiques',
   'form-endpoint': 'formulaire de réservation non relié',
+  conditions: 'conditions de réservation',
 };
 const forbiddenTexts = LANGS.flatMap((l) => [...Object.values(dict[l.code].tbc || {}), get(dict[l.code], 'pages.carte.pending')]);
 const allFiles = new Set(await listFiles(OUT));

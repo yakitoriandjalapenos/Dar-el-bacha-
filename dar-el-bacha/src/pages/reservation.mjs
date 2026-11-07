@@ -1,19 +1,32 @@
 import { html } from '../../scripts/lib/html.mjs';
 import { pageHead, info, button } from '../components/ui.mjs';
+import { eyebrow } from '../components/sections.mjs';
 
 /*
-  Trois canaux distincts, jamais confondus :
-  A. Formulaire  → envoie une DEMANDE (statut : en attente de confirmation).
-  B. WhatsApp    → ouvre une conversation ; l'utilisateur envoie lui-même le message.
-  C. Système connecté (optionnel) → n'apparaît que si site.json > reservation.bookingSystem est renseigné.
+  Trois parcours distincts, jamais confondus (cahier des charges, section 4.5) :
+  A. Formulaire  → envoie une DEMANDE (statut : en attente de confirmation par le restaurant).
+  B. WhatsApp    → ouvre une conversation ; le visiteur envoie lui-même le message.
+  C. Système connecté (optionnel) → n'apparaît que si site.json › reservation.bookingSystem est
+     réellement configuré : lien, et module intégré chargé uniquement à la demande (embedUrl).
+     Aucune disponibilité ni confirmation n'est jamais simulée.
+  Les conditions de réservation (site.json › reservation.conditions) s'affichent dès qu'elles sont
+  validées par le restaurant ; d'ici là, un repère [À CONFIRMER].
 */
-
 export function render(ctx) {
   const p = (key) => ctx.t(`pages.reservation.${key}`);
   const f = (key) => p(`form.${key}`);
   const { site } = ctx;
   const wa = site.whatsapp?.number;
   const system = site.reservation?.bookingSystem;
+  const endpoint = site.reservation?.formEndpoint;
+  const conditions = site.reservation?.conditions?.[ctx.lang] ?? null;
+
+  // Parcours effectivement proposés (le système connecté seulement s'il est configuré)
+  const paths = [
+    system && { id: 'system-title', title: p('system.title'), text: p('paths.system') },
+    { id: 'form-title', title: f('title'), text: p('paths.form') },
+    { id: 'wa-title', title: p('whatsapp.title'), text: p('paths.whatsapp') },
+  ].filter(Boolean);
 
   const field = ({ id, type = 'text', required = true, autocomplete, full = false, extra = '' }) => html`
     <div class="field${full ? ' field--full' : ''}">
@@ -44,24 +57,45 @@ export function render(ctx) {
   };
 
   const body = html`
-${pageHead({ title: p('title'), lead: p('lead') })}
+${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.cta.eyebrow') })}
 
-<section class="section">
+<section class="section section--tight paths-section" aria-labelledby="paths-title">
+  <div class="wrap">
+    <h2 class="visually-hidden" id="paths-title">${p('paths.title')}</h2>
+    <ol class="paths" role="list">
+      ${paths.map((path, i) => html`<li class="path">
+        <a class="path__link" href="#${path.id}">
+          <span class="path__number" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+          <span class="path__title">${path.title}</span>
+          <span class="path__text">${path.text}</span>
+        </a>
+      </li>`)}
+    </ol>
+  </div>
+</section>
+
+<section class="section booking-section">
   <div class="wrap">
     ${system && html`
-    <div class="panel booking-system" aria-labelledby="system-title">
+    <section class="panel booking-system" aria-labelledby="system-title">
+      ${eyebrow(p('paths.system'))}
       <h2 id="system-title">${p('system.title')}</h2>
       <p>${p('system.text')}</p>
-      ${button({ href: system.url, label: p('system.title'), external: true })}
-    </div>`}
+      <div class="actions">
+        ${button({ href: system.url, label: p('system.title'), external: true })}
+        ${system.embedUrl && html`<button class="btn btn--ghost" type="button" data-embed="${system.embedUrl}" data-embed-title="${p('system.frameTitle')}" data-embed-target="booking-embed">${p('system.load')}</button>`}
+      </div>
+      ${system.embedUrl && html`<div class="embed-frame" id="booking-embed" hidden></div>`}
+    </section>`}
 
     <div class="booking">
       <!-- A. Demande de réservation -->
-      <div class="panel" aria-labelledby="form-title">
+      <section class="panel" aria-labelledby="form-title">
+        ${eyebrow(p('paths.form'))}
         <h2 id="form-title">${f('title')}</h2>
         <p>${f('text')}</p>
-        <form id="reservation-form" novalidate${site.reservation?.formEndpoint ? html` method="post" action="${site.reservation.formEndpoint}"` : ''}
-          data-endpoint="${site.reservation?.formEndpoint || ''}"${site.reservation?.formEndpoint ? '' : html` data-provisional="form-endpoint"`}
+        <form id="reservation-form" novalidate${endpoint ? html` method="post" action="${endpoint}"` : ''}
+          data-endpoint="${endpoint || ''}"${endpoint ? '' : html` data-provisional="form-endpoint"`}
           data-messages="${JSON.stringify(messages)}">
           <div class="form-grid">
             ${field({ id: 'name', autocomplete: 'name', full: true, extra: html` maxlength="120"` })}
@@ -72,7 +106,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
             ${guests}
             ${field({ id: 'message', type: 'textarea', required: false, full: true })}
           </div>
-          <!-- Piège à robots : champ invisible, doit rester vide -->
+          <!-- Piège à robots : champ invisible, doit rester vide (protection serveur à prévoir avant la mise en ligne) -->
           <div class="visually-hidden" aria-hidden="true">
             <label for="f-website">Website</label>
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
@@ -82,10 +116,11 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
           <button class="btn" type="submit">${f('submit')}</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
-      </div>
+      </section>
 
       <!-- B. WhatsApp : canal de contact direct, distinct du formulaire -->
-      <aside class="panel theme-dark" aria-labelledby="wa-title">
+      <aside class="panel theme-dark lattice" aria-labelledby="wa-title">
+        ${eyebrow(p('paths.whatsapp'))}
         <h2 id="wa-title">${p('whatsapp.title')}</h2>
         <p>${p('whatsapp.text')}</p>
         ${wa
@@ -96,6 +131,11 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
         <p class="note">${p('whatsapp.note')}</p>
       </aside>
     </div>
+
+    <section class="conditions" aria-labelledby="conditions-title">
+      <h2 id="conditions-title">${p('conditions.title')}</h2>
+      <p>${info(ctx, conditions, 'conditions')}</p>
+    </section>
   </div>
 </section>`;
 

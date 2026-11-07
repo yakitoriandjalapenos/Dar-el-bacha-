@@ -14,9 +14,9 @@
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/noto-kufi-arabic-arabic-500-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.a7777c8983.css">
+<link rel="stylesheet" href="/assets/site.edb444f8e4.css">
 <script>(function(d){d.classList.replace('no-js','js');addEventListener('load',function(){if(!d.classList.contains('js-ok'))d.classList.replace('js','no-js')})})(document.documentElement)</script>
-<script src="/assets/main.cee10a207f.js" defer></script>
+<script src="/assets/main.42bc8ca315.js" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="الحجز — دار الباشا، الدار البيضاء">
@@ -82,19 +82,41 @@
 <header class="page-head theme-dark">
     <svg class="page-head__arch arch-frame__line" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M10 140V64C2 54 0 36 11 21 22 8 38 2 50 0c12 2 28 8 39 21 11 15 9 33 1 43v76Z"/></svg>
     <div class="wrap page-head__inner stack">
-      
+      <p class="eyebrow">الحجز</p>
       <h1>الحجز</h1>
       <p class="lead">اختاروا الطريقة التي تناسبكم. لا يُعدّ الطلب عبر الموقع أو رسالة واتساب تأكيدًا للحجز: سيردّ عليكم المطعم لتأكيد طاولتكم.</p>
     </div>
   </header>
 
-<section class="section">
+<section class="section section--tight paths-section" aria-labelledby="paths-title">
+  <div class="wrap">
+    <h2 class="visually-hidden" id="paths-title">طرق الحجز</h2>
+    <ol class="paths" role="list">
+      <li class="path">
+        <a class="path__link" href="#form-title">
+          <span class="path__number" aria-hidden="true">01</span>
+          <span class="path__title">طلب عبر الموقع</span>
+          <span class="path__text">إرسال طلب يؤكده المطعم لاحقًا</span>
+        </a>
+      </li><li class="path">
+        <a class="path__link" href="#wa-title">
+          <span class="path__number" aria-hidden="true">02</span>
+          <span class="path__title">عبر واتساب</span>
+          <span class="path__text">مراسلة المطعم مباشرة</span>
+        </a>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section booking-section">
   <div class="wrap">
     
 
     <div class="booking">
       <!-- A. Demande de réservation -->
-      <div class="panel" aria-labelledby="form-title">
+      <section class="panel" aria-labelledby="form-title">
+        <p class="eyebrow">إرسال طلب يؤكده المطعم لاحقًا</p>
         <h2 id="form-title">طلب عبر الموقع</h2>
         <p>املأ الاستمارة. سيتواصل معك المطعم لتأكيد طاولتك.</p>
         <form id="reservation-form" novalidate
@@ -148,7 +170,7 @@
       <p class="field__error" id="e-message"></p>
     </div>
           </div>
-          <!-- Piège à robots : champ invisible, doit rester vide -->
+          <!-- Piège à robots : champ invisible, doit rester vide (protection serveur à prévoir avant la mise en ligne) -->
           <div class="visually-hidden" aria-hidden="true">
             <label for="f-website">Website</label>
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
@@ -158,10 +180,11 @@
           <button class="btn" type="submit">أرسل الطلب</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
-      </div>
+      </section>
 
       <!-- B. WhatsApp : canal de contact direct, distinct du formulaire -->
-      <aside class="panel theme-dark" aria-labelledby="wa-title">
+      <aside class="panel theme-dark lattice" aria-labelledby="wa-title">
+        <p class="eyebrow">مراسلة المطعم مباشرة</p>
         <h2 id="wa-title">عبر واتساب</h2>
         <p>افتح محادثة برسالة جاهزة. راجعها، وأكملها إن لزم، ثم أرسلها بنفسك.</p>
         <span class="btn" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"/></svg>راسلنا عبر واتساب</span>
@@ -170,6 +193,11 @@
         <p class="note">يردّ المطعم عبر واتساب لتأكيد الحجز.</p>
       </aside>
     </div>
+
+    <section class="conditions" aria-labelledby="conditions-title">
+      <h2 id="conditions-title">شروط الحجز</h2>
+      <p><span class="tbc" data-provisional="conditions">[شروط الحجز قيد التأكيد]</span></p>
+    </section>
   </div>
 </section>
 </main>

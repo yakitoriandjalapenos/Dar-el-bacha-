@@ -74,6 +74,109 @@
     });
   });
 
+  /* ---------- Modules externes chargés à la demande (plan Google Maps, système de réservation) ----------
+     Rien n'est demandé au service tiers avant le clic ; sans JavaScript, le lien ouvre le service. */
+  safely('modules à la demande', () => {
+    document.querySelectorAll('[data-embed]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const target = document.getElementById(trigger.dataset.embedTarget);
+        if (!target) return;
+        e.preventDefault();
+        const frame = document.createElement('iframe');
+        frame.src = trigger.dataset.embed;
+        frame.title = trigger.dataset.embedTitle || '';
+        frame.loading = 'lazy';
+        frame.referrerPolicy = 'no-referrer-when-downgrade';
+        frame.className = 'embed-frame__iframe';
+        target.hidden = false;
+        target.classList.add('is-loaded');
+        target.replaceChildren(frame);
+        if (trigger.isConnected && !target.contains(trigger)) trigger.remove();
+        frame.focus();
+      });
+    });
+  });
+
+  /* ---------- Galerie : agrandissement des photographies ----------
+     Fenêtre modale native (<dialog>) : focus contenu, Échap pour fermer, retour du focus,
+     flèches du clavier (sens inversé en arabe), glissement au doigt. */
+  safely('galerie', () => {
+    const grid = document.querySelector('[data-gallery]');
+    const links = grid ? Array.from(grid.querySelectorAll('[data-lightbox]')) : [];
+    if (!links.length || typeof HTMLDialogElement !== 'function') return;
+    const L = JSON.parse(grid.dataset.labels || '{}');
+    const rtl = root.dir === 'rtl';
+    const dialog = document.createElement('dialog');
+    dialog.className = 'lightbox';
+    dialog.setAttribute('aria-label', L.dialog || '');
+    dialog.innerHTML = `<figure class="lightbox__figure"><div class="lightbox__frame"></div><figcaption class="lightbox__caption"></figcaption></figure>
+      <p class="lightbox__counter" aria-live="polite"></p>
+      <button class="lightbox__btn lightbox__close" type="button"><span aria-hidden="true">×</span></button>
+      <button class="lightbox__btn lightbox__prev" type="button"><span aria-hidden="true">‹</span></button>
+      <button class="lightbox__btn lightbox__next" type="button"><span aria-hidden="true">›</span></button>`;
+    const [btnClose, btnPrev, btnNext] = ['close', 'prev', 'next'].map((k) => {
+      const b = dialog.querySelector(`.lightbox__${k}`);
+      b.setAttribute('aria-label', L[k] || k);
+      return b;
+    });
+    if (links.length < 2) { btnPrev.hidden = true; btnNext.hidden = true; }
+    document.body.append(dialog);
+    const frame = dialog.querySelector('.lightbox__frame');
+    const caption = dialog.querySelector('.lightbox__caption');
+    const counter = dialog.querySelector('.lightbox__counter');
+    let index = 0;
+    let opener = null;
+
+    const show = (i) => {
+      index = (i + links.length) % links.length;
+      const link = links[index];
+      const pic = link.querySelector('picture');
+      const clone = pic ? pic.cloneNode(true) : document.createElement('img');
+      clone.querySelectorAll('source').forEach((s) => s.setAttribute('sizes', '100vw'));
+      const img = clone.tagName === 'IMG' ? clone : clone.querySelector('img');
+      if (!pic) img.src = link.href;
+      img.removeAttribute('loading');
+      img.classList.remove('is-loading');
+      img.draggable = false; // le glissement sert à changer de photo, pas à déplacer l'image
+      frame.replaceChildren(clone);
+      caption.textContent = img.alt || '';
+      counter.textContent = (L.counter || '{n} / {total}').replace('{n}', index + 1).replace('{total}', links.length);
+    };
+    const open = (i) => {
+      opener = document.activeElement;
+      show(i);
+      dialog.showModal();
+      root.classList.add('lightbox-open');
+      btnClose.focus();
+    };
+    const close = () => dialog.close();
+    dialog.addEventListener('close', () => {
+      root.classList.remove('lightbox-open');
+      frame.replaceChildren();
+      if (opener && opener.focus) opener.focus();
+    });
+
+    links.forEach((link, i) => link.addEventListener('click', (e) => { e.preventDefault(); open(i); }));
+    btnClose.addEventListener('click', close);
+    btnPrev.addEventListener('click', () => show(index - 1));
+    btnNext.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(index + (rtl ? -1 : 1)); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(index + (rtl ? 1 : -1)); }
+    });
+    // Glissement horizontal (écrans tactiles) : vers la gauche = suivante (inversé en arabe)
+    let startX = null;
+    dialog.addEventListener('pointerdown', (e) => { startX = e.clientX; });
+    dialog.addEventListener('pointercancel', () => { startX = null; });
+    dialog.addEventListener('pointerup', (e) => {
+      if (startX === null) return;
+      const dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 50) show(index + ((dx < 0) !== rtl ? 1 : -1));
+    });
+  });
+
   /* ---------- Formulaire de demande de réservation ---------- */
   const form = document.getElementById('reservation-form');
   if (!form) return;

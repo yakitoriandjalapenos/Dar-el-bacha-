@@ -9,10 +9,14 @@
 
   Vérifie : 19 pages × 7 largeurs (débordement horizontal, erreurs JavaScript, ressources manquantes),
   accès à la réservation à toutes les tailles, menu mobile et clavier, RTL arabe, états du formulaire,
-  repli sans JavaScript (script absent ou en erreur), apparitions progressives, liens externes.
+  repli sans JavaScript (script absent ou en erreur), apparitions progressives, liens externes,
+  parcours de réservation ; sur une copie de test (données de test) : agrandissement de la galerie,
+  plan et module de réservation chargés à la demande.
 */
 import { createRequire } from 'node:module';
-import { readdirSync, statSync } from 'node:fs';
+import { readdirSync, statSync, mkdtempSync, cpSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createStaticServer } from '../scripts/lib/static-server.mjs';
@@ -251,6 +255,104 @@ try {
     const all = await page.$$eval('[data-reveal]', (els) => els.map((e) => getComputedStyle(e).opacity));
     check('Apparitions : toutes les sections apparaissent au fil du défilement', all.every((o) => o === '1'), all.join(','));
     await ctx.close();
+  }
+
+  /* ---------- 8. Parcours de réservation et conditions (site actuel) ---------- */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    await page.goto(`${BASE}/fr/reservation/`);
+    const r = await page.evaluate(() => ({
+      paths: [...document.querySelectorAll('.path__link')].map((a) => a.getAttribute('href')),
+      conditions: document.querySelector('.conditions [data-provisional="conditions"]')?.textContent,
+      system: !!document.querySelector('.booking-system'),
+    }));
+    check('Réservation : 2 parcours présentés tant que le système connecté n\'est pas configuré, ancres valides', r.paths.join() === '#form-title,#wa-title' && !r.system, JSON.stringify(r));
+    check('Réservation : emplacement des conditions signalé [À CONFIRMER]', /CONFIRMER/.test(r.conditions || ''), r.conditions);
+    await ctx.close();
+  }
+
+  /* ---------- 9. Copie de test avec photos, adresse et système connecté (données de test, hors projet) ---------- */
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'dar-el-bacha-navigateur-'));
+  let fxServer;
+  try {
+    for (const p of ['scripts', 'src', 'package.json']) cpSync(path.join(ROOT, p), path.join(tmp, p), { recursive: true });
+    const rd = (p) => JSON.parse(readFileSync(path.join(tmp, p), 'utf8'));
+    const wr = (p, v) => writeFileSync(path.join(tmp, p), JSON.stringify(v, null, 2));
+    const T = (t) => ({ fr: `${t} (test)`, en: `${t} (test)`, ar: `${t} (اختبار)` });
+    const gallery = rd('src/content/gallery.json');
+    gallery.items.forEach((i, n) => { i.image = { src: 'logo/logo-vert-or', width: 333, height: 313 }; i.alt = T(`Image ${n + 1}`); });
+    wr('src/content/gallery.json', gallery);
+    const site = rd('src/content/site.json');
+    site.address = { street: 'Adresse de test', postalCode: '20000', district: null };
+    site.reservation.bookingSystem = { url: 'https://reservation.domaine-de-test.ma', embedUrl: 'https://reservation.domaine-de-test.ma/module' };
+    wr('src/content/site.json', site);
+    const b = spawnSync(process.execPath, ['scripts/build.mjs'], { cwd: tmp, encoding: 'utf8' });
+    if (b.status !== 0) throw new Error(`build de la copie de test : ${b.stderr}`);
+    fxServer = createStaticServer({ root: path.join(tmp, 'dist'), home: '/fr/' });
+    await new Promise((r) => fxServer.listen(0, r));
+    const FX = `http://localhost:${fxServer.address().port}`;
+
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const external = [];
+    await ctx.route(/^https:\/\/(maps\.google\.com|reservation\.domaine-de-test\.ma)\//, (route) => { external.push(route.request().url()); route.fulfill({ status: 200, contentType: 'text/html', body: '<p>module</p>' }); });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+
+    // Galerie : agrandissement
+    await page.goto(`${FX}/fr/galerie/`);
+    const links = await page.locator('[data-lightbox]').count();
+    const href = await page.locator('[data-lightbox]').first().getAttribute('href');
+    const direct = await fetch(FX + href);
+    check('Galerie : chaque photo est un lien vers sa grande version (fonctionne sans JavaScript)', links === 7 && direct.ok, `${links} liens, ${href} → ${direct.status}`);
+    await page.locator('[data-lightbox]').first().click();
+    const state = () => page.evaluate(() => ({ open: document.querySelector('dialog.lightbox')?.open, counter: document.querySelector('.lightbox__counter')?.textContent, focus: document.activeElement.className, img: !!document.querySelector('.lightbox__frame img') }));
+    let st = await state();
+    check('Galerie : ouverture de la fenêtre, focus sur « Fermer », photo et compteur affichés', st.open && /lightbox__close/.test(st.focus) && st.img && st.counter === 'Photo 1 sur 7', JSON.stringify(st));
+    await page.keyboard.press('ArrowRight');
+    const afterRight = (await state()).counter;
+    await page.keyboard.press('ArrowLeft');
+    await page.keyboard.press('ArrowLeft');
+    const afterLeft = (await state()).counter;
+    check('Galerie : flèches du clavier (suivante, précédente, en boucle)', afterRight === 'Photo 2 sur 7' && afterLeft === 'Photo 7 sur 7', `${afterRight} / ${afterLeft}`);
+    await page.mouse.move(900, 450); await page.mouse.down(); await page.mouse.move(700, 450, { steps: 4 }); await page.mouse.up();
+    check('Galerie : glissement vers la gauche → photo suivante', (await state()).counter === 'Photo 1 sur 7', (await state()).counter);
+    for (let i = 0; i < 6; i++) await page.keyboard.press('Tab');
+    check('Galerie : le focus reste dans la fenêtre ouverte', await page.evaluate(() => !!document.activeElement.closest('dialog.lightbox')));
+    await page.keyboard.press('Escape');
+    st = await state();
+    const back = await page.evaluate(() => document.activeElement.matches('[data-lightbox]') && document.activeElement === document.querySelectorAll('[data-lightbox]')[0]);
+    check('Galerie : Échap ferme la fenêtre et rend le focus à la photo d\'origine', !st.open && back, JSON.stringify(st));
+    await page.goto(`${FX}/ar/gallery/`);
+    await page.locator('[data-lightbox]').first().click();
+    await page.keyboard.press('ArrowLeft');
+    check('Galerie (arabe) : la flèche gauche mène à la photo suivante (sens de lecture RTL)', (await state()).counter === 'الصورة 2 من 7', (await state()).counter);
+    await page.keyboard.press('Escape');
+
+    // Plan d'accès chargé à la demande
+    external.length = 0;
+    await page.goto(`${FX}/fr/contact/`, { waitUntil: 'networkidle' });
+    const before = external.filter((u) => u.includes('maps.google.com')).length;
+    await page.locator('.map-frame__load').click();
+    await page.waitForSelector('#map-embed iframe');
+    const iframe = await page.getAttribute('#map-embed iframe', 'src');
+    check('Contact : aucune requête vers Google avant le clic, plan intégré après le clic', before === 0 && /^https:\/\/maps\.google\.com\/maps\?q=/.test(iframe), `${before} requête(s) avant ; ${iframe}`);
+
+    // Système de réservation connecté configuré : 3 parcours, module chargé à la demande
+    external.length = 0;
+    await page.goto(`${FX}/fr/reservation/`, { waitUntil: 'networkidle' });
+    const paths = await page.$$eval('.path__link', (a) => a.map((x) => x.getAttribute('href')));
+    const moduleBefore = external.length;
+    await page.locator('[data-embed-target="booking-embed"]').click();
+    await page.waitForSelector('#booking-embed iframe');
+    check('Réservation : 3 parcours distincts quand le système est configuré, module chargé seulement à la demande',
+      paths.join() === '#system-title,#form-title,#wa-title' && moduleBefore === 0 && (await page.getAttribute('#booking-embed iframe', 'src')).endsWith('/module'), `${paths.join()} ; ${moduleBefore} requête(s) avant le clic`);
+    check('Copie de test : aucune erreur JavaScript', !errors.length, errors.join('\n'));
+    await ctx.close();
+  } finally {
+    fxServer?.close();
+    rmSync(tmp, { recursive: true, force: true });
   }
 } finally {
   await browser.close();

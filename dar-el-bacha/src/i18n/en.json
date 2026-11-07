@@ -41,7 +41,8 @@
     "social": "[SOCIAL ACCOUNTS TO BE CONFIRMED]",
     "map": "[LOCATION TO BE CONFIRMED]",
     "story": "[RESTAURANT INTRODUCTION AND HISTORY TO BE CONFIRMED]",
-    "photo": "Official photograph to come"
+    "photo": "Official photograph to come",
+    "conditions": "[BOOKING CONDITIONS TO BE CONFIRMED]"
   },
   "footer": {
     "tagline": "Moroccan fine dining in Casablanca",
@@ -161,6 +162,14 @@
         "decoration": "The decor",
         "ambiance": "The atmosphere",
         "accueil": "The art of hospitality"
+      },
+      "lightbox": {
+        "open": "Enlarge photo",
+        "close": "Close",
+        "prev": "Previous photo",
+        "next": "Next photo",
+        "counter": "Photo {n} of {total}",
+        "dialog": "Photo gallery"
       }
     },
     "reservation": {
@@ -212,7 +221,18 @@
       },
       "system": {
         "title": "Book online",
-        "text": "Choose a time slot from the restaurant's real availability."
+        "text": "Choose a time slot from the restaurant's real availability.",
+        "load": "Show the booking module",
+        "frameTitle": "Online booking module"
+      },
+      "paths": {
+        "title": "Ways to book",
+        "form": "Send a request, then confirmed by the restaurant",
+        "whatsapp": "Message the restaurant directly",
+        "system": "Book from real-time availability"
+      },
+      "conditions": {
+        "title": "Booking conditions"
       }
     },
     "contact": {
@@ -226,7 +246,10 @@
       "hours": "Opening hours",
       "whatsapp": "WhatsApp",
       "social": "Social media",
-      "map": "Getting here"
+      "map": "Getting here",
+      "mapLoad": "Show the interactive map",
+      "mapNote": "Map provided by Google Maps, loaded only when you ask for it.",
+      "mapTitle": "Map — Dar el Bacha"
     },
     "notFound": {
       "seoTitle": "Page not found — Dar el Bacha",
