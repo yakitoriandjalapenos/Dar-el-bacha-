@@ -75,10 +75,16 @@ function checkLocalized(value, langs, label, errors, { nullable = true } = {}) {
   for (const k of Object.keys(value)) if (!langs.some((l) => l.code === k)) errors.push(`${label} : langue inconnue « ${k} ».`);
 }
 
+/** Référence de photo : nom préparé par « npm run images » (ex. "restaurant/salle") ou { src, width, height }. */
+export const PHOTO_NAME = /^[a-z0-9][a-z0-9-]*(\/[a-z0-9][a-z0-9-]*)*$/;
 function checkImage(image, label, errors) {
   if (image === null || image === undefined) return;
+  if (typeof image === 'string') {
+    if (!PHOTO_NAME.test(image)) errors.push(`${label} : nom de photo invalide « ${image} » (minuscules, chiffres, tirets, ex. "restaurant/salle").`);
+    return;
+  }
   if (!isObj(image) || !isNonEmpty(image.src) || !isPosInt(image.width) || !isPosInt(image.height)) {
-    errors.push(`${label} : image invalide, format attendu { "src": "photos/nom", "width": 1600, "height": 1067 }.`);
+    errors.push(`${label} : image invalide, nom de photo attendu (ex. "restaurant/salle") ou { "src": "photos/nom", "width": 1600, "height": 1067 }.`);
   }
 }
 
@@ -222,4 +228,52 @@ export function validateSite(site, langs) {
   if (site.ogImage && !String(site.ogImage).startsWith('/')) errors.push(`${s} › ogImage : chemin depuis la racine du site attendu (ex. /og-image.jpg).`);
 
   return { errors, warnings: [] };
+}
+
+/* ------------------------------------------------------------------ */
+/* Emplacements photo des pages (media.json)                           */
+/* ------------------------------------------------------------------ */
+
+const SLOT_FORMATS = ['portrait', 'paysage', 'carre'];
+
+/** Structure attendue : celle de media.json livré (mêmes emplacements, mêmes listes). */
+export function validateMedia(media, langs) {
+  const errors = [];
+  const warnings = [];
+  const slot = (value, label) => {
+    if (!isObj(value) || !('image' in value)) { errors.push(`media.json › ${label} : emplacement invalide, { "image": null, "alt": null } attendu.`); return; }
+    checkImage(value.image, `media.json › ${label}`, errors);
+    checkLocalized(value.alt, langs, `media.json › ${label} › alt`, errors);
+    if ('format' in value && !SLOT_FORMATS.includes(value.format)) errors.push(`media.json › ${label} : format « ${value.format} » inconnu.`);
+    if (value.image && !value.alt) warnings.push(`media.json › ${label} : photo sans texte alternatif (considérée comme décorative).`);
+  };
+  const expect = {
+    'home.hero': 1, 'home.philosophy': 1, 'home.signature': 3, 'home.mosaic': 3,
+    'histoire.presentation': 1, 'histoire.philosophie': 1, 'histoire.inspiration': 1, 'histoire.savoirFaire': 1,
+    'histoire.recevoir': 1, 'histoire.ambiance': 1, 'contact.map': 1,
+  };
+  for (const [key, n] of Object.entries(expect)) {
+    const v = get(media, key);
+    if (n > 1) {
+      if (!Array.isArray(v) || v.length !== n) { errors.push(`media.json › ${key} : liste de ${n} emplacements attendue.`); continue; }
+      v.forEach((x, i) => slot(x, `${key}[${i}]`));
+    } else slot(v, key);
+  }
+  return { errors, warnings };
+}
+
+/** Toutes les références de photos utilisées dans les contenus : [{ ref, where }]. */
+export function collectImageRefs({ media, gallery, menu }) {
+  const refs = [];
+  const visit = (v, where) => {
+    if (Array.isArray(v)) v.forEach((x, i) => visit(x, `${where}[${i}]`));
+    else if (isObj(v)) {
+      if ('image' in v && v.image) refs.push({ ref: v.image, where });
+      for (const [k, x] of Object.entries(v)) if (k !== 'image' && !k.startsWith('_')) visit(x, where ? `${where}.${k}` : k);
+    }
+  };
+  visit(media, 'media.json');
+  visit(gallery.items, 'gallery.json');
+  menu.categories.forEach((c) => visit(c.items, `menu.json › ${c.id}`));
+  return refs;
 }

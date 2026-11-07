@@ -3,17 +3,14 @@ import { pageHead, info, button } from '../components/ui.mjs';
 import { media } from '../components/media.mjs';
 import { arch } from '../components/arch.mjs';
 
-// Ordre des sections. image : photo d'illustration (null = emplacement temporaire).
-const SECTIONS = [
-  { id: 'philosophie', image: null },
-  { id: 'inspiration', image: null },
-  { id: 'savoirFaire', image: null },
-  { id: 'recevoir', image: null },
-  { id: 'ambiance', image: null },
-];
+// Ordre des sections. Photos d'illustration : src/content/media.json (histoire).
+const SECTION_IDS = ['philosophie', 'inspiration', 'savoirFaire', 'recevoir', 'ambiance'];
 
 export function render(ctx) {
   const p = (key) => ctx.t(`pages.histoire.${key}`);
+  const slots = ctx.media.histoire;
+  const alt = (slot) => slot.alt?.[ctx.lang] || '';
+  const SECTIONS = SECTION_IDS.map((id) => ({ id, ...slots[id] }));
 
   // Le texte de présentation n'est pas fourni : on n'invente rien, on affiche un repère.
   const presentationText = ctx.site.story?.[ctx.lang] ?? null;
@@ -28,7 +25,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
       <p class="lead">${info(ctx, presentationText, 'story')}</p>
     </div>
     <div style="max-width: 22rem; justify-self: center; width: 100%">
-      ${arch(media(ctx, { image: null, format: null, sizes: '22rem' }))}
+      ${arch(media(ctx, { image: slots.presentation.image, alt: alt(slots.presentation), format: null, sizes: '22rem' }))}
     </div>
   </div>
 </section>
@@ -36,7 +33,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
 ${SECTIONS.map((s, i) => html`
 <section class="section${i % 2 === 0 ? ' section--sand' : ''}" aria-labelledby="${s.id}-title">
   <div class="wrap feature${i % 2 === 1 ? ' feature--reverse' : ''}">
-    ${media(ctx, { image: s.image, format: 'paysage', sizes: '(min-width: 56rem) 55vw, 100vw' })}
+    ${media(ctx, { image: s.image, alt: alt(s), format: 'paysage', sizes: '(min-width: 56rem) 55vw, 100vw' })}
     <div class="stack stack-l">
       <h2 id="${s.id}-title">${p(`sections.${s.id}.title`)}</h2>
       <p>${p(`sections.${s.id}.text`)}</p>

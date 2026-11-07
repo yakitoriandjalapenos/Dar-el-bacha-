@@ -4,11 +4,15 @@
   "private": true,
   "description": "Site gastronomique DAR EL BACHA — Casablanca",
   "type": "module",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:prod": "node scripts/build.mjs --prod",
     "serve": "node scripts/serve.mjs",
-    "dev": "node scripts/dev.mjs"
+    "dev": "node scripts/dev.mjs",
+    "images": "node scripts/images.mjs",
+    "test:browser": "node tests/browser.mjs"
   }
 }

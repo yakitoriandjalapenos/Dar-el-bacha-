@@ -1,17 +1,24 @@
 # DAR EL BACHA — site gastronomique
 
-Structure de base du site (étape 1). Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions.
+Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : socle technique consolidé (phase 1) ; l'identité visuelle définitive viendra ensuite.
 
 ## Démarrer
 
-Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est nécessaire.
+Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est nécessaire pour compiler le site.
 
-```bash
-npm run dev      # compile puis lance http://localhost:4321/fr/
-npm run build    # compile uniquement → dossier dist/
-```
+| Commande | Rôle |
+|---|---|
+| `npm run dev` | Compile, lance http://localhost:4321/fr/, recompile à chaque modification de `src/` ou `scripts/` et **recharge le navigateur** automatiquement. Une erreur de build s'affiche dans la page ; la dernière version valide reste servie. |
+| `npm run build` | Compilation de **prévisualisation** → `dist/`. Toutes les pages portent `noindex`, `robots.txt` bloque l'indexation. Les contenus provisoires sont listés. |
+| `npm run build:prod` | Compilation de **production**. Refusée (et `dist/` laissé intact) tant qu'il reste une information `[À CONFIRMER]`, une photo provisoire, un plat « à valider », un formulaire non relié ou que l'URL officielle (`siteUrl`) n'est pas configurée. |
+| `npm run serve` | Sert `dist/` tel quel (sans rechargement). |
+| `npm run images` | Prépare les photos de `ressources/photos/` (AVIF, WebP, JPEG, 480 à 2000 px). Nécessite `sharp`, voir « Photos ». |
+| `npm test` | Tests automatiques sans dépendance (contrôles des contenus, du site généré, des deux modes de compilation). |
+| `npm run test:browser` | Tests dans Chromium (19 pages × 6 largeurs, menu, clavier, RTL, formulaire, pannes de script). Nécessite Playwright installé à part. |
 
-Le dossier `dist/` est le site final : il se dépose tel quel chez n'importe quel hébergeur statique (Netlify, Cloudflare Pages, Vercel, OVH…). Ouvrir les fichiers directement par double-clic ne fonctionne pas (les liens partent de la racine du site) : passer par `npm run serve`.
+Chaque compilation construit le site dans un dossier temporaire, le **contrôle** (langue et sens d'écriture, titres, liens et ressources internes, ancres, canonical, hreflang, Open Graph, sitemap, indexation, images), puis remplace `dist/` seulement si tout est conforme.
+
+Le dossier `dist/` est le site final : il se dépose tel quel chez n'importe quel hébergeur statique (Netlify, Cloudflare Pages, Vercel, OVH…). Ouvrir les fichiers directement par double-clic ne fonctionne pas (les liens partent de la racine du site) : passer par `npm run serve`. **Ne mettre en ligne qu'un `dist/` produit par `npm run build:prod`.**
 
 ## Organisation
 
@@ -21,18 +28,24 @@ src/
     site.json        Informations officielles (adresse, téléphone, WhatsApp, horaires…)
     menu.json        La carte — 25 propositions maximum, contrôlé au build
     gallery.json     Emplacements photo de la galerie
+    media.json       Emplacements photo des autres pages (accueil, histoire, plan d'accès)
   i18n/
     fr.json en.json ar.json   Tous les textes du site, par langue
   routes.mjs         Langues et adresses des pages
   components/        Éléments réutilisables (en-tête, pied de page, arche, médias, boutons…)
   pages/             Les 6 pages + la page 404
   styles/            tokens → base → layout → components → pages (concaténés au build)
-  scripts/main.js    Menu mobile, apparitions, formulaire, lien WhatsApp (5 ko)
-  assets/            Images (arche, motif zellige), polices
-  static/            Fichiers copiés à la racine (favicon, robots)
+  scripts/main.js    Menu mobile, apparitions, formulaire, lien WhatsApp (7 ko non compressé)
+  assets/            Images (logo, arche, motif zellige, photos préparées), polices
+  static/            Fichiers copiés à la racine (favicon, icônes, image de partage, robots)
+ressources/          Fichiers sources définitifs (logo, icônes, polices, photos) — inventaire dans ressources/README.md
 scripts/
-  build.mjs          Générateur
+  build.mjs          Générateur (prévisualisation / production)
+  dev.mjs            Serveur de développement avec rechargement automatique
   serve.mjs          Serveur local
+  images.mjs         Préparation des photographies
+  lib/               Contrôles des contenus (validate), contrôle du site généré (check-output), serveur statique, gabarits HTML
+tests/               Tests automatiques (npm test) et tests navigateur (npm run test:browser)
 ```
 
 ## Adresses des pages
@@ -52,17 +65,20 @@ La racine `/` redirige vers `/fr/`. Prévoir aussi une redirection 301 chez l'h�
 
 Rien n'est inventé. Toute valeur à `null` dans `src/content/site.json` s'affiche sur le site sous la forme `[ADRESSE À CONFIRMER]`, `[TÉLÉPHONE À CONFIRMER]`, etc. (traduite dans chaque langue), et le build en dresse la liste à chaque compilation. Il suffit de remplacer `null` par la vraie valeur puis de recompiler.
 
+Chaque élément provisoire affiché porte l'attribut `data-provisional` : c'est ce qui permet à `npm run build:prod` de les détecter tous. Le build signale aussi tout texte provisoire **non balisé** (repère `À CONFIRMER`, `lorem ipsum`, `TODO`, domaine fictif…).
+
 Quelques effets automatiques :
 
 - **WhatsApp** : tant que `whatsapp.number` est vide, le bouton est inactif. Une fois le numéro renseigné, il ouvre une conversation préremplie avec les informations saisies dans le formulaire.
 - **Formulaire** : tant que `reservation.formEndpoint` est vide, l'envoi affiche un message clair (« l'envoi en ligne n'est pas encore activé »). Il ne simule jamais une réussite.
 - **Système de réservation connecté** : invisible tant que `reservation.bookingSystem` vaut `null`. Pour l'activer : `{ "url": "https://…" }`.
 - **Données structurées** (schema.org Restaurant / Menu) : seules les informations renseignées sont publiées ; les plats « à valider » en sont exclus.
-- **Nom de domaine** : tant que `siteUrl` est vide, une adresse provisoire `dar-el-bacha.example` est utilisée pour canonical, sitemap et Open Graph.
+- **Nom de domaine** : tant que `siteUrl` est vide, aucune adresse absolue n'est publiée (canonical, hreflang, `og:url`, `og:image` et sitemap sont omis) ; la production est refusée. Les domaines fictifs ou locaux (`.example`, `.test`, `localhost`…) et les adresses en `http://` sont refusés.
+- **Présentation du restaurant** (page Notre histoire) : `story` = `{ "fr": "…", "en": "…", "ar": "…" }`.
 
 ## La carte
 
-`src/content/menu.json` contient 4 catégories avec leurs limites strictes : entrées 6, plats 10, desserts 4, boissons 5, soit 25 au total. Le build **s'arrête** si une limite est dépassée ou si une catégorie non prévue est ajoutée. Les tajines et spécialités fassies se placent dans `plats`.
+`src/content/menu.json` est la **seule source** des catégories et des limites : `maxTotal` (25) et, pour chaque catégorie, `max` (entrées 6, plats 10, desserts 4, boissons 5). Le build **s'arrête** si une limite est dépassée, si une catégorie n'a pas d'intitulé dans les trois langues (`pages.carte.categories.<id>`), si un plat n'a pas son nom dans les trois langues, si une description est incomplète ou si un prix est invalide. Les tajines et spécialités fassies se placent dans `plats`.
 
 Les propositions déjà présentes (zaalouk, taktouka, pastilla, briouates, thé marocain) viennent des exemples du cahier des charges et portent `"status": "a-valider"` : elles s'affichent avec la mention « À valider ». Retirer ce statut une fois la carte validée par le restaurant.
 
@@ -83,12 +99,13 @@ La planche est une image JPEG de basse définition : le découpage convient pour
 
 Toutes les images sont pour l'instant des emplacements temporaires (motif zellige + mention « Photographie officielle à venir »). Pour en remplacer un :
 
-1. Déposer les fichiers dans `src/assets/img/photos/`, par exemple `salle-800.avif`, `salle-1600.avif`, `salle-800.webp`, `salle-1600.webp`, `salle-1600.jpg`.
-2. Dans le contenu, remplacer `image: null` par `{ "src": "photos/salle", "width": 1600, "height": 1067 }`.
+1. Déposer l'original haute définition dans `ressources/photos/restaurant/` ou `ressources/photos/gastronomie/`.
+2. `npm run images` : variantes AVIF, WebP et JPEG de 480 à 2000 px (sans agrandissement), métadonnées supprimées, manifeste des dimensions et de la couleur dominante (`src/assets/img/photos/manifest.json`, non publié).
+3. Dans `src/content/media.json` (accueil, histoire, plan d'accès) ou `gallery.json`, remplacer `"image": null` par le nom de la photo, par exemple `"restaurant/salle-principale"`, et renseigner `alt` dans les trois langues.
 
-Le build crée la balise `<picture>` (AVIF, puis WebP, puis JPEG), avec `srcset`, dimensions explicites (pas de décalage de mise en page) et chargement différé hors écran.
+Le build crée la balise `<picture>` (AVIF, puis WebP, puis JPEG), avec `srcset`, `sizes`, dimensions explicites (pas de décalage de mise en page), couleur de fond pendant le chargement et chargement différé hors écran. Seule l'image principale de l'accueil est chargée en priorité haute ; le build refuse plus d'une image prioritaire par page. Une photo citée mais introuvable interrompt le build.
 
-Emplacements : `gallery.json` pour la galerie, en tête de `src/pages/home.mjs` et `src/pages/histoire.mjs` pour les autres pages.
+**`sharp`** : `npm run images` utilise la bibliothèque `sharp` (Apache 2.0), seule façon fiable d'encoder l'AVIF depuis Node. Elle sert uniquement à préparer les photos sur le poste de travail : le build et le site publié n'en dépendent pas. Installation : `npm install --save-dev sharp` (en attente de validation pour l'ajouter au projet).
 
 ## Direction artistique
 

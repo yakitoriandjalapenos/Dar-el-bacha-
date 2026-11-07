@@ -116,6 +116,15 @@ export function checkOutput({ files, allFiles, pages, mode, siteUrl, base, forbi
       }
     }
 
+    // Images : une seule image prioritaire par page, dimensions toujours déclarées (pas de décalage de mise en page)
+    const imgs = tags(html, /<img\b[^>]*>/g);
+    const high = imgs.filter((t) => /fetchpriority="high"/.test(t)).length;
+    if (high > 1) errors.push(`${where} : ${high} images en priorité haute (une seule image principale attendue).`);
+    const noSize = imgs.filter((t) => !attr(t, 'width') || !attr(t, 'height')).length;
+    if (noSize) errors.push(`${where} : ${noSize} image(s) sans largeur ni hauteur déclarées.`);
+    const noAlt = imgs.filter((t) => attr(t, 'alt') === undefined).length;
+    if (noAlt) errors.push(`${where} : ${noAlt} image(s) sans attribut alt.`);
+
     // Contenus provisoires balisés
     for (const [, type] of html.matchAll(/\sdata-provisional="([^"]+)"/g)) {
       const entry = provisional.get(type) || { count: 0, files: new Set() };

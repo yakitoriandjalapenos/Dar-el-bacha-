@@ -22,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { LANGS, DEFAULT_LANG, PAGES, pathFor } from '../src/routes.mjs';
 import { layout } from '../src/components/layout.mjs';
-import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite } from './lib/validate.mjs';
+import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, collectImageRefs } from './lib/validate.mjs';
 import { checkOutput } from './lib/check-output.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -59,6 +59,10 @@ const readJSON = async (p) => {
 const site = await readJSON(path.join(SRC, 'content/site.json'));
 const menu = await readJSON(path.join(SRC, 'content/menu.json'));
 const gallery = await readJSON(path.join(SRC, 'content/gallery.json'));
+const media = await readJSON(path.join(SRC, 'content/media.json'));
+// Manifeste des photos préparées par « npm run images » (dimensions, variantes, couleur dominante)
+const PHOTOS_MANIFEST = path.join(SRC, 'assets/img/photos/manifest.json');
+const photos = existsSync(PHOTOS_MANIFEST) ? await readJSON(PHOTOS_MANIFEST) : {};
 const dict = Object.fromEntries(
   await Promise.all(LANGS.map(async (l) => [l.code, await readJSON(path.join(SRC, `i18n/${l.code}.json`))])),
 );
@@ -69,8 +73,12 @@ const dict = Object.fromEntries(
 
 // Les catégories et les limites de la carte viennent exclusivement de menu.json.
 const menuCheck = validateMenu(menu, dict, LANGS);
-const checks = [validateI18n(dict, LANGS, DEFAULT_LANG), menuCheck, validateGallery(gallery, dict, LANGS), validateSite(site, LANGS)];
+const checks = [validateI18n(dict, LANGS, DEFAULT_LANG), menuCheck, validateGallery(gallery, dict, LANGS), validateMedia(media, LANGS), validateSite(site, LANGS)];
 const errors = checks.flatMap((c) => c.errors);
+// Chaque photo citée dans les contenus doit exister
+for (const { ref, where } of collectImageRefs({ media, gallery, menu })) {
+  if (typeof ref === 'string' && !photos[ref]) errors.push(`${where} : photo « ${ref} » introuvable (lancer npm run images après avoir déposé l'original dans ressources/photos/).`);
+}
 const warnings = checks.flatMap((c) => c.warnings);
 if (errors.length) fail('Build interrompu', errors);
 const total = menuCheck.total;
@@ -109,7 +117,7 @@ const jsName = `main.${hash(js)}.js`;
 await writeFile(path.join(OUT, 'assets', jsName), js);
 
 // Images et polices copiées telles quelles ; fichiers statiques à la racine
-await cp(path.join(SRC, 'assets/img'), path.join(OUT, 'assets/img'), { recursive: true });
+await cp(path.join(SRC, 'assets/img'), path.join(OUT, 'assets/img'), { recursive: true, filter: (f) => f !== PHOTOS_MANIFEST && path.basename(f) !== '.gitkeep' });
 await mkdir(path.join(OUT, 'assets/fonts'), { recursive: true });
 for (const f of fontManifest) await cp(path.join(fontsDir, f.file), path.join(OUT, 'assets/fonts', f.file));
 for (const f of await readdir(path.join(SRC, 'static'))) {
@@ -143,6 +151,7 @@ function makeCtx(lang, pageId) {
     site,
     menu,
     gallery,
+    media,
     mode: MODE,
     preview: !PROD,
     siteUrl,
@@ -173,12 +182,21 @@ function makeCtx(lang, pageId) {
     formatPrice: (n) =>
       new Intl.NumberFormat(lang === 'ar' ? 'ar-MA-u-nu-latn' : `${lang}-MA`, { style: 'currency', currency: menu.currency, maximumFractionDigits: 0 }).format(n),
 
+    resolveImage: (ref) => resolveImage(ref),
     picture: (image) => pictureSources(image),
 
     restaurantSchema: () => restaurantSchema(ctx),
     menuSchema: () => menuSchema(ctx),
   };
   return ctx;
+}
+
+/** Référence de photo → { src, width, height, color } (nom du manifeste ou objet explicite). */
+function resolveImage(ref) {
+  if (typeof ref !== 'string') return ref;
+  const p = photos[ref];
+  if (!p) throw new Error(`Photo introuvable : ${ref}`);
+  return { src: `photos/${ref}`, width: p.width, height: p.height, color: p.color };
 }
 
 function pictureSources(image) {
@@ -394,7 +412,18 @@ const walk = (obj, prefix) => {
 walk(site, '');
 const pendingDishes = menu.categories.flatMap((c) => c.items.filter((i) => i.status === 'a-valider').map((i) => i.id));
 const prices = menu.categories.flatMap((c) => c.items.filter((i) => i.price == null).map((i) => i.id));
-const photos = gallery.items.filter((i) => !i.image).length;
+const missingGalleryPhotos = gallery.items.filter((i) => !i.image).length;
+
+// Ressources définitives encore absentes (non bloquant : signalé à chaque compilation)
+const resources = [];
+if (!imageFiles.some((f) => /^logo\/.+\.svg$/.test(f))) resources.push('logo définitif vectoriel (SVG, variantes fond sombre / fond clair) : logo actuel = découpe provisoire de 300 px');
+const provisionalFonts = fontManifest.filter((f) => f.provisional).map((f) => f.file);
+if (provisionalFonts.length) resources.push(`police de titres définitive (police provisoire : ${provisionalFonts.join(', ')})`);
+if (!fontManifest.some((f) => /Arabic/.test(f.family))) resources.push('police arabe (les polices du système sont utilisées)');
+const emptySlots = [];
+const countSlots = (v) => { if (Array.isArray(v)) v.forEach(countSlots); else if (v && typeof v === 'object') { if ('image' in v && !v.image) emptySlots.push(v); Object.entries(v).forEach(([k, x]) => { if (!k.startsWith('_') && k !== 'image') countSlots(x); }); } };
+countSlots(media); countSlots(gallery.items);
+if (emptySlots.length) resources.push(`photographies : ${emptySlots.length} emplacements sans photo (media.json, gallery.json)`);
 
 const htmlPages = written.filter((w) => w.relPath.endsWith('.html'));
 console.log(`\n✓ Build ${PROD ? 'de PRODUCTION' : 'de prévisualisation (noindex)'} terminé → dist/  (${htmlPages.length} pages HTML, ${LANGS.length} langues)`);
@@ -409,11 +438,12 @@ if (!PROD) {
   if (missing.length) console.log(`  - site.json : ${missing.join(', ')}`);
   if (pendingDishes.length) console.log(`  - Plats à valider : ${pendingDishes.join(', ')}`);
   if (prices.length) console.log(`  - Prix manquants : ${prices.length}`);
-  if (photos) console.log(`  - Photos de galerie manquantes : ${photos}`);
+  if (missingGalleryPhotos) console.log(`  - Photos de galerie manquantes : ${missingGalleryPhotos}`);
   if (!siteUrl) console.log(`  - URL officielle (siteUrl) non configurée : canonical, hreflang, Open Graph et sitemap sont omis`);
   if (provisionalLines.length) console.log(`  - Repères provisoires affichés :\n      ${provisionalLines.join('\n      ')}`);
   if (strayLines.length) console.log(`  - ${strayLines.join('\n  - ')}`);
 }
+if (resources.length) console.log(`\n⚠ Ressources définitives à fournir (voir ressources/README.md) :\n  - ${resources.join('\n  - ')}`);
 console.log('');
 
 /* ------------------------------------------------------------------ */

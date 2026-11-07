@@ -3,14 +3,12 @@ import { button, ornament } from '../components/ui.mjs';
 import { arch } from '../components/arch.mjs';
 import { media } from '../components/media.mjs';
 
-// Emplacements photo de l'accueil. Remplacer image: null par { src, width, height } à réception des photos.
-const HERO_IMAGE = null;
-const SIGNATURE = [{ image: null }, { image: null }, { image: null }];
-const MOSAIC = [{ image: null, format: 'portrait' }, { image: null, format: 'paysage' }, { image: null, format: 'paysage' }];
-const PHILOSOPHY_IMAGE = null;
+// Emplacements photo de l'accueil : src/content/media.json (home).
 
 export function render(ctx) {
   const p = (key) => ctx.t(`pages.home.${key}`);
+  const { hero: HERO, philosophy: PHILOSOPHY, signature: SIGNATURE, mosaic: MOSAIC } = ctx.media.home;
+  const alt = (slot) => slot.alt?.[ctx.lang] || '';
   // Le texte « présentée ici dès que… » n'a de sens que tant que les plats emblématiques ne sont pas illustrés.
   const signaturePending = SIGNATURE.some((s) => !s.image);
 
@@ -26,7 +24,7 @@ export function render(ctx) {
       </div>
     </div>
     <div class="hero__visual">
-      ${arch(media(ctx, { image: HERO_IMAGE, alt: '', format: null, dark: true, eager: true, sizes: '(min-width: 56rem) 25rem, 78vw' }))}
+      ${arch(media(ctx, { image: HERO.image, alt: alt(HERO), format: null, dark: true, eager: true, sizes: '(min-width: 56rem) 25rem, 78vw' }))}
     </div>
   </div>
 </section>
@@ -46,7 +44,7 @@ export function render(ctx) {
 
 <section class="section section--sand" aria-labelledby="philo-title">
   <div class="wrap feature">
-    ${media(ctx, { image: PHILOSOPHY_IMAGE, format: 'paysage', sizes: '(min-width: 56rem) 55vw, 100vw' })}
+    ${media(ctx, { image: PHILOSOPHY.image, alt: alt(PHILOSOPHY), format: 'paysage', sizes: '(min-width: 56rem) 55vw, 100vw' })}
     <div class="stack stack-l">
       <h2 id="philo-title">${p('philosophy.title')}</h2>
       <p>${p('philosophy.text')}</p>
@@ -64,7 +62,7 @@ export function render(ctx) {
       <a class="text-link" href="${ctx.path('carte')}">${ctx.t('cta.viewMenu')}</a>
     </div>
     <div class="arcade">
-      ${SIGNATURE.map((s, i) => html`<div data-reveal style="--reveal-i:${i}">${arch(media(ctx, { image: s.image, format: null, sizes: '(min-width: 40rem) 30vw, 72vw' }), { framed: false })}</div>`)}
+      ${SIGNATURE.map((s, i) => html`<div data-reveal style="--reveal-i:${i}">${arch(media(ctx, { image: s.image, alt: alt(s), format: null, sizes: '(min-width: 40rem) 30vw, 72vw' }), { framed: false })}</div>`)}
     </div>
   </div>
 </section>
@@ -83,7 +81,7 @@ export function render(ctx) {
       <a class="text-link" href="${ctx.path('galerie')}">${ctx.t('cta.viewGallery')}</a>
     </div>
     <div class="mosaic">
-      ${MOSAIC.map((m) => media(ctx, { image: m.image, format: m.format, sizes: '(min-width: 48rem) 50vw, 100vw' }))}
+      ${MOSAIC.map((m) => media(ctx, { image: m.image, alt: alt(m), format: m.format, sizes: '(min-width: 48rem) 50vw, 100vw' }))}
     </div>
   </div>
 </section>

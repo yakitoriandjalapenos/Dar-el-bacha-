@@ -13,13 +13,17 @@ const FILES = {
   complet: { name: 'logo-ivoire-or', width: 300, height: 278 },
 };
 
+/*
+  Priorités : le logo de l'en-tête est chargé immédiatement (il est visible dès l'ouverture) mais sans
+  priorité haute, pour ne pas concurrencer l'image principale de la page ; celui du pied de page est différé.
+*/
 export function logoImage(ctx, variant, { className = '', eager = false, alt = '' } = {}) {
   const f = FILES[variant];
   const src = (ext) => `${ctx.asset(`assets/img/logo/${f.name}.${ext}`)}`;
   return html`<picture>
     <source type="image/webp" srcset="${src('webp')}">
     <img class="${className}" src="${src('png')}" width="${f.width}" height="${f.height}" alt="${alt}"
-      ${eager ? html`fetchpriority="high"` : html`loading="lazy" decoding="async"`}>
+      ${eager ? html`decoding="async"` : html`loading="lazy" decoding="async"`}>
   </picture>`;
 }
 

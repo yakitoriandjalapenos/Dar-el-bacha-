@@ -1,0 +1,32 @@
+{
+  "_comment": "Emplacements photo des pages (la galerie est dans gallery.json). image : nom d'une photo préparée par « npm run images » (ex. « restaurant/salle-principale »), ou null = emplacement temporaire signalé « Photographie officielle à venir ». alt : texte alternatif { fr, en, ar } à rédiger avec la photo ; null si la photo est purement décorative. Ne jamais y placer une photo qui ne vient pas du restaurant.",
+
+  "home": {
+    "hero": { "image": null, "alt": null },
+    "philosophy": { "image": null, "alt": null },
+    "signature": [
+      { "image": null, "alt": null },
+      { "image": null, "alt": null },
+      { "image": null, "alt": null }
+    ],
+    "mosaic": [
+      { "image": null, "alt": null, "format": "portrait" },
+      { "image": null, "alt": null, "format": "paysage" },
+      { "image": null, "alt": null, "format": "paysage" }
+    ]
+  },
+
+  "histoire": {
+    "presentation": { "image": null, "alt": null },
+    "philosophie": { "image": null, "alt": null },
+    "inspiration": { "image": null, "alt": null },
+    "savoirFaire": { "image": null, "alt": null },
+    "recevoir": { "image": null, "alt": null },
+    "ambiance": { "image": null, "alt": null }
+  },
+
+  "contact": {
+    "_map": "Plan d'accès : image statique fournie ou validée par le restaurant (le plan interactif Google Maps chargé au clic est prévu dans une phase ultérieure).",
+    "map": { "image": null, "alt": null }
+  }
+}
