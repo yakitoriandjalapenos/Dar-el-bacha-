@@ -25,7 +25,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
       <p class="lead">${info(ctx, presentationText, 'story')}</p>
     </div>
     <div style="max-width: 22rem; justify-self: center; width: 100%">
-      ${arch(media(ctx, { image: slots.presentation.image, alt: alt(slots.presentation), format: null, sizes: '22rem' }))}
+      ${arch(media(ctx, { image: slots.presentation.image, alt: alt(slots.presentation), format: null, sizes: '22rem', eager: true }))}
     </div>
   </div>
 </section>

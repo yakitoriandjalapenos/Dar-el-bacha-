@@ -7,7 +7,7 @@
   s'il n'est pas disponible sur la machine, installer-le à part :
     npm install --no-save playwright && npx playwright install chromium
 
-  Vérifie : 19 pages × 6 largeurs (débordement horizontal, erreurs JavaScript, ressources manquantes),
+  Vérifie : 19 pages × 7 largeurs (débordement horizontal, erreurs JavaScript, ressources manquantes),
   accès à la réservation à toutes les tailles, menu mobile et clavier, RTL arabe, états du formulaire,
   repli sans JavaScript (script absent ou en erreur), apparitions progressives, liens externes.
 */
@@ -29,7 +29,7 @@ try {
   process.exit(2);
 }
 
-const WIDTHS = [320, 390, 768, 1024, 1440, 1920];
+const WIDTHS = [320, 360, 390, 768, 1024, 1440, 1920];
 const URLS = [...LANGS.flatMap((l) => PAGES.map((p) => pathFor(p.id, l.code))), '/404.html'];
 
 const results = [];

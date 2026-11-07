@@ -29,7 +29,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
 
     <div class="contact-map">
       <h2 class="visually-hidden">${p('map')}</h2>
-      ${media(ctx, { image: ctx.media.contact.map.image, alt: ctx.media.contact.map.alt?.[ctx.lang] || p('map'), format: 'paysage', sizes: '(min-width: 56rem) 55vw, 100vw', caption: site.googleMapsUrl ? p('map') : ctx.t('tbc.map') })}
+      ${media(ctx, { image: ctx.media.contact.map.image, alt: ctx.media.contact.map.alt?.[ctx.lang] || p('map'), format: 'paysage', sizes: '(min-width: 56rem) 55vw, 100vw', eager: true, caption: site.googleMapsUrl ? p('map') : ctx.t('tbc.map') })}
       <div class="actions">
         ${button({ href: directionsUrl, label: ctx.t('cta.directions'), icon: 'pin', external: true, disabled: !directionsUrl })}
         ${button({ href: site.googleMapsUrl, label: ctx.t('cta.openMaps'), variant: 'ghost', external: true, disabled: !site.googleMapsUrl })}

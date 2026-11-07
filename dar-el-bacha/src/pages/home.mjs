@@ -24,7 +24,7 @@ export function render(ctx) {
       </div>
     </div>
     <div class="hero__visual">
-      ${arch(media(ctx, { image: HERO.image, alt: alt(HERO), format: null, dark: true, eager: true, sizes: '(min-width: 56rem) 25rem, 78vw' }))}
+      ${arch(media(ctx, { image: HERO.image, alt: alt(HERO), format: null, dark: true, eager: true, priority: 'high', sizes: '(min-width: 56rem) 25rem, 78vw' }))}
     </div>
   </div>
 </section>

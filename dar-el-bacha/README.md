@@ -14,7 +14,7 @@ Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est né
 | `npm run serve` | Sert `dist/` tel quel (sans rechargement). |
 | `npm run images` | Prépare les photos de `ressources/photos/` (AVIF, WebP, JPEG, 480 à 2000 px). Nécessite `sharp`, voir « Photos ». |
 | `npm test` | Tests automatiques sans dépendance (contrôles des contenus, du site généré, des deux modes de compilation). |
-| `npm run test:browser` | Tests dans Chromium (19 pages × 6 largeurs, menu, clavier, RTL, formulaire, pannes de script). Nécessite Playwright installé à part. |
+| `npm run test:browser` | Tests dans Chromium (19 pages × 7 largeurs, menu, clavier, RTL, formulaire, pannes de script). Nécessite Playwright installé à part. |
 
 Chaque compilation construit le site dans un dossier temporaire, le **contrôle** (langue et sens d'écriture, titres, liens et ressources internes, ancres, canonical, hreflang, Open Graph, sitemap, indexation, images), puis remplace `dist/` seulement si tout est conforme.
 
@@ -114,18 +114,46 @@ Le build crée la balise `<picture>` (AVIF, puis WebP, puis JPEG), avec `srcset`
 - **Typographie** : titres en serif (Lora, police provisoire auto-hébergée, 42 ko), texte courant en police système (0 ko). Voir `src/assets/fonts/README.md` pour installer la police de titres définitive et une police arabe.
 - **Mouvement** : un seul moment chorégraphié (l'arche du hero se dessine au chargement), plus une apparition discrète de l'arcade. Tout est coupé si l'utilisateur a demandé la réduction des animations.
 
-## Performance et accessibilité (mesures de cette étape)
+## Performance et accessibilité
 
-Mesures sur mobile simulé (CPU ralenti ×4, connexion 4G lente) : LCP 0,6 à 0,8 s, CLS 0 sur toutes les pages testées. Poids d'une page : environ 85 ko non compressés, polices comprises.
+**Objectifs** : LCP < 2 s, CLS < 0,05, INP < 200 ms, JavaScript initial ≤ 15 ko, Lighthouse ≥ 95.
 
-Lien d'évitement, navigation au clavier, focus visible, libellés de formulaire, messages d'erreur reliés aux champs, menu mobile fermé par Échap, `prefers-reduced-motion` respecté, interface arabe en RTL complète (propriétés logiques CSS).
+**Conditions de mesure (phase 1, novembre 2026)** : Lighthouse 12.6.1, Chromium 1243 sans interface, profil mobile par défaut
+(Moto G Power émulé, processeur ralenti ×4, réseau simulé : 150 ms de latence, 1,6 Mbit/s), 3 passages par page (médiane),
+site servi localement avec compression Brotli et en-têtes de cache comme chez un hébergeur statique.
+Les mesures de laboratoire ne remplacent pas les données réelles des visiteurs (Chrome UX Report) après la mise en ligne.
+
+| Page (mobile) | Performance | Accessibilité | Bonnes pratiques | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|
+| Accueil FR | 100 | 100 | 100 | 1,51 s | 0 | 0 ms |
+| Accueil AR | 100 | 100 | 100 | 1,22 s | 0 | 0 ms |
+| La carte FR / EN | 100 | 100 | 100 | 1,59 s | 0 | 0 ms |
+| Réservation FR / AR | 100 | 100 | 100 | 1,52 / 1,16 s | 0 | 0 ms |
+| Galerie EN | 100 | 100 | 100 | 1,52 s | 0 | 0 ms |
+| Notre histoire FR | 100 | 100 | 100 | 1,51 s | 0 | 0 ms |
+| Contact AR | 100 | 100 | 100 | 1,14 s | 0 | 0 ms |
+| Accueil FR (profil ordinateur) | 100 | 100 | 100 | 0,37 s | 0 | 0 ms |
+
+- **SEO** : 66 en prévisualisation, **par construction** (pages en `noindex`). Sur une copie compilée en production avec des données de test : 100.
+- **Avec une photo principale** (copie de test, images synthétiques préparées par `npm run images`) : Accueil FR mobile 100, LCP 1,58 s ; Galerie FR mobile 100, LCP 1,58 s.
+- **INP** (laboratoire, Chromium, processeur ralenti ×4, Event Timing) : 24 ms pour la pire interaction mesurée (menu mobile, validation du formulaire, saisie, sélecteur, navigation dans la carte).
+- **Poids** : JavaScript 7,3 ko (2,4 ko compressé) + 179 octets en ligne ; CSS 22 ko (4,9 ko compressé) ; HTML 10 à 13 ko (2 à 3 ko compressé). Page d'accueil complète : 73 ko transférés (police comprise).
+
+Points relevés par Lighthouse, sans effet sur les scores : la feuille de style bloque le premier affichage (5 ko compressés, environ 150 ms estimés ;
+conservée en fichier séparé pour profiter du cache entre les pages) ; le symbole du logo (171 × 112 px, 17 ko) est plus grand que son affichage : le logo vectoriel définitif réglera ce point.
+
+Accessibilité : lien d'évitement, navigation au clavier (le bouton du menu mobile précède le menu, Tab mène à ses liens), focus visible,
+libellés de formulaire, messages d'erreur reliés aux champs, menu mobile fermé par Échap, par un clic en dehors ou quand le focus le quitte,
+`prefers-reduced-motion` respecté, interface arabe en RTL complète (propriétés logiques CSS). Sans JavaScript (désactivé, fichier absent ou en erreur),
+le site revient automatiquement à un mode entièrement utilisable.
 
 ## Étapes suivantes
 
 - Service d'envoi du formulaire (fonction serveur avec validation côté serveur, anti-spam et e-mail au restaurant), puis renseigner `formEndpoint`.
-- Politique de confidentialité pour les données du formulaire.
+  Il devra accepter aussi les envois classiques (sans JavaScript) : le formulaire les lui adresse dès que `formEndpoint` est renseigné.
+- Politique de confidentialité et mentions légales (données du formulaire, loi 09-08).
 - Contenus officiels : carte, prix, histoire, photographies, coordonnées.
 - Galerie : agrandissement des photos (lightbox) et légendes.
 - Plan Google Maps chargé au clic (pour ne pas alourdir la page).
 - Police de titres définitive en WOFF2, police arabe auto-hébergée.
-- Fichiers originaux du logo en haute définition (SVG).
+- Fichiers originaux du logo en haute définition (SVG), favicon simplifié, icône d'application.

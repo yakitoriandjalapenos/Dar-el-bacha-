@@ -17,7 +17,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
 <section class="section" aria-label="${p('title')}">
   <div class="wrap">
     <ul class="gallery-grid" role="list">
-      ${ctx.gallery.items.map((item) => {
+      ${ctx.gallery.items.map((item, index) => {
         const theme = p(`themes.${item.theme}`);
         return html`<li class="gallery-item--${item.format}">
           <figure style="height:100%">
@@ -27,6 +27,8 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
               format: item.format,
               caption: `${theme}. ${ctx.t('tbc.photo')}`,
               sizes: SIZES[item.format],
+              // Première photo : visible dès l'ouverture sur mobile comme sur ordinateur
+              ...(index === 0 && { eager: true, priority: 'high' }),
             })}
           </figure>
         </li>`;

@@ -10,9 +10,10 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:prod": "node scripts/build.mjs --prod",
-    "serve": "node scripts/serve.mjs",
     "dev": "node scripts/dev.mjs",
+    "serve": "node scripts/serve.mjs",
     "images": "node scripts/images.mjs",
+    "test": "node --test",
     "test:browser": "node tests/browser.mjs"
   }
 }

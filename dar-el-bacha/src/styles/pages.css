@@ -118,8 +118,11 @@
 .dish__row { display: flex; align-items: baseline; gap: var(--space-xs); }
 .dish__name { font-family: var(--font-display); font-size: var(--step-1); color: var(--heading); }
 .dish__leader { flex: 1; min-width: 1.5rem; border-block-end: 1px dotted var(--c-gold-500); transform: translateY(-0.3em); }
-.dish__price { font-size: var(--step--1); white-space: nowrap; min-width: 0; }
-.dish__price .tbc { white-space: normal; display: inline-block; text-align: end; }
+.dish__price { font-size: var(--step--1); white-space: nowrap; }
+/* Très petits écrans : le repère de prix (long) peut passer à la ligne au lieu de déborder */
+@media (max-width: 22rem) {
+  .dish__price .tbc { white-space: normal; display: inline-block; text-align: end; }
+}
 .dish__desc { margin-block-start: var(--space-3xs); color: var(--fg-muted); }
 .badge {
   display: inline-block;

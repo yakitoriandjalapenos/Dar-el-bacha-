@@ -8,10 +8,12 @@ import { html, attrs } from '../../scripts/lib/html.mjs';
  *         ou null → emplacement temporaire avec motif zellige et légende (balisé comme provisoire).
  * Le build fournit ctx.resolveImage() (dimensions, couleur dominante) et ctx.picture() (variantes AVIF/WebP/JPEG).
  *
- * Priorités de chargement : une seule image par page doit être « eager » (l'image principale, au-dessus
- * de la ligne de flottaison) ; elle reçoit fetchpriority="high". Toutes les autres sont différées.
+ * Priorités de chargement :
+ *   eager: true               → chargement immédiat (image visible dès l'ouverture, au moins sur grand écran) ;
+ *   priority: 'high'          → en plus, priorité haute : une seule image par page (l'image principale), contrôlé au build ;
+ *   par défaut                → chargement différé (hors écran).
  */
-export function media(ctx, { image = null, alt = '', format = 'paysage', caption, dark = false, eager = false, sizes = '100vw', className = '' } = {}) {
+export function media(ctx, { image = null, alt = '', format = 'paysage', caption, dark = false, eager = false, priority = null, sizes = '100vw', className = '' } = {}) {
   const cls = ['media', format && `media--${format}`, className].filter(Boolean).join(' ');
 
   if (!image) {
@@ -33,7 +35,7 @@ export function media(ctx, { image = null, alt = '', format = 'paysage', caption
         height: img.height,
         loading: eager ? 'eager' : 'lazy',
         decoding: eager ? 'auto' : 'async',
-        fetchpriority: eager ? 'high' : false,
+        fetchpriority: priority === 'high' ? 'high' : false,
       })}>
     </picture>
   </div>`;
