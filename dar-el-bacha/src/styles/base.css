@@ -55,6 +55,9 @@ a:hover { text-decoration-thickness: 2px; }
 
 main:focus { outline: none; }
 
+/* Contenus réservés au mode sans JavaScript */
+.js .no-js-only { display: none; }
+
 ::selection { background: var(--c-sand-300); color: var(--c-ink); }
 
 /* Lien d'évitement */

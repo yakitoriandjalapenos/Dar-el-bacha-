@@ -36,6 +36,12 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
       </div>
     </div>
   </div>
+</section>
+
+<section class="section section--tight theme-dark cta-band">
+  <div class="wrap actions">
+    ${button({ href: ctx.path('reservation'), label: ctx.t('cta.reserve') })}
+  </div>
 </section>`;
 
   return { title: p('seoTitle'), description: p('seoDescription'), body, jsonLd: [ctx.restaurantSchema()] };

@@ -14,9 +14,9 @@
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/lora-latin.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/assets/site.9eeb5937f4.css">
-<script>document.documentElement.classList.replace('no-js','js')</script>
-<script src="/assets/main.a463dcf129.js" defer></script>
+<link rel="stylesheet" href="/assets/site.ccc6a6aa48.css">
+<script>(function(d){d.classList.replace('no-js','js');addEventListener('load',function(){if(!d.classList.contains('js-ok'))d.classList.replace('js','no-js')})})(document.documentElement)</script>
+<script src="/assets/main.275a345307.js" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DAR EL BACHA">
 <meta property="og:title" content="Contact and directions — Dar el Bacha, Casablanca">
@@ -40,6 +40,13 @@
   </picture>
     <span class="brand__name" aria-hidden="true">DAR EL BACHA</span>
   </a>
+      <!-- Le bouton précède le menu dans le code : au clavier, Tab mène directement aux liens du menu ouvert.
+           Sa place à l'écran (à droite, ou à gauche en arabe) est donnée par la propriété CSS order. -->
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"
+        data-label-open="Open menu" data-label-close="Close menu">
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+        <span class="nav-toggle__label">Open menu</span>
+      </button>
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul class="primary-nav__list" role="list">
           <li><a href="/en/our-story/">Our story</a></li><li><a href="/en/menu/">Menu</a></li><li><a href="/en/gallery/">Gallery</a></li><li><a href="/en/contact/" aria-current="page">Contact</a></li>
@@ -67,11 +74,6 @@
     </ul>
   </nav>
         <a class="btn btn--small" href="/en/reservations/">Book a table</a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"
-          data-label-open="Open menu" data-label-close="Close menu">
-          <span class="nav-toggle__bars" aria-hidden="true"></span>
-          <span class="nav-toggle__label">Open menu</span>
-        </button>
       </div>
     </div>
   </header>
@@ -108,7 +110,16 @@
     </div>
   </div>
 </section>
+
+<section class="section section--tight theme-dark cta-band">
+  <div class="wrap actions">
+    <a class="btn" href="/en/reservations/">Book a table</a>
+  </div>
+</section>
 </main>
+<div class="booking-bar theme-dark">
+    <a class="btn btn--block" href="/en/reservations/">Book a table</a>
+  </div>
 <footer class="site-footer theme-dark">
     <div class="wrap">
       <div class="site-footer__grid">

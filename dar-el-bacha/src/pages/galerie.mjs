@@ -1,5 +1,5 @@
 import { html } from '../../scripts/lib/html.mjs';
-import { pageHead } from '../components/ui.mjs';
+import { pageHead, button } from '../components/ui.mjs';
 import { media } from '../components/media.mjs';
 
 const SIZES = {
@@ -32,6 +32,12 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
         </li>`;
       })}
     </ul>
+  </div>
+</section>
+
+<section class="section section--tight theme-dark cta-band">
+  <div class="wrap actions">
+    ${button({ href: ctx.path('reservation'), label: ctx.t('cta.reserve') })}
   </div>
 </section>`;
 

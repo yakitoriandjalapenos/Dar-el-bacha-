@@ -143,6 +143,7 @@
         "optional": "facultatif",
         "submit": "Envoyer la demande",
         "note": "L'envoi du formulaire ne vaut pas confirmation : votre demande reste en attente jusqu'à la réponse du restaurant.",
+        "noScript": "L'envoi en ligne nécessite JavaScript, désactivé dans votre navigateur. Vous pouvez nous écrire sur WhatsApp ou nous appeler.",
         "status": {
           "sending": "Envoi en cours…",
           "success": "Demande envoyée. Elle est en attente de confirmation par le restaurant.",

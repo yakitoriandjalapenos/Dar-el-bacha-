@@ -1,6 +1,14 @@
 import { html, raw } from '../../scripts/lib/html.mjs';
 import { header } from './header.mjs';
 import { footer } from './footer.mjs';
+import { bookingBar } from './booking-bar.mjs';
+
+/*
+  Active le mode JavaScript avant l'affichage (pas de décalage de mise en page), puis revient
+  au mode sans JavaScript si main.js ne s'est pas exécuté correctement à la fin du chargement
+  (fichier manquant, erreur réseau ou erreur d'exécution) : menu, contenus et formulaire restent utilisables.
+*/
+const JS_GUARD = "(function(d){d.classList.replace('no-js','js');addEventListener('load',function(){if(!d.classList.contains('js-ok'))d.classList.replace('js','no-js')})})(document.documentElement)";
 
 /** Document HTML complet : métadonnées SEO, en-tête, contenu, pied de page. */
 export function layout(ctx, { title, description, body, jsonLd = [], noindex = false }) {
@@ -31,7 +39,7 @@ ${xDefault && html`<link rel="alternate" hreflang="x-default" href="${xDefault}"
 <link rel="apple-touch-icon" href="${ctx.asset('apple-touch-icon.png')}">
 ${ctx.fontPreloads.map((f) => html`<link rel="preload" href="${f.href}" as="font" type="font/${f.format}" crossorigin>`)}
 <link rel="stylesheet" href="${ctx.assets.css}">
-<script>document.documentElement.classList.replace('no-js','js')</script>
+<script>${raw(JS_GUARD)}</script>
 <script src="${ctx.assets.js}" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${ctx.site.name}">
@@ -52,6 +60,7 @@ ${header(ctx)}
 <main id="contenu" tabindex="-1">
 ${body}
 </main>
+${bookingBar(ctx)}
 ${footer(ctx)}
 </body>
 </html>

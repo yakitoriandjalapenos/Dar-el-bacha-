@@ -131,9 +131,10 @@
 @media (max-width: 63.99rem) {
   .site-header__inner { flex-wrap: wrap; }
   .js .nav-toggle { display: inline-flex; }
-  .site-header__tools .btn { display: none; }
 
-  .primary-nav { flex-basis: 100%; order: 3; }
+  .site-header__tools { order: 2; }
+  .nav-toggle { order: 3; }
+  .primary-nav { flex-basis: 100%; order: 4; }
   .primary-nav__list { flex-wrap: wrap; gap: var(--space-2xs) var(--space-s); padding-block-end: var(--space-xs); }
 
   .js .primary-nav {
@@ -167,6 +168,12 @@
   .js .site-header__inner { flex-wrap: nowrap; }
   .js .lang-switch--bar { display: none; }
 }
+/* Réservation toujours accessible : bouton dans l'en-tête à partir de 40rem,
+   barre fixée en bas de l'écran en dessous (voir .booking-bar). */
+@media (max-width: 39.99rem) {
+  .site-header__tools .btn { display: none; }
+}
+
 /* Sans JavaScript, le sélecteur reste dans la barre : on n'affiche pas son double */
 .no-js .lang-switch--panel { display: none; }
 @media (min-width: 64rem) {
@@ -206,4 +213,22 @@
   border-block-start: 1px solid var(--rule);
   color: var(--fg-muted);
   max-width: none;
+}
+
+/* ---------- Barre de réservation (petits écrans) ---------- */
+
+.booking-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+  padding: var(--space-2xs) var(--gutter);
+  padding-block-end: max(var(--space-2xs), env(safe-area-inset-bottom));
+  border-block-start: 1px solid var(--rule);
+  box-shadow: 0 -0.5rem 1.5rem color-mix(in srgb, var(--c-ink) 18%, transparent);
+}
+@media (min-width: 40rem) {
+  .booking-bar { display: none; }
+}
+@media print {
+  .booking-bar { display: none; }
 }

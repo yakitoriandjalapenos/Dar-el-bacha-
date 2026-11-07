@@ -60,7 +60,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
       <div class="panel" aria-labelledby="form-title">
         <h2 id="form-title">${f('title')}</h2>
         <p>${f('text')}</p>
-        <form id="reservation-form" novalidate
+        <form id="reservation-form" novalidate${site.reservation?.formEndpoint ? html` method="post" action="${site.reservation.formEndpoint}"` : ''}
           data-endpoint="${site.reservation?.formEndpoint || ''}"${site.reservation?.formEndpoint ? '' : html` data-provisional="form-endpoint"`}
           data-messages="${JSON.stringify(messages)}">
           <div class="form-grid">
@@ -78,6 +78,7 @@ ${pageHead({ title: p('title'), lead: p('lead') })}
             <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
           <p class="note">${f('note')}</p>
+          <p class="note no-js-only">${f('noScript')}</p>
           <button class="btn" type="submit">${f('submit')}</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
