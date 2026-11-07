@@ -3,12 +3,25 @@
 L'aperçu fonctionne **uniquement sur votre ordinateur** : rien n'est publié sur Internet, aucun domaine ni hébergement n'est
 nécessaire. Le formulaire de réservation fonctionne en **mode test** (rien n'est envoyé au restaurant).
 
-## Une seule fois : installer Node.js
+## Méthode la plus simple : la version hors ligne (rien à installer)
+
+1. Télécharger le fichier **`DAR-EL-BACHA-apercu.zip`** (environ 26 Mo) envoyé dans la conversation.
+2. Le décompresser (double-clic sur le fichier ZIP ; sous Windows : clic droit → « Extraire tout »).
+3. Ouvrir le dossier **`DAR-EL-BACHA-apercu`** et double-cliquer sur **`OUVRIR-LE-SITE.html`**.
+
+Le site s'ouvre dans votre navigateur habituel, sans Internet, sans logiciel à installer, sans serveur. Seules différences avec
+l'aperçu complet ci-dessous : le formulaire de réservation n'envoie rien (même en mode test) et le plan Google Maps comme le
+bouton WhatsApp demandent une connexion Internet. Pour régénérer ce ZIP après une modification : `npm run apercu:hors-ligne`
+(il est créé dans `apercu-hors-ligne/`).
+
+## Aperçu complet (formulaire en mode test, rechargement automatique)
+
+### Une seule fois : installer Node.js
 
 1. Ouvrir **https://nodejs.org** et télécharger la version **LTS** (gratuite).
 2. L'installer comme n'importe quel logiciel (laisser les options par défaut).
 
-## Récupérer le projet
+### Récupérer le projet
 
 1. Ouvrir dans le navigateur (connecté à votre compte GitHub) :
    **https://github.com/yakitoriandjalapenos/Dar-el-bacha-/archive/refs/heads/claude/nifty-ritchie-ago1e5.zip**
@@ -16,7 +29,7 @@ nécessaire. Le formulaire de réservation fonctionne en **mode test** (rien n'e
 2. Décompresser le fichier ZIP téléchargé (double-clic).
 3. Ouvrir le dossier obtenu, puis le sous-dossier **`dar-el-bacha`**.
 
-## Lancer l'aperçu (à chaque fois)
+### Lancer l'aperçu (à chaque fois)
 
 | Ordinateur | Action |
 |---|---|

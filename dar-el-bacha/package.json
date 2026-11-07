@@ -15,6 +15,7 @@
     "images": "node scripts/images.mjs",
     "contenus": "node scripts/contenus.mjs",
     "apercu": "node scripts/apercu.mjs",
+    "apercu:hors-ligne": "node scripts/hors-ligne.mjs",
     "test": "node --test",
     "test:browser": "node tests/browser.mjs"
   }

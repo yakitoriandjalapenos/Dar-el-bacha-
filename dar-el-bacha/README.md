@@ -15,6 +15,7 @@ Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est né
 | `npm run build:prod` | Compilation de **production**. Refusée (et `dist/` laissé intact) tant qu'il reste une information `[À CONFIRMER]`, une photo provisoire, un plat « à valider », un formulaire non relié ou que l'URL officielle (`siteUrl`) n'est pas configurée. |
 | `npm run serve` | Sert `dist/` tel quel (sans rechargement), avec les en-têtes de sécurité de `dist/_headers` (CSP…) appliqués comme chez l'hébergeur. |
 | `npm run images` | Prépare les photos de `ressources/photos/` (AVIF, WebP, JPEG, 480 à 2000 px). Nécessite `sharp`, voir « Photos ». |
+| `npm run apercu:hors-ligne` | Produit `apercu-hors-ligne/DAR-EL-BACHA-apercu.zip` : copie du site à ouvrir par double-clic (`OUVRIR-LE-SITE.html`), sans serveur ni Internet. |
 | `npm run apercu` | Met à jour le dossier de livraison `DAR-EL-BACHA-APERÇU/` (carte, avis, photos rangées par section, correspondances et licences) à partir des fichiers de contenu. |
 | `npm run contenus` | Régénère `INFORMATIONS-A-FOURNIR.md` : liste centralisée de tout ce que le restaurant doit fournir, avec l'état réel (fourni / à fournir), l'endroit où le renseigner et le format. |
 | `npm test` | Tests automatiques sans dépendance (contrôles des contenus, du site généré, des deux modes de compilation). |
