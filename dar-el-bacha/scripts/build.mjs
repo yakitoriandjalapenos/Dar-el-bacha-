@@ -121,7 +121,7 @@ const cssName = `site.${hash(css)}.css`;
 await writeFile(path.join(OUT, 'assets', cssName), css);
 
 // JS
-const js = await readFile(path.join(SRC, 'scripts/main.js'), 'utf8');
+const js = minifyJs(await readFile(path.join(SRC, 'scripts/main.js'), 'utf8'));
 const jsName = `main.${hash(js)}.js`;
 await writeFile(path.join(OUT, 'assets', jsName), js);
 
@@ -131,10 +131,29 @@ await mkdir(path.join(OUT, 'assets/fonts'), { recursive: true });
 for (const f of fontManifest) await cp(path.join(fontsDir, f.file), path.join(OUT, 'assets/fonts', f.file));
 // Licences des polices publiées avec elles (SIL Open Font License)
 if (existsSync(path.join(fontsDir, 'licences'))) await cp(path.join(fontsDir, 'licences'), path.join(OUT, 'assets/fonts/licences'), { recursive: true });
-for (const f of await readdir(path.join(SRC, 'static'))) {
+const staticFiles = await readdir(path.join(SRC, 'static'));
+for (const f of staticFiles) {
   if (f === 'robots.txt') continue;
   await cp(path.join(SRC, 'static', f), path.join(OUT, f), { recursive: true });
 }
+// Favicon vectoriel officiel : utilisé automatiquement dès qu'il est déposé (src/static/favicon.svg)
+const hasSvgFavicon = staticFiles.includes('favicon.svg');
+
+// Manifeste d'application (écran d'accueil des téléphones) : icônes de src/static/ (provisoires tant que l'icône
+// officielle 1024 px n'est pas fournie, voir INFORMATIONS-A-FOURNIR.md)
+await writeFile(path.join(OUT, 'site.webmanifest'), `${JSON.stringify({
+  name: site.name,
+  short_name: site.name,
+  lang: DEFAULT_LANG,
+  start_url: `${BASE}${pathFor('home', DEFAULT_LANG)}`,
+  display: 'browser',
+  background_color: '#f7f3ea',
+  theme_color: '#123d32',
+  icons: [
+    staticFiles.includes('icon-512.png') && { src: `${BASE}/icon-512.png`, sizes: '512x512', type: 'image/png' },
+    staticFiles.includes('apple-touch-icon.png') && { src: `${BASE}/apple-touch-icon.png`, sizes: '180x180', type: 'image/png' },
+  ].filter(Boolean),
+}, null, 2)}\n`);
 
 // Index des images disponibles (pour <picture> : AVIF / WebP / JPEG, variantes nom-800.webp…)
 const imageFiles = await listFiles(path.join(SRC, 'assets/img'));
@@ -184,6 +203,7 @@ function makeCtx(lang, pageId) {
     absUrl: (p) => (siteUrl ? siteUrl + (BASE && p.startsWith(BASE) ? p.slice(BASE.length) : p) : null),
     asset: (name) => `${BASE}/${name}`,
     // Fichier image présent dans src/assets/img/ (ex. logo SVG définitif déposé)
+    hasSvgFavicon,
     hasAsset: (p) => p.startsWith('assets/img/') && imageFiles.includes(p.slice('assets/img/'.length)),
 
     address: () => {
@@ -275,6 +295,19 @@ function restaurantSchema(ctx) {
   return data;
 }
 
+/* Fil d'Ariane des pages intérieures (Accueil › Page), uniquement sur le domaine officiel */
+function breadcrumbSchema(ctx, pageId) {
+  if (!siteUrl || pageId === 'home') return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: ctx.t('nav.home'), item: ctx.absUrl(ctx.path('home')) },
+      { '@type': 'ListItem', position: 2, name: ctx.t(`pages.${pageId}.title`), item: ctx.absUrl(ctx.path(pageId)) },
+    ],
+  };
+}
+
 function menuSchema(ctx) {
   // Les propositions « à valider » ne sont pas publiées dans les données structurées.
   const sections = menu.categories
@@ -330,7 +363,7 @@ for (const l of LANGS) {
   for (const page of SITE_PAGES) {
     const ctx = makeCtx(l.code, page.id);
     const result = pageModules[page.id].render(ctx);
-    const doc = layout(ctx, { ...result, jsonLd: (result.jsonLd || []).filter(Boolean) }).toString();
+    const doc = layout(ctx, { ...result, jsonLd: [...(result.jsonLd || []), breadcrumbSchema(ctx, page.id)].filter(Boolean) }).toString();
     const file = path.posix.join(pathFor(page.id, l.code).slice(1), 'index.html');
     await writePage(file, doc);
     pageChecks.push({ file, lang: l.code, dir: l.dir, path: pathFor(page.id, l.code), indexable: !result.noindex, alternates: alternatesFor(page.id) });
@@ -485,6 +518,20 @@ if (resources.length) console.log(`\n⚠ Ressources définitives à fournir (voi
 console.log('');
 
 /* ------------------------------------------------------------------ */
+
+/*
+  Minification prudente du JavaScript (cahier des charges 10.2), sans dépendance : retire les commentaires
+  occupant des lignes entières, l'indentation et les lignes vides. Le code et les chaînes ne sont jamais
+  modifiés, et les retours à la ligne sont conservés (aucun changement d'interprétation du script).
+*/
+function minifyJs(s) {
+  return s
+    .replace(/^[ \t]*\/\*[\s\S]*?\*\/[ \t]*$/gm, '')
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith('//'))
+    .join('\n');
+}
 
 function minifyCss(s) {
   return s

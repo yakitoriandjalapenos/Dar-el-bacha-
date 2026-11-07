@@ -1,6 +1,6 @@
 # DAR EL BACHA — site gastronomique
 
-Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : phase 2 terminée — identité « patrimoine marocain revisité » et expérience premium, en attente des contenus officiels du restaurant.
+Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : phase 3 en cours — fonctions réelles (service de réservation, pages juridiques, contenus centralisés) en attente des informations officielles du restaurant (voir `INFORMATIONS-A-FOURNIR.md`).
 
 ## Démarrer
 
@@ -8,11 +8,12 @@ Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est né
 
 | Commande | Rôle |
 |---|---|
-| `npm run dev` | Compile, lance http://localhost:4321/fr/, recompile à chaque modification de `src/` ou `scripts/` et **recharge le navigateur** automatiquement. Une erreur de build s'affiche dans la page ; la dernière version valide reste servie. |
+| `npm run dev` | Compile, lance http://localhost:4321/fr/, recompile à chaque modification de `src/` ou `scripts/` et **recharge le navigateur** automatiquement. Une erreur de build s'affiche dans la page ; la dernière version valide reste servie. Le formulaire de réservation est relié au service local `/api/reservation` en **mode simulation** (rien n'est transmis au restaurant ; voir `server/README.md`). |
 | `npm run build` | Compilation de **prévisualisation** → `dist/`. Toutes les pages portent `noindex`, `robots.txt` bloque l'indexation. Les contenus provisoires sont listés. |
 | `npm run build:prod` | Compilation de **production**. Refusée (et `dist/` laissé intact) tant qu'il reste une information `[À CONFIRMER]`, une photo provisoire, un plat « à valider », un formulaire non relié ou que l'URL officielle (`siteUrl`) n'est pas configurée. |
 | `npm run serve` | Sert `dist/` tel quel (sans rechargement). |
 | `npm run images` | Prépare les photos de `ressources/photos/` (AVIF, WebP, JPEG, 480 à 2000 px). Nécessite `sharp`, voir « Photos ». |
+| `npm run contenus` | Régénère `INFORMATIONS-A-FOURNIR.md` : liste centralisée de tout ce que le restaurant doit fournir, avec l'état réel (fourni / à fournir), l'endroit où le renseigner et le format. |
 | `npm test` | Tests automatiques sans dépendance (contrôles des contenus, du site généré, des deux modes de compilation). |
 | `npm run test:browser` | Tests dans Chromium (19 pages × 7 largeurs, menu, clavier, RTL, formulaire, pannes de script). Nécessite Playwright installé à part. |
 
@@ -39,6 +40,8 @@ src/
   assets/            Images (logo, arche, motif zellige, photos préparées), polices
   static/            Fichiers copiés à la racine (favicon, icônes, image de partage, robots)
 ressources/          Fichiers sources définitifs (logo, icônes, polices, photos) — inventaire dans ressources/README.md
+server/              Service des demandes de réservation (Node.js, sans dépendance) — voir server/README.md
+INFORMATIONS-A-FOURNIR.md   Liste centralisée des informations et fichiers attendus du restaurant (npm run contenus)
 scripts/
   build.mjs          Générateur (prévisualisation / production)
   dev.mjs            Serveur de développement avec rechargement automatique
@@ -169,28 +172,55 @@ avec compression Brotli et en-têtes de cache. Les mesures de laboratoire ne rem
 | Accueil FR (ordinateur) | 100 | 100 | 100 | 0,40 s | 0,002 | 0 ms |
 
 - **Avec une photo dans le hero** (copie de test, image synthétique) : LCP mobile 1,62 s (FR) et 1,84 s (AR), l'image étant l'élément LCP.
+- **Contrôle phase 3** (mêmes conditions, après ajout du service de réservation et des pages juridiques) : accueil FR 100 / LCP 1,69 s ;
+  accueil AR 99 / 1,92 s ; réservation FR 100 / 1,74 s et AR 99 / 1,99 s ; confidentialité EN 100 / 1,69 s ; contact FR 100 / 1,72 s ;
+  accessibilité et bonnes pratiques 100 partout ; CLS ≤ 0,010.
 - **SEO** : 66 en prévisualisation **par construction** (`noindex`) ; 100 en production (copie de test, phase 1).
 - **INP** (Chromium, processeur ralenti ×4, Event Timing) : 56 ms pour la pire interaction (ouverture d'une photo en grand) ;
   menu, formulaire, carte et galerie entre 16 et 32 ms.
-- **Poids** : JavaScript 12,9 ko (3,8 ko compressé) ; CSS 42,6 ko (7,9 ko compressé) ; accueil complet 141 ko transférés (FR, polices
+- **Poids** (phase 3) : JavaScript minifié 12,4 ko (3,7 ko compressé) ; CSS 42,6 ko (7,9 ko compressé) ; accueil complet 141 ko transférés (FR, polices
   comprises), 173 ko en arabe (deux polices arabes).
 
 Accessibilité : Lighthouse 100 sur les pages mesurées ; navigation au clavier (menu, galerie), focus visibles, contrastes vérifiés
 automatiquement, textes alternatifs, libellés, `prefers-reduced-motion`, RTL complet. Les pages arabes ne contiennent aucun texte
 latin visible hors noms de marque et de langues (test automatique).
 
+## Réservation (phase 3)
+
+- **Formulaire** : nom, e-mail, téléphone, date, heure, nombre de personnes, message facultatif et **consentement** obligatoire
+  (avec lien vers la politique de confidentialité). Validation dans le navigateur **et** sur le serveur, avec les mêmes règles :
+  date au fuseau de Casablanca, horizon de réservation, créneaux de 15 minutes, jours de fermeture, fermetures exceptionnelles
+  et heures d'ouverture dès que `site.json › openingHours` est renseigné.
+- **Statut** : une demande envoyée est toujours présentée comme **en attente de confirmation par le restaurant**, jamais confirmée.
+- **Sans JavaScript** : le navigateur valide les champs, le service reçoit l'envoi classique et redirige vers une page de résultat
+  dans la langue du visiteur (`/fr/reservation/statut/…/`, non indexée).
+- **Service** (`server/`) : anti-robot, limite d'envois, contrôle d'origine, e-mail configurable (simulation par défaut), journal sans
+  donnée personnelle. Détails, configuration, sauvegarde et récupération : `server/README.md`.
+- **WhatsApp** : message prérempli dans la langue de la page, envoyé par le client ; actif dès que le numéro officiel est renseigné.
+- **Système externe** : seulement s'il est réellement configuré (`reservation.bookingSystem`).
+
+## Pages juridiques (phase 3)
+
+Politique de confidentialité (`/fr/confidentialite/`, `/en/privacy/`, `/ar/privacy/`) et mentions légales (`/fr/mentions-legales/`,
+`/en/legal-notice/`, `/ar/legal-notice/`), liées depuis le pied de page. Toutes les informations viennent de `site.json › legal`
+(repère `[INFORMATION JURIDIQUE À CONFIRMER]` sinon). La politique ne décrit que ce que le site fait réellement et ne déclare pas la
+conformité CNDP acquise. Tant que `legal.validated` n'est pas `true` (validation par un juriste), un bandeau l'indique et la
+production est refusée.
+
 ## Avant la mise en ligne (plan des travaux)
 
-Ces points ne sont **pas** opérationnels aujourd'hui et doivent être finalisés avant toute mise en production :
+État des points à finaliser avant toute mise en production :
 
-- **Formulaire** : service d'envoi avec **validation côté serveur**, **protection anti-robots côté serveur** (le piège actuel n'agit
-  que dans le navigateur), e-mail au restaurant, puis renseigner `formEndpoint` (il devra accepter aussi les envois sans JavaScript).
-- **Données personnelles** : **politique de confidentialité**, **mentions légales**, **consentement** au traitement des données du
-  formulaire, conformité à la **loi marocaine 09-08** (CNDP) ; consentement également à prévoir pour le plan Google Maps si nécessaire.
-- **En-têtes de sécurité** : **CSP** (le script en ligne de repli devra être autorisé par empreinte) et **HSTS**, chez l'hébergeur retenu.
-- **Contenus officiels** : coordonnées, horaires, carte validée et prix, plats emblématiques, conditions de réservation, histoire,
-  photographies et textes alternatifs, réseaux sociaux, domaine (`siteUrl`).
-- **Logo** : fichiers SVG définitifs ; icônes d'application.
+- ✅ Préparé : service de réception des demandes avec validation serveur, anti-robots, limite d'envois et e-mail configurable
+  (`server/`) ; consentement ; pages juridiques ; horaires structurés ; liste centralisée des informations à fournir.
+- ⏳ À configurer selon l'hébergeur : déploiement du service, service d'e-mail réel (clé, adresse de réception, SPF/DKIM/DMARC),
+  limite d'envois partagée entre instances, `formEndpoint`.
+- ⏳ **En-têtes de sécurité** : **CSP** (le script en ligne de repli devra être autorisé par empreinte) et **HSTS**, chez l'hébergeur retenu.
+- ⛔ **Données personnelles** : informations juridiques, durée de conservation, transferts, démarches **CNDP** (loi 09-08) et
+  validation par un juriste (`legal.validated`).
+- ⛔ **Contenus officiels** : coordonnées, horaires, carte validée et prix, plats emblématiques, conditions de réservation, histoire,
+  photographies et textes alternatifs, réseaux sociaux, domaine (`siteUrl`) — voir `INFORMATIONS-A-FOURNIR.md`.
+- ⛔ **Logo** : fichiers SVG définitifs ; favicon SVG (`src/static/favicon.svg`, pris en compte automatiquement) ; icônes d'application.
 - Hébergement, redirection 301 de la racine, mesure avec PageSpeed Insights une fois en ligne, tests sur Safari et Firefox.
 
 `npm run build:prod` refuse la production tant que les contenus provisoires ou le formulaire non relié subsistent.

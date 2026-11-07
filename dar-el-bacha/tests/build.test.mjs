@@ -131,4 +131,8 @@ test('production acceptée quand tous les contenus sont renseignés (données de
   assert.doesNotMatch(await html('fr/mentions-legales/index.html'), /data-provisional/);
   assert.match(await html('robots.txt'), /Sitemap: https:\/\/www\.domaine-de-test\.ma\/sitemap\.xml/);
   assert.doesNotMatch(await html('_headers'), /X-Robots-Tag/);
+  // Fil d'Ariane des pages intérieures et manifeste d'application
+  assert.match(await html('fr/la-carte/index.html'), /"@type":"BreadcrumbList".*"item":"https:\/\/www\.domaine-de-test\.ma\/fr\/la-carte\/"/);
+  assert.doesNotMatch(home, /BreadcrumbList/);
+  assert.equal(JSON.parse(await html('site.webmanifest')).theme_color, '#123d32');
 });

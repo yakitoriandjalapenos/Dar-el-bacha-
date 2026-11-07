@@ -33,10 +33,12 @@ ${robots && html`<meta name="robots" content="${robots}">`}
 ${url && html`<link rel="canonical" href="${url}">`}
 ${alternates.map((a) => html`<link rel="alternate" hreflang="${a.hreflang}" href="${a.href}">`)}
 ${xDefault && html`<link rel="alternate" hreflang="x-default" href="${xDefault}">`}
-<meta name="theme-color" content="#12372b">
+<meta name="theme-color" content="#123d32">
+${ctx.hasSvgFavicon && html`<link rel="icon" href="${ctx.asset('favicon.svg')}" type="image/svg+xml">`}
 <link rel="icon" href="${ctx.asset('favicon.ico')}" sizes="48x48">
 <link rel="icon" href="${ctx.asset('favicon-32.png')}" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="${ctx.asset('apple-touch-icon.png')}">
+<link rel="manifest" href="${ctx.asset('site.webmanifest')}">
 ${ctx.fontPreloads.map((f) => html`<link rel="preload" href="${f.href}" as="font" type="font/${f.format}" crossorigin>`)}
 <link rel="stylesheet" href="${ctx.assets.css}">
 <script>${raw(JS_GUARD)}</script>
@@ -50,7 +52,8 @@ ${url && html`<meta property="og:url" content="${url}">`}
 ${ctx.langs.filter((l) => l.code !== ctx.lang).map((l) => html`<meta property="og:locale:alternate" content="${l.ogLocale}">`)}
 ${ogImage && html`<meta property="og:image" content="${ogImage}">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">`}
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${ctx.siteName}">`}
 <meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}">
 ${jsonLd.map((data) => html`<script type="application/ld+json">${raw(JSON.stringify(data).replace(/</g, '\\u003c'))}</script>`)}
 </head>
