@@ -85,6 +85,12 @@
         "title": "The house in pictures",
         "eyebrow": "Gallery"
       },
+      "reviews": {
+        "eyebrow": "Testimonials",
+        "title": "Words from our guests",
+        "demo": "Fictitious reviews — demonstration preview",
+        "stars": "{n} stars out of 5"
+      },
       "cta": {
         "title": "Book your table",
         "text": "Send a request online or message us on WhatsApp. The restaurant confirms every reservation.",
@@ -138,7 +144,9 @@
       "seoDescription": "Explore the menu at Dar el Bacha in Casablanca: starters, tagines, Fassi specialities, couscous, desserts and Moroccan drinks.",
       "title": "Menu",
       "lead": "A focused menu built around the great classics of Moroccan cuisine, from starters to sweets.",
-      "notice": "Dishes, descriptions and prices are being finalised by the restaurant.",
+      "notice": "Proposed menu for this preview: dishes, descriptions and prices are being reviewed by the restaurant.",
+      "indicative": "Indicative prices in Moroccan dirhams (DH), to be confirmed.",
+      "currency": "DH",
       "categoriesNav": "Menu categories",
       "categories": {
         "entrees": "Starters",
@@ -390,7 +398,8 @@
     }
   },
   "hours": {
-    "closed": "Closed"
+    "closed": "Closed",
+    "pending": "Proposed opening hours, to be confirmed by the restaurant."
   },
   "legal": {
     "draft": "Document under legal review: the information below must be completed by the restaurant and checked by a legal professional before the site goes live.",
@@ -427,5 +436,11 @@
       "signature": "{site}",
       "moreThan12": "more than 12"
     }
+  },
+  "demo": {
+    "banner": "Demonstration preview: illustrative photographs, fictitious reviews and indicative prices, pending the restaurant's official content.",
+    "illustration": "Illustrative photo",
+    "creditsTitle": "Illustrative photographs used in this preview",
+    "creditsText": "These photographs come from Wikimedia Commons under free licences. They illustrate the preview and do not show the restaurant; they will be replaced by its official photographs."
   }
 }

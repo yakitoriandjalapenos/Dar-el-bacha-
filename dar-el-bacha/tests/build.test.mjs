@@ -55,7 +55,8 @@ test('prévisualisation : 41 pages (6 principales, 2 juridiques et 5 résultats 
   const headers = await html('_headers');
   assert.match(headers, /X-Robots-Tag: noindex/);
   assert.doesNotMatch(headers, /Strict-Transport-Security/, 'HSTS réservé au domaine officiel');
-  assert.match(headers, /Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-[A-Za-z0-9+/]+='; .*frame-src 'none'/);
+  // Seuls les modules réellement présents sont autorisés en cadre (ici, le plan Google Maps de l'adresse)
+  assert.match(headers, /Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-[A-Za-z0-9+/]+='; .*frame-src (?:'none'|https:\/\/maps\.google\.com https:\/\/www\.google\.com);/);
   assert.match(r.stdout, /À confirmer avant mise en ligne/);
 });
 
@@ -90,14 +91,16 @@ test('production acceptée quand tous les contenus sont renseignés (données de
     reservation: { formEndpoint: '/api/reservation', bookingSystem: null, conditions: T('Conditions') },
     legal: Object.fromEntries(['companyName', 'legalForm', 'shareCapital', 'registeredOffice', 'rc', 'ice', 'identifiantFiscal', 'publicationDirector', 'dataController', 'cndpReference', 'hosting', 'emailProvider', 'photoCredits'].map((k) => [k, `${k} (test)`])),
   });
+  site.hoursConfirmed = true;
   Object.assign(site.legal, { dataContactEmail: 'donnees@domaine-de-test.ma', dataRetention: T('Durée'), dataTransfers: T('Transferts'), validated: true });
   await writeJSON('src/content/site.json', site);
 
   const menu = await readJSON('src/content/menu.json');
   for (const c of menu.categories) {
     if (!c.items.length) c.items.push({ id: `test-${c.id}`, name: T('Plat'), description: null, price: 100, image: null });
-    for (const i of c.items) { delete i.status; i.price = 120; }
+    for (const i of c.items) { delete i.status; delete i.signature; i.price = 120; i.image = null; }
   }
+  menu.pricesStatus = 'valide';
   // Plats emblématiques désignés par le restaurant (ici, données de test), avec leur photo
   menu.categories.flatMap((c) => c.items).slice(0, 3).forEach((i) => { i.signature = true; i.image = img; });
   await writeJSON('src/content/menu.json', menu);
@@ -109,6 +112,10 @@ test('production acceptée quand tous les contenus sont renseignés (données de
   const gallery = await readJSON('src/content/gallery.json');
   gallery.items.forEach((i) => { i.image = img; i.alt = T('Image'); });
   await writeJSON('src/content/gallery.json', gallery);
+  // Avis réels (données de test) : la mention « avis fictifs » disparaît
+  const reviews = await readJSON('src/content/reviews.json');
+  reviews.demo = false;
+  await writeJSON('src/content/reviews.json', reviews);
 
   const r = build('--prod');
   assert.equal(r.status, 0, r.stderr);

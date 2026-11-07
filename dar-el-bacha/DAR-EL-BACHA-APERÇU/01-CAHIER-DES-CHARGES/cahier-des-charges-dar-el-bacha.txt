@@ -1,0 +1,893 @@
+# PROJET DAR EL BACHA
+## Création d’une expérience digitale gastronomique de luxe
+### Cahier des charges stratégique, créatif et technique
+
+---
+
+# 1. PRÉSENTATION ET POSITIONNEMENT DE LA MARQUE
+
+## 1.1. Présentation du projet
+
+Créer un site web haut de gamme pour **DAR EL BACHA**, un restaurant gastronomique marocain situé à Casablanca, proposant une expérience culinaire raffinée inspirée de la tradition marocaine et de l’art de recevoir.
+
+Le site doit refléter le positionnement premium du restaurant et transmettre immédiatement une sensation de prestige, d’élégance, d’authenticité et d’excellence.
+
+Il ne doit pas ressembler à un site de restaurant classique, mais à une véritable expérience digitale immersive, comparable aux univers des établissements gastronomiques et hôteliers de luxe.
+
+## 1.2. Positionnement de la marque
+
+DAR EL BACHA doit être présenté comme :
+
+- Un restaurant marocain gastronomique haut de gamme.
+- Un lieu où tradition et modernité se rencontrent.
+- Une adresse élégante dédiée à l’art culinaire marocain.
+- Une expérience sensorielle et culturelle.
+- Un établissement accueillant une clientèle locale et internationale.
+
+## 1.3. Objectifs du site
+
+Le site doit remplir plusieurs objectifs :
+
+1. Construire une image de marque forte et prestigieuse.
+2. Présenter l’univers gastronomique du restaurant.
+3. Mettre en valeur les plats, les ingrédients et le savoir-faire culinaire.
+4. Donner envie de découvrir le restaurant.
+5. Faciliter les demandes de réservation.
+6. Rassurer les visiteurs grâce à une présentation professionnelle.
+7. Améliorer la visibilité du restaurant sur Google.
+8. Transformer les visiteurs en clients potentiels.
+
+---
+
+# 2. DIRECTION ARTISTIQUE : LUXE MAROCAIN CONTEMPORAIN
+
+## 2.1. Identité visuelle
+
+Créer une direction artistique inspirée du luxe marocain contemporain.
+
+L’univers visuel doit associer :
+
+- Architecture marocaine traditionnelle.
+- Artisanat marocain raffiné.
+- Gastronomie haut de gamme.
+- Élégance contemporaine.
+- Minimalisme sophistiqué.
+- Ambiance chaleureuse et intimiste.
+
+Le résultat doit être luxueux, sans être excessivement chargé.
+
+## 2.2. Palette de couleurs
+
+Privilégier une palette élégante et cohérente :
+
+- Vert profond ou vert émeraude.
+- Or subtil et raffiné.
+- Beige sable.
+- Ivoire ou blanc cassé.
+- Brun chaud.
+- Noir doux pour certains contrastes.
+
+L’or doit être utilisé avec subtilité, notamment pour les détails, les séparateurs, les icônes et certains éléments interactifs.
+
+Éviter les couleurs trop vives ou les associations visuelles qui pourraient donner une impression de site touristique générique.
+
+## 2.3. Typographie
+
+Utiliser une combinaison de typographies élégantes :
+
+- Une typographie serif raffinée pour les titres.
+- Une typographie sans-serif moderne pour les textes courants.
+- Une hiérarchie typographique claire.
+- Des espacements généreux.
+- Une excellente lisibilité sur tous les écrans.
+
+## 2.4. Éléments graphiques
+
+Intégrer avec subtilité des références à l’art marocain :
+
+- Motifs géométriques traditionnels.
+- Détails inspirés du zellige.
+- Arches marocaines.
+- Lignes décoratives fines.
+- Textures naturelles.
+- Références architecturales discrètes.
+
+Ces éléments ne doivent jamais surcharger l'interface.
+
+---
+
+# 3. EXPÉRIENCE UTILISATEUR ET EXCELLENCE DIGITALE
+
+## 3.1. Expérience immersive
+
+Le site doit offrir une expérience digitale fluide, élégante et immersive.
+
+L'utilisateur doit ressentir une continuité visuelle entre les différentes pages.
+
+Prévoir :
+
+- Des transitions élégantes.
+- Des animations discrètes.
+- Des interactions soignées.
+- Des effets de survol subtils.
+- Des apparitions progressives des éléments.
+- Une navigation intuitive.
+- Des retours visuels clairs lors des interactions.
+
+Les animations doivent renforcer l'expérience sans distraire l'utilisateur.
+
+## 3.2. Fluidité et performances
+
+La fluidité visuelle, les animations et les effets graphiques ne doivent jamais compromettre les performances du site.
+
+La priorité absolue est de garantir :
+
+- Un chargement rapide des pages.
+- Une navigation instantanée et réactive.
+- Une excellente fluidité sur mobile.
+- Une stabilité visuelle pendant le chargement.
+- Une utilisation raisonnable des ressources du navigateur.
+- Une expérience homogène sur les appareils récents comme sur les appareils moins puissants.
+
+Les animations doivent être optimisées et privilégier les propriétés CSS performantes, notamment `transform` et `opacity`, lorsque cela est pertinent.
+
+Éviter les animations coûteuses, les effets excessifs, les scripts inutiles et les traitements susceptibles de ralentir le navigateur.
+
+Si un effet visuel entraîne une dégradation mesurable des performances, il doit être simplifié, optimisé ou supprimé.
+
+## 3.3. Priorité à l'expérience utilisateur
+
+Ne jamais sacrifier la lisibilité, l'accessibilité, la rapidité ou la stabilité au profit d'un effet esthétique.
+
+L'expérience doit rester premium, même sur une connexion mobile moyenne.
+
+---
+
+# 4. ARCHITECTURE DU SITE
+
+Créer un site composé de six pages principales.
+
+## 4.1. Page d'accueil
+
+La page d'accueil doit constituer une véritable vitrine de l'identité DAR EL BACHA.
+
+Elle doit comprendre :
+
+- Un hero visuel immersif.
+- Une photographie ou vidéo d'ambiance de haute qualité.
+- Le logo et une navigation élégante.
+- Une accroche éditoriale forte.
+- Une présentation courte du restaurant.
+- Une mise en avant de la philosophie gastronomique.
+- Une sélection de plats emblématiques.
+- Une présentation de l'expérience culinaire.
+- Une section photographique.
+- Un appel à l'action vers la carte.
+- Un appel à l'action vers les réservations.
+- Un footer élégant avec les informations essentielles.
+
+Le hero doit être particulièrement soigné, avec une composition visuelle digne d'un établissement gastronomique de luxe.
+
+## 4.2. Page Notre histoire
+
+Présenter l'identité et l'histoire du restaurant.
+
+Contenu attendu :
+
+- Présentation de DAR EL BACHA.
+- Philosophie culinaire.
+- Inspiration marocaine.
+- Savoir-faire et traditions.
+- Art de recevoir.
+- Ambiance et expérience proposée.
+
+Le ton éditorial doit être élégant, évocateur et authentique.
+
+Ne pas inventer d'informations historiques, de distinctions ou de détails biographiques non fournis.
+
+## 4.3. Page La carte
+
+Créer une page gastronomique permettant de découvrir les propositions culinaires.
+
+Elle doit comporter :
+
+- Une introduction éditoriale.
+- Des catégories clairement identifiées.
+- Une présentation raffinée des plats.
+- Les descriptions des préparations.
+- Les prix lorsqu'ils sont disponibles.
+- Des photographies culinaires de qualité lorsque cela est pertinent.
+
+La carte doit être élégante, facile à consulter et parfaitement adaptée au mobile.
+
+La répartition doit respecter strictement le maximum de 25 propositions défini dans la section 5.
+
+## 4.4. Page Galerie
+
+Créer une galerie photographique immersive présentant :
+
+- Les plats.
+- Les détails culinaires.
+- L'intérieur du restaurant.
+- L'architecture.
+- La décoration.
+- L'ambiance.
+- L'art de recevoir.
+
+Prévoir une mise en page éditoriale, avec des compositions visuelles variées.
+
+Les images doivent être optimisées afin de ne pas ralentir le site.
+
+## 4.5. Page Réservation
+
+Créer une page de réservation élégante et fonctionnelle.
+
+Elle doit distinguer clairement trois possibilités qui ne doivent pas être confondues.
+
+### A. Formulaire de demande de réservation
+
+Créer un formulaire permettant au visiteur d'envoyer une demande de réservation.
+
+Champs recommandés :
+
+- Nom et prénom.
+- Adresse e-mail.
+- Numéro de téléphone.
+- Date souhaitée.
+- Heure souhaitée.
+- Nombre de personnes.
+- Message complémentaire facultatif.
+
+Le formulaire doit :
+
+- Vérifier les champs obligatoires.
+- Valider le format des coordonnées.
+- Afficher un retour clair après l'envoi.
+- Indiquer que la demande est en attente de confirmation.
+- Ne jamais présenter une demande envoyée comme une réservation confirmée.
+
+La confirmation définitive doit dépendre de la validation du restaurant.
+
+### B. Réservation par WhatsApp
+
+Proposer un bouton WhatsApp distinct du formulaire.
+
+Ce bouton doit ouvrir une conversation WhatsApp avec un message prérempli contenant, si possible, les informations utiles à la demande de réservation.
+
+L'utilisateur doit pouvoir vérifier et envoyer lui-même le message.
+
+WhatsApp constitue un canal de contact direct : l'ouverture de la conversation ou l'envoi du message ne doit pas être présenté comme une confirmation automatique de réservation.
+
+Utiliser uniquement le numéro WhatsApp officiel fourni par le restaurant.
+
+### C. Système de réservation connecté (optionnel)
+
+Prévoir la possibilité d'intégrer ultérieurement un système de réservation externe ou connecté.
+
+Ce système pourra, selon les fonctionnalités réellement disponibles :
+
+- Afficher les disponibilités.
+- Gérer les créneaux horaires.
+- Enregistrer les réservations.
+- Envoyer des confirmations.
+- Centraliser les demandes.
+- Permettre au restaurant de gérer les réservations.
+
+Cette intégration reste optionnelle et dépend de la disponibilité d'un service adapté ainsi que des accès nécessaires.
+
+Ne jamais simuler de disponibilités en temps réel ni afficher une réservation comme confirmée sans validation effective du système.
+
+### Présentation et cohérence
+
+Les trois solutions doivent être visuellement distinctes et clairement expliquées au visiteur :
+
+- Formulaire : envoyer une demande de réservation.
+- WhatsApp : contacter directement le restaurant.
+- Système connecté : réserver selon les disponibilités réelles, si cette fonctionnalité est effectivement intégrée.
+
+Ne pas mélanger les statuts, les confirmations ou les fonctionnalités de ces trois solutions.
+
+## 4.6. Page Contact
+
+Présenter les informations pratiques :
+
+- Adresse du restaurant.
+- Numéro de téléphone.
+- Adresse e-mail.
+- Horaires d'ouverture.
+- Localisation sur Google Maps.
+- Bouton d'itinéraire.
+- Lien WhatsApp si disponible.
+- Liens vers les réseaux sociaux officiels.
+
+Les informations non communiquées doivent être identifiées comme à confirmer.
+
+---
+
+# 5. CARTE GASTRONOMIQUE
+
+## 5.1. Philosophie culinaire
+
+La carte doit mettre en valeur la richesse de la gastronomie marocaine dans une approche raffinée et gastronomique.
+
+Elle doit associer :
+
+- Recettes traditionnelles.
+- Spécialités marocaines.
+- Produits de qualité.
+- Présentations soignées.
+- Saveurs authentiques.
+- Savoir-faire culinaire.
+
+## 5.2. Répartition exacte de la carte
+
+La carte doit comporter **25 propositions maximum au total**, réparties comme suit :
+
+| Catégorie | Nombre maximum |
+|---|---:|
+| Entrées | 6 |
+| Plats principaux | 10 |
+| Desserts | 4 |
+| Boissons | 5 |
+| **Total** | **25** |
+
+Cette répartition constitue une limite stricte et non un minimum.
+
+Les spécialités fassies et les tajines doivent être intégrés dans les catégories correspondantes, notamment parmi les plats principaux. Ils ne doivent pas être ajoutés comme des catégories supplémentaires venant augmenter le total.
+
+## 5.3. Entrées — 6 propositions maximum
+
+Mettre en avant des propositions inspirées de la gastronomie marocaine, par exemple :
+
+- Salades marocaines raffinées.
+- Zaalouk.
+- Taktouka.
+- Pastilla traditionnelle.
+- Briouates.
+- Entrées de saison.
+
+Les propositions définitives devront être validées par le restaurant.
+
+## 5.4. Plats principaux — 10 propositions maximum
+
+Mettre en valeur les grandes spécialités de la cuisine marocaine :
+
+- Tajines traditionnels.
+- Spécialités fassies.
+- Couscous.
+- Plats mijotés.
+- Recettes marocaines emblématiques.
+
+Les tajines et spécialités fassies sont inclus dans les dix plats principaux maximum.
+
+## 5.5. Desserts — 4 propositions maximum
+
+Proposer une sélection de desserts inspirés de la tradition marocaine et de la pâtisserie raffinée.
+
+Exemples :
+
+- Pâtisseries marocaines.
+- Desserts aux amandes.
+- Créations autour de la fleur d'oranger.
+- Desserts de saison.
+
+## 5.6. Boissons — 5 propositions maximum
+
+Présenter une sélection cohérente avec l'identité du restaurant :
+
+- Thé marocain.
+- Infusions.
+- Jus frais.
+- Boissons traditionnelles.
+- Autres boissons validées par le restaurant.
+
+## 5.7. Présentation des plats
+
+Chaque proposition peut comprendre :
+
+- Nom du plat.
+- Description courte et élégante.
+- Ingrédients ou particularités, lorsque confirmés.
+- Prix, lorsqu'il est communiqué.
+- Photographie facultative.
+
+Ne pas inventer de prix, d'ingrédients, de labels ou de caractéristiques culinaires.
+
+**Règle impérative : aucune proposition supplémentaire ne doit porter le total au-delà de 25 éléments.**
+
+---
+
+# 6. PHOTOGRAPHIE ET UNIVERS VISUEL
+
+## 6.1. Direction photographique
+
+La photographie joue un rôle essentiel dans l'expérience.
+
+Privilégier une direction photographique inspirée de la gastronomie haut de gamme :
+
+- Lumière naturelle ou maîtrisée.
+- Contrastes élégants.
+- Couleurs chaleureuses.
+- Textures visibles.
+- Mise en scène soignée.
+- Profondeur de champ maîtrisée.
+- Cadrages éditoriaux.
+
+## 6.2. Photographies culinaires
+
+Les plats doivent être présentés comme de véritables créations gastronomiques.
+
+Les photographies doivent :
+
+- Valoriser les textures.
+- Mettre en évidence les ingrédients.
+- Souligner le dressage.
+- Transmettre une sensation de qualité.
+- Donner envie de découvrir les plats.
+
+## 6.3. Photographies d'ambiance
+
+Mettre en valeur :
+
+- L'architecture.
+- Les matériaux.
+- Les détails décoratifs.
+- Les tables.
+- L'éclairage.
+- L'atmosphère du restaurant.
+
+## 6.4. Gestion des images
+
+Utiliser des images de haute qualité, correctement optimisées.
+
+Prévoir :
+
+- Formats modernes comme WebP ou AVIF lorsque compatibles.
+- Images responsives.
+- Dimensions adaptées aux écrans.
+- Chargement différé pour les images non prioritaires.
+- Dimensions explicites pour limiter les décalages de mise en page.
+- Textes alternatifs pertinents.
+
+Ne pas utiliser d'images génériques de mauvaise qualité.
+
+Les visuels temporaires doivent pouvoir être remplacés facilement par les photographies officielles du restaurant.
+
+---
+
+# 7. EXPÉRIENCE MULTILINGUE
+
+Le site doit être conçu pour une clientèle locale et internationale.
+
+Prévoir une architecture permettant une expérience multilingue.
+
+Langues recommandées :
+
+- Français.
+- Anglais.
+- Arabe.
+
+La structure doit permettre une traduction complète de l'ensemble des pages.
+
+Pour l'arabe :
+
+- Prévoir une interface RTL (Right-to-Left).
+- Adapter les alignements.
+- Adapter les menus et les composants.
+- Vérifier les espacements et la lisibilité.
+- Respecter les conventions typographiques arabes.
+
+Ne pas mélanger plusieurs langues dans une même interface sans cohérence.
+
+Le changement de langue doit être facilement accessible.
+
+---
+
+# 8. RESPONSIVE DESIGN
+
+Le site doit être parfaitement adapté à :
+
+- Ordinateurs de bureau.
+- Ordinateurs portables.
+- Tablettes.
+- Smartphones.
+
+## 8.1. Approche mobile-first
+
+La version mobile doit bénéficier d'une attention particulière.
+
+Prévoir :
+
+- Navigation mobile intuitive.
+- Menu adapté aux petits écrans.
+- Boutons facilement accessibles.
+- Typographie lisible.
+- Images adaptées.
+- Espacements optimisés.
+- Formulaires simples.
+- Galerie responsive.
+- Chargement rapide.
+
+## 8.2. Cohérence visuelle
+
+L'expérience doit rester premium sur toutes les tailles d'écran.
+
+Les compositions graphiques doivent être adaptées et non simplement réduites.
+
+Les animations et effets doivent être adaptés aux capacités des appareils et ne jamais nuire à la fluidité.
+
+---
+
+# 9. SEO TECHNIQUE ET RÉFÉRENCEMENT LOCAL
+
+Le site doit être optimisé pour le référencement naturel.
+
+## 9.1. SEO technique
+
+Prévoir :
+
+- Structure HTML sémantique.
+- Titres hiérarchisés.
+- Balises title personnalisées.
+- Meta descriptions.
+- URLs propres.
+- Sitemap XML.
+- Robots.txt.
+- Balises canonical.
+- Open Graph.
+- Données structurées pertinentes.
+- Optimisation des images.
+- Maillage interne.
+
+## 9.2. SEO local
+
+Optimiser le site pour les recherches locales liées à :
+
+- Restaurant marocain à Casablanca.
+- Restaurant gastronomique à Casablanca.
+- Cuisine marocaine traditionnelle.
+- Tajines marocains.
+- Restaurant haut de gamme à Casablanca.
+
+Utiliser les données structurées adaptées aux restaurants lorsque les informations sont disponibles.
+
+## 9.3. Référencement éditorial
+
+Rédiger des contenus naturels, qualitatifs et pertinents.
+
+Éviter le bourrage de mots-clés.
+
+Les textes doivent conserver une dimension éditoriale premium.
+
+---
+
+# 10. PERFORMANCE WEB
+
+Les performances constituent une exigence fondamentale du projet.
+
+L'objectif est de proposer un site visuellement riche, mais techniquement léger et rapide.
+
+## 10.1. Objectifs de performance
+
+Viser de bons résultats sur les indicateurs Core Web Vitals :
+
+- LCP inférieur ou égal à 2,5 secondes.
+- INP inférieur ou égal à 200 ms.
+- CLS inférieur ou égal à 0,1.
+
+Ces objectifs doivent être recherchés dans des conditions de mesure représentatives.
+
+## 10.2. Optimisations techniques
+
+Prévoir :
+
+- Optimisation des images.
+- Compression des ressources.
+- Chargement différé.
+- Minification CSS et JavaScript.
+- Réduction des dépendances inutiles.
+- Limitation des scripts tiers.
+- Mise en cache appropriée.
+- Chargement prioritaire des ressources essentielles.
+- Prévention des décalages visuels.
+- Optimisation des polices.
+- Réduction du JavaScript non nécessaire.
+
+## 10.3. Animations et effets visuels
+
+Les animations, transitions et effets graphiques doivent être conçus avec une logique de performance-first.
+
+Ils doivent :
+
+- Être légers.
+- Être optimisés pour les appareils mobiles.
+- Éviter les calculs coûteux.
+- Ne pas bloquer le rendu.
+- Ne pas ralentir le défilement.
+- Ne pas provoquer de saccades.
+- Ne pas retarder l'interactivité.
+
+Privilégier les animations CSS performantes et limiter les effets nécessitant des ressources importantes.
+
+Les vidéos, images animées, effets de parallaxe et autres éléments immersifs doivent être utilisés uniquement lorsqu'ils apportent une réelle valeur à l'expérience.
+
+**Aucun effet visuel, animation ou exigence esthétique ne doit prendre le dessus sur la rapidité, la fluidité et la stabilité du site.**
+
+Si nécessaire, simplifier un effet plutôt que dégrader les performances.
+
+---
+
+# 11. ACCESSIBILITÉ
+
+Le site doit respecter les bonnes pratiques d'accessibilité web.
+
+Prévoir notamment :
+
+- Contrastes suffisants.
+- Navigation au clavier.
+- Focus visibles.
+- Textes alternatifs.
+- Labels explicites.
+- Formulaires accessibles.
+- Hiérarchie sémantique.
+- Boutons clairement identifiables.
+- Respect de la préférence de réduction des animations (`prefers-reduced-motion`).
+
+Les interactions doivent rester compréhensibles et utilisables sans dépendre uniquement des animations ou des effets visuels.
+
+---
+
+# 12. ARCHITECTURE TECHNIQUE
+
+L'architecture doit être moderne, maintenable et évolutive.
+
+Le choix technologique doit privilégier :
+
+- Performance.
+- Fiabilité.
+- Sécurité.
+- Maintenabilité.
+- Référencement.
+- Facilité de mise à jour.
+
+Le développement doit respecter les bonnes pratiques du framework ou de la technologie retenue.
+
+Le code doit être :
+
+- Organisé.
+- Réutilisable.
+- Lisible.
+- Modulaire.
+- Documenté lorsque nécessaire.
+
+Éviter les dépendances inutiles et les solutions techniques disproportionnées par rapport aux besoins.
+
+---
+
+# 13. SÉCURITÉ ET FIABILITÉ
+
+Prévoir les bonnes pratiques de sécurité :
+
+- Validation des données côté client et côté serveur.
+- Protection contre les soumissions automatisées abusives.
+- Protection des formulaires.
+- Gestion sécurisée des secrets.
+- Connexion HTTPS.
+- Gestion appropriée des erreurs.
+- Protection des données personnelles.
+- Respect des règles applicables en matière de confidentialité.
+
+Ne jamais exposer de clés API ou d'informations sensibles dans le code côté client.
+
+Les éventuelles intégrations externes doivent être sécurisées et documentées.
+
+---
+
+# 14. ARCHITECTURE DES COMPOSANTS
+
+Construire une architecture de composants cohérente.
+
+Prévoir notamment :
+
+- Header.
+- Navigation principale.
+- Menu mobile.
+- Footer.
+- Hero.
+- Sections éditoriales.
+- Cartes de plats.
+- Galerie photographique.
+- Boutons d'action.
+- Formulaires.
+- Éléments de contact.
+- Composants de réservation.
+- Sélecteur de langue.
+
+Les composants doivent être réutilisables et conserver une cohérence visuelle sur l'ensemble du site.
+
+Les éléments interactifs doivent présenter des états cohérents : normal, survol, focus, chargement, succès et erreur lorsque cela s'applique.
+
+---
+
+# 15. STRATÉGIE DE TESTS ET VALIDATION
+
+Le site doit être testé avant sa livraison.
+
+## 15.1. Tests fonctionnels
+
+Vérifier :
+
+- Tous les liens.
+- Tous les boutons.
+- La navigation.
+- Les formulaires.
+- Les demandes de réservation.
+- Les liens WhatsApp.
+- Les éventuelles intégrations de réservation.
+- Le changement de langue.
+- Les liens de contact.
+- Les interactions de la galerie.
+
+## 15.2. Tests responsive
+
+Tester les différentes pages sur plusieurs tailles d'écran.
+
+Vérifier notamment :
+
+- Absence de débordement.
+- Lisibilité.
+- Navigation.
+- Affichage des images.
+- Utilisation des formulaires.
+- Accessibilité des boutons.
+
+## 15.3. Tests de performance
+
+Effectuer des tests avec des outils adaptés, notamment Lighthouse et PageSpeed Insights.
+
+Contrôler :
+
+- Les temps de chargement.
+- Les Core Web Vitals.
+- Les ressources lourdes.
+- Les scripts.
+- Les images.
+- Les animations.
+- La stabilité visuelle.
+
+## 15.4. Tests de compatibilité
+
+Vérifier le fonctionnement sur les principaux navigateurs modernes et appareils courants.
+
+## 15.5. Tests de qualité
+
+Vérifier :
+
+- Orthographe.
+- Cohérence éditoriale.
+- Cohérence graphique.
+- Absence de contenu fictif présenté comme réel.
+- Absence de liens cassés.
+- Absence d'erreurs visibles.
+
+---
+
+# 16. LIVRABLES OBLIGATOIRES
+
+Le projet doit aboutir à un site complet et fonctionnel.
+
+Livrables attendus :
+
+1. Site web complet.
+2. Six pages principales.
+3. Identité visuelle cohérente.
+4. Version responsive.
+5. Architecture multilingue.
+6. Carte gastronomique structurée selon la limite de 25 propositions.
+7. Galerie photographique.
+8. Formulaire de demande de réservation fonctionnel.
+9. Intégration WhatsApp distincte.
+10. Architecture permettant une éventuelle intégration d'un système de réservation connecté.
+11. Page de contact.
+12. Optimisation SEO.
+13. Optimisation des performances.
+14. Vérification de l'accessibilité.
+15. Tests fonctionnels.
+16. Code source organisé et maintenable.
+
+Les fonctionnalités dépendant d'informations, de services externes ou d'identifiants non fournis doivent être clairement signalées comme nécessitant une configuration.
+
+---
+
+# 17. MÉTHODOLOGIE DE RÉDACTION
+
+Le contenu doit adopter un ton :
+
+- Élégant.
+- Raffiné.
+- Sensoriel.
+- Professionnel.
+- Authentique.
+- Chaleureux.
+- Premium.
+
+Éviter :
+
+- Les formulations commerciales agressives.
+- Les expressions génériques.
+- Les superlatifs excessifs.
+- Les descriptions artificielles.
+- Les répétitions.
+- Les textes trop longs.
+
+Chaque section doit apporter une réelle valeur à l'expérience.
+
+Le contenu doit évoquer la gastronomie marocaine et l'art de recevoir sans tomber dans les clichés.
+
+---
+
+# 18. GESTION DES INFORMATIONS MANQUANTES
+
+Certaines informations devront être confirmées par le restaurant avant la mise en production.
+
+Exemples :
+
+- Adresse exacte.
+- Coordonnées téléphoniques.
+- Adresse e-mail.
+- Horaires.
+- Numéro WhatsApp officiel.
+- Prix de la carte.
+- Photographies officielles.
+- Informations historiques.
+- Réseaux sociaux.
+- Conditions de réservation.
+- Éventuel service de réservation connecté.
+
+Ne jamais inventer ces informations.
+
+Utiliser des indications temporaires clairement identifiées, par exemple :
+
+- `[ADRESSE À CONFIRMER]`
+- `[TÉLÉPHONE À CONFIRMER]`
+- `[HORAIRES À CONFIRMER]`
+- `[PRIX À CONFIRMER]`
+
+Les éléments temporaires doivent être faciles à remplacer avant la mise en ligne.
+
+---
+
+# 19. EXIGENCE FINALE DE QUALITÉ
+
+Le résultat final doit être comparable à l'expérience digitale d'un établissement gastronomique haut de gamme.
+
+Le site doit associer :
+
+- Identité forte.
+- Élégance visuelle.
+- Raffinement graphique.
+- Photographie qualitative.
+- Expérience utilisateur irréprochable.
+- Navigation intuitive.
+- Contenu éditorial premium.
+- Performance technique.
+- Accessibilité.
+- Fiabilité.
+
+La qualité esthétique doit être remarquable, mais ne doit jamais être obtenue au détriment de la qualité technique.
+
+**La fluidité, les animations et les effets visuels doivent toujours rester au service de l'expérience utilisateur. Ils ne doivent jamais compromettre les performances, la rapidité, la stabilité ou l'accessibilité du site.**
+
+En cas de conflit entre un effet esthétique et les performances, les performances doivent toujours être prioritaires.
+
+Le site doit donner une impression de luxe dès les premières secondes, tout en restant rapide, stable, fonctionnel et parfaitement utilisable sur tous les appareils.
+
+---
+
+## INSTRUCTION FINALE
+
+À partir de ce cahier des charges, réaliser le projet DAR EL BACHA dans son intégralité, en respectant strictement les exigences stratégiques, graphiques, éditoriales et techniques.
+
+Ne pas réduire le périmètre du projet, ne pas supprimer de fonctionnalité et ne pas simplifier l'expérience au détriment du niveau de qualité attendu.
+
+Le résultat doit être un site gastronomique de luxe complet, cohérent, performant et prêt à être finalisé avec les informations officielles du restaurant.

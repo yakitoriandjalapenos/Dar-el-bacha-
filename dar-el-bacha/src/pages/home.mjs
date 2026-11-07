@@ -6,6 +6,7 @@ import { hero } from '../components/hero.mjs';
 import { eyebrow, sectionHead, frieze } from '../components/sections.mjs';
 import { dishFeature } from '../components/dish.mjs';
 import { signature } from '../components/logo.mjs';
+import { reviewsSection } from '../components/reviews.mjs';
 
 /*
   Accueil. Photographies : src/content/media.json (home). Plats emblématiques : propositions de
@@ -99,6 +100,8 @@ ${hero(ctx, {
     </div>
   </div>
 </section>
+
+${reviewsSection(ctx)}
 
 <section class="section cta-band theme-dark lattice" aria-labelledby="cta-title">
   ${frieze('frieze--top')}

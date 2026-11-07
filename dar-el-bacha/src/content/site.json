@@ -15,7 +15,7 @@
   "siteUrl": null,
 
   "address": {
-    "street": null,
+    "street": "22 Boulevard de Paris",
     "postalCode": null,
     "district": null
   },
@@ -24,7 +24,7 @@
     "longitude": null
   },
 
-  "phone": null,
+  "phone": "+212 6 23 69 92 70",
   "email": null,
 
   "whatsapp": {
@@ -35,7 +35,20 @@
   "_hours": "Horaires en texte libre { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" } : optionnel si openingHours est renseigné (l'affichage est alors produit automatiquement dans les trois langues).",
   "hours": null,
   "_openingHours": "Horaires structurés, utilisés pour l'affichage, les données Google et le contrôle des demandes de réservation : { \"days\": { \"mon\": [[\"12:00\", \"15:00\"], [\"19:00\", \"23:00\"]], \"tue\": [], \"wed\": …, \"sun\": … }, \"closures\": [\"AAAA-MM-JJ\"] }. Liste vide = jour de fermeture.",
-  "openingHours": null,
+  "openingHours": {
+    "days": {
+      "mon": [],
+      "tue": [["12:30", "15:00"], ["19:00", "23:00"]],
+      "wed": [["12:30", "15:00"], ["19:00", "23:00"]],
+      "thu": [["12:30", "15:00"], ["19:00", "23:00"]],
+      "fri": [["12:30", "15:00"], ["19:00", "23:00"]],
+      "sat": [["12:30", "15:00"], ["19:00", "23:00"]],
+      "sun": [["12:30", "15:00"], ["19:00", "23:00"]]
+    },
+    "closures": []
+  },
+  "_hoursConfirmed": "false tant que les horaires ci-dessus sont seulement proposés : le site les affiche avec la mention « horaires proposés, à confirmer », ne les publie pas dans les données Google et la production est refusée. Passer à true une fois confirmés par le restaurant.",
+  "hoursConfirmed": false,
   "_priceRange": "Gamme de prix indicative publiée dans les données Google (ex. \"MAD 400–700 par personne\"), fournie par le restaurant.",
   "priceRange": null,
 

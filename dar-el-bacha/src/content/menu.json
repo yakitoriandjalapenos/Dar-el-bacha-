@@ -1,33 +1,545 @@
 {
-  "_comment": "Carte gastronomique. Plafonds stricts du cahier des charges (section 5.2), contrôlés au build : 6 entrées, 10 plats, 4 desserts, 5 boissons, 25 au total ; « max » et « maxTotal » peuvent seulement les abaisser, aucune autre catégorie n'est acceptée (tajines et spécialités fassies dans « plats »). Ne rien inventer : description, ingredients (ingrédients ou particularités, { fr, en, ar }), prix et photo restent à null tant que le restaurant ne les a pas fournis et validés. status « a-valider » = proposition issue du cahier des charges, en attente de validation. signature: true = plat emblématique mis en avant sur l'accueil (choix du restaurant ; 4 au plus).",
+  "_comment": "Carte gastronomique. Plafonds stricts du cahier des charges (section 5.2), contrôlés au build : 6 entrées, 10 plats, 4 desserts, 5 boissons, 25 au total ; aucune autre catégorie n'est acceptée (tajines et spécialités fassies dans « plats »). Les 25 propositions ci-dessous sont un APERÇU DE DÉMONSTRATION : noms, descriptions, ingrédients et prix restent à valider par le restaurant (status « a-valider »). price : prix en dirhams (DH), nombre entier ou null. image : nom d'une photo préparée par « npm run images » (ex. « illustrations/zaalouk ») ou null. signature: true = plat emblématique mis en avant sur l'accueil (4 au plus).",
   "currency": "MAD",
+  "_pricesStatus": "« indicatif » : prix proposés pour l'aperçu, affichés comme « prix indicatifs, à confirmer » (production refusée) ; passer à « valide » une fois tous les prix confirmés par le restaurant.",
+  "pricesStatus": "indicatif",
   "maxTotal": 25,
   "categories": [
     {
       "id": "entrees",
       "max": 6,
       "items": [
-        { "id": "zaalouk", "status": "a-valider", "name": { "fr": "Zaalouk", "en": "Zaalouk", "ar": "زعلوك" }, "description": null, "ingredients": null, "price": null, "image": null },
-        { "id": "taktouka", "status": "a-valider", "name": { "fr": "Taktouka", "en": "Taktouka", "ar": "تكتوكة" }, "description": null, "ingredients": null, "price": null, "image": null },
-        { "id": "pastilla", "status": "a-valider", "name": { "fr": "Pastilla traditionnelle", "en": "Traditional pastilla", "ar": "بسطيلة تقليدية" }, "description": null, "ingredients": null, "price": null, "image": null },
-        { "id": "briouates", "status": "a-valider", "name": { "fr": "Briouates", "en": "Briouates", "ar": "بريوات" }, "description": null, "ingredients": null, "price": null, "image": null }
+        {
+          "id": "salades-marocaines",
+          "status": "a-valider",
+          "name": {
+            "fr": "Salades marocaines",
+            "en": "Moroccan salads",
+            "ar": "سلطات مغربية"
+          },
+          "description": {
+            "fr": "Assortiment de salades cuites et crues de saison, servies à partager.",
+            "en": "A selection of cooked and fresh seasonal salads, served to share.",
+            "ar": "تشكيلة من السلطات المطبوخة والطازجة حسب الموسم، تُقدَّم للمشاركة."
+          },
+          "ingredients": {
+            "fr": "Selon le marché : carottes au cumin, betterave, tomates et poivrons, aubergines",
+            "en": "Depending on the market: cumin carrots, beetroot, tomatoes and peppers, aubergine",
+            "ar": "حسب السوق: جزر بالكمون، شمندر، طماطم وفلفل، باذنجان"
+          },
+          "price": 90,
+          "image": null
+        },
+        {
+          "id": "zaalouk",
+          "status": "a-valider",
+          "name": {
+            "fr": "Zaalouk",
+            "en": "Zaalouk",
+            "ar": "زعلوك"
+          },
+          "description": {
+            "fr": "Caviar d'aubergines fumées, tomates confites, ail doux et huile d'olive.",
+            "en": "Smoked aubergine caviar with slow-cooked tomatoes, mild garlic and olive oil.",
+            "ar": "باذنجان مشوي على الجمر مع طماطم مطهوة ببطء وثوم وزيت الزيتون."
+          },
+          "ingredients": {
+            "fr": "Aubergine, tomate, ail, cumin, coriandre, huile d'olive",
+            "en": "Aubergine, tomato, garlic, cumin, coriander, olive oil",
+            "ar": "باذنجان، طماطم، ثوم، كمون، قزبر، زيت الزيتون"
+          },
+          "price": 70,
+          "image": null
+        },
+        {
+          "id": "taktouka",
+          "status": "a-valider",
+          "name": {
+            "fr": "Taktouka",
+            "en": "Taktouka",
+            "ar": "تكتوكة"
+          },
+          "description": {
+            "fr": "Poivrons grillés et tomates fondantes, relevés de paprika et de cumin.",
+            "en": "Grilled peppers and melting tomatoes, lifted with paprika and cumin.",
+            "ar": "فلفل مشوي وطماطم مطهوة على مهل، بنكهة الفلفل الأحمر الحلو والكمون."
+          },
+          "ingredients": {
+            "fr": "Poivron, tomate, ail, paprika, cumin, persil",
+            "en": "Pepper, tomato, garlic, paprika, cumin, parsley",
+            "ar": "فلفل، طماطم، ثوم، فلفل أحمر حلو، كمون، معدنوس"
+          },
+          "price": 70,
+          "image": null
+        },
+        {
+          "id": "harira",
+          "status": "a-valider",
+          "name": {
+            "fr": "Harira",
+            "en": "Harira",
+            "ar": "حريرة"
+          },
+          "description": {
+            "fr": "Velouté traditionnel de tomates, lentilles et pois chiches, parfumé au céleri et à la coriandre, servi avec des dattes.",
+            "en": "Traditional soup of tomato, lentils and chickpeas, scented with celery and coriander, served with dates.",
+            "ar": "حساء تقليدي بالطماطم والعدس والحمص، معطّر بالكرفس والقزبر، يُقدَّم مع التمر."
+          },
+          "ingredients": {
+            "fr": "Tomate, lentilles, pois chiches, céleri, coriandre, gingembre",
+            "en": "Tomato, lentils, chickpeas, celery, coriander, ginger",
+            "ar": "طماطم، عدس، حمص، كرفس، قزبر، زنجبيل"
+          },
+          "price": 60,
+          "image": null
+        },
+        {
+          "id": "briouates",
+          "status": "a-valider",
+          "name": {
+            "fr": "Briouates",
+            "en": "Briouates",
+            "ar": "بريوات"
+          },
+          "description": {
+            "fr": "Feuilles de brick croustillantes, farcies de viande hachée épicée et d'herbes fraîches.",
+            "en": "Crisp brick pastry parcels filled with spiced minced meat and fresh herbs.",
+            "ar": "رقائق الورقة المقرمشة محشوة باللحم المفروم المتبّل والأعشاب الطازجة."
+          },
+          "ingredients": {
+            "fr": "Feuille de brick, bœuf haché, oignon, persil, coriandre, épices",
+            "en": "Brick pastry, minced beef, onion, parsley, coriander, spices",
+            "ar": "ورقة البسطيلة، لحم بقري مفروم، بصل، معدنوس، قزبر، توابل"
+          },
+          "price": 85,
+          "image": null
+        },
+        {
+          "id": "pastilla",
+          "status": "a-valider",
+          "name": {
+            "fr": "Pastilla traditionnelle",
+            "en": "Traditional pastilla",
+            "ar": "بسطيلة تقليدية"
+          },
+          "description": {
+            "fr": "Feuilleté de volaille aux amandes, cannelle et fleur d'oranger, poudré de sucre glace.",
+            "en": "Flaky pastry of chicken with almonds, cinnamon and orange blossom, dusted with icing sugar.",
+            "ar": "رقائق محشوة بالدجاج واللوز والقرفة وماء الزهر، مرشوشة بالسكر الناعم."
+          },
+          "ingredients": {
+            "fr": "Volaille, amandes, œufs, oignons, cannelle, fleur d'oranger",
+            "en": "Chicken, almonds, eggs, onions, cinnamon, orange blossom",
+            "ar": "دجاج، لوز، بيض، بصل، قرفة، ماء الزهر"
+          },
+          "price": 140,
+          "image": null
+        }
       ]
     },
     {
       "id": "plats",
       "max": 10,
-      "items": []
+      "items": [
+        {
+          "id": "tajine-agneau-pruneaux",
+          "status": "a-valider",
+          "name": {
+            "fr": "Tajine d'agneau aux pruneaux et amandes",
+            "en": "Lamb tagine with prunes and almonds",
+            "ar": "طاجين لحم الغنم بالبرقوق واللوز"
+          },
+          "description": {
+            "fr": "Épaule d'agneau mijotée, pruneaux caramélisés, amandes grillées et graines de sésame.",
+            "en": "Slow-cooked lamb shoulder, caramelised prunes, toasted almonds and sesame seeds.",
+            "ar": "كتف غنم مطهو على مهل مع برقوق مكرمل ولوز محمّص وسمسم."
+          },
+          "ingredients": {
+            "fr": "Agneau, pruneaux, amandes, sésame, cannelle, miel",
+            "en": "Lamb, prunes, almonds, sesame, cinnamon, honey",
+            "ar": "لحم الغنم، برقوق، لوز، سمسم، قرفة، عسل"
+          },
+          "price": 260,
+          "image": null,
+          "signature": true
+        },
+        {
+          "id": "tajine-poulet-citron",
+          "status": "a-valider",
+          "name": {
+            "fr": "Tajine de poulet au citron confit et olives",
+            "en": "Chicken tagine with preserved lemon and olives",
+            "ar": "طاجين الدجاج بالليمون المصبّر والزيتون"
+          },
+          "description": {
+            "fr": "Poulet mijoté au gingembre et au safran, citron confit et olives violettes.",
+            "en": "Chicken simmered with ginger and saffron, preserved lemon and violet olives.",
+            "ar": "دجاج مطهو بالزنجبيل والزعفران مع الليمون المصبّر والزيتون البنفسجي."
+          },
+          "ingredients": {
+            "fr": "Poulet, citron confit, olives, gingembre, safran, coriandre",
+            "en": "Chicken, preserved lemon, olives, ginger, saffron, coriander",
+            "ar": "دجاج، ليمون مصبّر، زيتون، زنجبيل، زعفران، قزبر"
+          },
+          "price": 210,
+          "image": null,
+          "signature": true
+        },
+        {
+          "id": "couscous-sept-legumes",
+          "status": "a-valider",
+          "name": {
+            "fr": "Couscous aux sept légumes",
+            "en": "Seven-vegetable couscous",
+            "ar": "كسكس بالخضر السبع"
+          },
+          "description": {
+            "fr": "Semoule fine cuite à la vapeur, bouillon parfumé, sept légumes de saison et agneau.",
+            "en": "Steamed fine semolina, fragrant broth, seven seasonal vegetables and lamb.",
+            "ar": "سميد رقيق مطهو على البخار، مرق معطّر، سبع خضر موسمية ولحم الغنم."
+          },
+          "ingredients": {
+            "fr": "Semoule, agneau, carottes, navets, courgettes, potiron, chou, pois chiches",
+            "en": "Semolina, lamb, carrots, turnips, courgettes, pumpkin, cabbage, chickpeas",
+            "ar": "سميد، لحم الغنم، جزر، لفت، كوسة، قرع، كرنب، حمص"
+          },
+          "price": 230,
+          "image": null,
+          "signature": true
+        },
+        {
+          "id": "rfissa",
+          "status": "a-valider",
+          "name": {
+            "fr": "Rfissa",
+            "en": "Rfissa",
+            "ar": "رفيسة"
+          },
+          "description": {
+            "fr": "Msemen effiloché, poulet aux lentilles et au fenugrec, parfumé au ras el hanout.",
+            "en": "Shredded msemen flatbread, chicken with lentils and fenugreek, scented with ras el hanout.",
+            "ar": "مسمن مقطّع مع دجاج بالعدس والحلبة، بنكهة رأس الحانوت."
+          },
+          "ingredients": {
+            "fr": "Msemen, poulet, lentilles, fenugrec, ras el hanout, oignons",
+            "en": "Msemen, chicken, lentils, fenugreek, ras el hanout, onions",
+            "ar": "مسمن، دجاج، عدس، حلبة، رأس الحانوت، بصل"
+          },
+          "price": 220,
+          "image": null
+        },
+        {
+          "id": "mrouzia",
+          "status": "a-valider",
+          "name": {
+            "fr": "Mrouzia",
+            "en": "Mrouzia",
+            "ar": "مروزية"
+          },
+          "description": {
+            "fr": "Agneau confit au miel et au ras el hanout, raisins secs et amandes, plat de fête.",
+            "en": "Lamb confit with honey and ras el hanout, raisins and almonds, a festive dish.",
+            "ar": "لحم غنم مطهو بالعسل ورأس الحانوت مع الزبيب واللوز، طبق الأعياد."
+          },
+          "ingredients": {
+            "fr": "Agneau, miel, raisins secs, amandes, ras el hanout, cannelle",
+            "en": "Lamb, honey, raisins, almonds, ras el hanout, cinnamon",
+            "ar": "لحم الغنم، عسل، زبيب، لوز، رأس الحانوت، قرفة"
+          },
+          "price": 270,
+          "image": null
+        },
+        {
+          "id": "tanjia",
+          "status": "a-valider",
+          "name": {
+            "fr": "Tanjia marrakchia",
+            "en": "Tanjia marrakchia",
+            "ar": "طنجية مراكشية"
+          },
+          "description": {
+            "fr": "Jarret de veau cuit lentement en jarre de terre, citron confit, cumin et safran.",
+            "en": "Veal shank slow-cooked in a clay jar with preserved lemon, cumin and saffron.",
+            "ar": "لحم عجل مطهو ببطء في جرة فخارية مع الليمون المصبّر والكمون والزعفران."
+          },
+          "ingredients": {
+            "fr": "Veau, citron confit, ail, cumin, safran, smen",
+            "en": "Veal, preserved lemon, garlic, cumin, saffron, smen",
+            "ar": "لحم عجل، ليمون مصبّر، ثوم، كمون، زعفران، سمن"
+          },
+          "price": 250,
+          "image": null
+        },
+        {
+          "id": "mechoui",
+          "status": "a-valider",
+          "name": {
+            "fr": "Méchoui d'agneau",
+            "en": "Lamb mechoui",
+            "ar": "مشوي الغنم"
+          },
+          "description": {
+            "fr": "Épaule d'agneau rôtie lentement, fondante, servie avec cumin et sel.",
+            "en": "Slow-roasted lamb shoulder, meltingly tender, served with cumin and salt.",
+            "ar": "كتف غنم مشوي ببطء، طري، يُقدَّم مع الكمون والملح."
+          },
+          "ingredients": {
+            "fr": "Agneau, beurre, cumin, sel",
+            "en": "Lamb, butter, cumin, salt",
+            "ar": "لحم الغنم، زبدة، كمون، ملح"
+          },
+          "price": 290,
+          "image": null,
+          "signature": true
+        },
+        {
+          "id": "tajine-kefta",
+          "status": "a-valider",
+          "name": {
+            "fr": "Tajine de kefta aux œufs",
+            "en": "Kefta tagine with eggs",
+            "ar": "طاجين الكفتة بالبيض"
+          },
+          "description": {
+            "fr": "Boulettes de viande épicées dans une sauce tomate parfumée, œufs mollets.",
+            "en": "Spiced meatballs in a fragrant tomato sauce, finished with soft eggs.",
+            "ar": "كويرات لحم متبّلة في صلصة طماطم معطّرة مع البيض."
+          },
+          "ingredients": {
+            "fr": "Bœuf haché, tomate, œufs, cumin, paprika, coriandre",
+            "en": "Minced beef, tomato, eggs, cumin, paprika, coriander",
+            "ar": "لحم بقري مفروم، طماطم، بيض، كمون، فلفل أحمر حلو، قزبر"
+          },
+          "price": 180,
+          "image": null
+        },
+        {
+          "id": "seffa-medfouna",
+          "status": "a-valider",
+          "name": {
+            "fr": "Seffa medfouna",
+            "en": "Seffa medfouna",
+            "ar": "سفة مدفونة"
+          },
+          "description": {
+            "fr": "Vermicelles fins cuits à la vapeur, poulet fondant caché au cœur, cannelle et amandes.",
+            "en": "Steamed fine vermicelli with tender chicken hidden at its heart, cinnamon and almonds.",
+            "ar": "شعرية رقيقة مطهوة على البخار يختبئ في قلبها دجاج طري، مع القرفة واللوز."
+          },
+          "ingredients": {
+            "fr": "Vermicelles, poulet, amandes, cannelle, sucre glace",
+            "en": "Vermicelli, chicken, almonds, cinnamon, icing sugar",
+            "ar": "شعرية، دجاج، لوز، قرفة، سكر ناعم"
+          },
+          "price": 220,
+          "image": null
+        },
+        {
+          "id": "tajine-poisson",
+          "status": "a-valider",
+          "name": {
+            "fr": "Tajine de poisson à la chermoula",
+            "en": "Fish tagine with chermoula",
+            "ar": "طاجين السمك بالشرمولة"
+          },
+          "description": {
+            "fr": "Poisson du jour mariné à la chermoula, pommes de terre, tomates et poivrons.",
+            "en": "Fish of the day marinated in chermoula, with potatoes, tomatoes and peppers.",
+            "ar": "سمك اليوم متبّل بالشرمولة مع البطاطس والطماطم والفلفل."
+          },
+          "ingredients": {
+            "fr": "Poisson, chermoula, pommes de terre, tomates, poivrons, citron",
+            "en": "Fish, chermoula, potatoes, tomatoes, peppers, lemon",
+            "ar": "سمك، شرمولة، بطاطس، طماطم، فلفل، حامض"
+          },
+          "price": 240,
+          "image": null
+        }
+      ]
     },
     {
       "id": "desserts",
       "max": 4,
-      "items": []
+      "items": [
+        {
+          "id": "pastilla-lait",
+          "status": "a-valider",
+          "name": {
+            "fr": "Pastilla au lait",
+            "en": "Milk pastilla",
+            "ar": "بسطيلة بالحليب"
+          },
+          "description": {
+            "fr": "Feuilles croustillantes, crème légère à la fleur d'oranger et amandes grillées.",
+            "en": "Crisp pastry leaves, light orange-blossom cream and toasted almonds.",
+            "ar": "رقائق مقرمشة مع كريمة خفيفة بماء الزهر ولوز محمّص."
+          },
+          "ingredients": {
+            "fr": "Feuille de brick, lait, amandes, fleur d'oranger",
+            "en": "Brick pastry, milk, almonds, orange blossom",
+            "ar": "ورقة البسطيلة، حليب، لوز، ماء الزهر"
+          },
+          "price": 75,
+          "image": null
+        },
+        {
+          "id": "cornes-gazelle",
+          "status": "a-valider",
+          "name": {
+            "fr": "Cornes de gazelle",
+            "en": "Gazelle horns",
+            "ar": "كعب الغزال"
+          },
+          "description": {
+            "fr": "Pâte fine garnie de pâte d'amande parfumée à la fleur d'oranger.",
+            "en": "Delicate pastry filled with almond paste scented with orange blossom.",
+            "ar": "عجينة رقيقة محشوة بعجينة اللوز المعطّرة بماء الزهر."
+          },
+          "ingredients": {
+            "fr": "Amandes, fleur d'oranger, beurre, cannelle",
+            "en": "Almonds, orange blossom, butter, cinnamon",
+            "ar": "لوز، ماء الزهر، زبدة، قرفة"
+          },
+          "price": 70,
+          "image": null
+        },
+        {
+          "id": "oranges-cannelle",
+          "status": "a-valider",
+          "name": {
+            "fr": "Oranges à la cannelle",
+            "en": "Oranges with cinnamon",
+            "ar": "برتقال بالقرفة"
+          },
+          "description": {
+            "fr": "Oranges en fines tranches, cannelle et eau de fleur d'oranger.",
+            "en": "Thinly sliced oranges with cinnamon and orange-blossom water.",
+            "ar": "شرائح برتقال رقيقة بالقرفة وماء الزهر."
+          },
+          "ingredients": {
+            "fr": "Oranges, cannelle, fleur d'oranger",
+            "en": "Oranges, cinnamon, orange blossom",
+            "ar": "برتقال، قرفة، ماء الزهر"
+          },
+          "price": 60,
+          "image": null
+        },
+        {
+          "id": "patisseries",
+          "status": "a-valider",
+          "name": {
+            "fr": "Assortiment de pâtisseries",
+            "en": "Selection of pastries",
+            "ar": "تشكيلة حلويات"
+          },
+          "description": {
+            "fr": "Sélection de douceurs marocaines au miel et aux amandes, servie avec le thé.",
+            "en": "A selection of Moroccan sweets with honey and almonds, served with tea.",
+            "ar": "تشكيلة من الحلويات المغربية بالعسل واللوز، تُقدَّم مع الشاي."
+          },
+          "ingredients": {
+            "fr": "Selon la saison : chebakia, briouates aux amandes, ghriba",
+            "en": "Depending on the season: chebakia, almond briouates, ghriba",
+            "ar": "حسب الموسم: شباكية، بريوات باللوز، غريبة"
+          },
+          "price": 80,
+          "image": null
+        }
+      ]
     },
     {
       "id": "boissons",
       "max": 5,
       "items": [
-        { "id": "the-marocain", "status": "a-valider", "name": { "fr": "Thé marocain", "en": "Moroccan tea", "ar": "الشاي المغربي" }, "description": null, "ingredients": null, "price": null, "image": null }
+        {
+          "id": "the-marocain",
+          "status": "a-valider",
+          "name": {
+            "fr": "Thé marocain",
+            "en": "Moroccan tea",
+            "ar": "الشاي المغربي"
+          },
+          "description": {
+            "fr": "Thé vert à la menthe fraîche, servi à la théière.",
+            "en": "Green tea with fresh mint, served from the teapot.",
+            "ar": "شاي أخضر بالنعناع الطازج، يُقدَّم في البرّاد."
+          },
+          "ingredients": {
+            "fr": "Thé vert, menthe fraîche, sucre à la demande",
+            "en": "Green tea, fresh mint, sugar on request",
+            "ar": "شاي أخضر، نعناع طازج، سكر حسب الرغبة"
+          },
+          "price": 35,
+          "image": null
+        },
+        {
+          "id": "jus-orange",
+          "status": "a-valider",
+          "name": {
+            "fr": "Jus d'orange pressé",
+            "en": "Freshly squeezed orange juice",
+            "ar": "عصير برتقال طازج"
+          },
+          "description": {
+            "fr": "Oranges pressées à la commande.",
+            "en": "Oranges squeezed to order.",
+            "ar": "برتقال يُعصر عند الطلب."
+          },
+          "ingredients": null,
+          "price": 40,
+          "image": null
+        },
+        {
+          "id": "infusion-verveine",
+          "status": "a-valider",
+          "name": {
+            "fr": "Infusion de verveine",
+            "en": "Lemon verbena infusion",
+            "ar": "منقوع اللويزة"
+          },
+          "description": {
+            "fr": "Verveine (louiza) en infusion, douce et parfumée.",
+            "en": "Lemon verbena (louiza), gentle and fragrant.",
+            "ar": "لويزة منقوعة، لطيفة وعطرة."
+          },
+          "ingredients": null,
+          "price": 35,
+          "image": null
+        },
+        {
+          "id": "lait-amande",
+          "status": "a-valider",
+          "name": {
+            "fr": "Lait d'amande à la fleur d'oranger",
+            "en": "Almond milk with orange blossom",
+            "ar": "حليب اللوز بماء الزهر"
+          },
+          "description": {
+            "fr": "Boisson traditionnelle d'amandes mixées, fraîche et légèrement sucrée.",
+            "en": "Traditional drink of blended almonds, chilled and lightly sweetened.",
+            "ar": "مشروب تقليدي من اللوز المطحون، بارد ومحلّى قليلاً."
+          },
+          "ingredients": null,
+          "price": 45,
+          "image": null
+        },
+        {
+          "id": "citronnade",
+          "status": "a-valider",
+          "name": {
+            "fr": "Citronnade à la menthe",
+            "en": "Mint lemonade",
+            "ar": "عصير الحامض بالنعناع"
+          },
+          "description": {
+            "fr": "Citron pressé, menthe fraîche et une touche de miel.",
+            "en": "Freshly squeezed lemon, fresh mint and a touch of honey.",
+            "ar": "حامض معصور ونعناع طازج ولمسة عسل."
+          },
+          "ingredients": null,
+          "price": 40,
+          "image": null
+        }
       ]
     }
   ]

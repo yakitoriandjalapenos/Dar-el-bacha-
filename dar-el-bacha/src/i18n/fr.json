@@ -85,6 +85,12 @@
         "title": "La maison en images",
         "eyebrow": "Galerie"
       },
+      "reviews": {
+        "eyebrow": "Témoignages",
+        "title": "Paroles d'invités",
+        "demo": "Avis fictifs — aperçu de démonstration",
+        "stars": "{n} étoiles sur 5"
+      },
       "cta": {
         "title": "Réserver votre table",
         "text": "Envoyez une demande en ligne ou écrivez-nous sur WhatsApp. Le restaurant confirme chaque réservation.",
@@ -138,7 +144,9 @@
       "seoDescription": "Découvrez la carte de Dar el Bacha à Casablanca : entrées, tajines, spécialités fassies, couscous, desserts et boissons marocaines.",
       "title": "La carte",
       "lead": "Une carte resserrée autour des grands classiques de la cuisine marocaine, des entrées aux douceurs.",
-      "notice": "Les plats, leurs descriptions et leurs prix sont en cours de validation par le restaurant.",
+      "notice": "Carte proposée pour l'aperçu : plats, descriptions et prix sont en cours de validation par le restaurant.",
+      "indicative": "Prix indicatifs en dirhams (DH), à confirmer.",
+      "currency": "DH",
       "categoriesNav": "Catégories de la carte",
       "categories": {
         "entrees": "Entrées",
@@ -390,7 +398,8 @@
     }
   },
   "hours": {
-    "closed": "Fermé"
+    "closed": "Fermé",
+    "pending": "Horaires proposés, à confirmer par le restaurant."
   },
   "legal": {
     "draft": "Document en cours de validation juridique : les informations ci-dessous doivent être complétées par le restaurant et vérifiées par un juriste avant la mise en ligne.",
@@ -427,5 +436,11 @@
       "signature": "{site}",
       "moreThan12": "plus de 12"
     }
+  },
+  "demo": {
+    "banner": "Aperçu de démonstration : photographies d'illustration, avis fictifs et prix indicatifs, en attente des contenus officiels du restaurant.",
+    "illustration": "Photo d'illustration",
+    "creditsTitle": "Photographies d'illustration de l'aperçu",
+    "creditsText": "Ces photographies proviennent de Wikimedia Commons, sous licence libre. Elles illustrent l'aperçu et ne représentent pas le restaurant ; elles seront remplacées par ses photographies officielles."
   }
 }

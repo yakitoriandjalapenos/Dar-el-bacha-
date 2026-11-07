@@ -27,7 +27,7 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.speci
 </nav>
 
 <div class="wrap menu-layout">
-  ${pending && html`<p class="menu-notice note" data-provisional="menu-notice">${p('notice')}</p>`}
+  ${pending && html`<p class="menu-notice note" data-provisional="menu-notice">${p('notice')}${ctx.pricesIndicative ? html` <span aria-hidden="true">*</span>${p('indicative')}` : ''}</p>`}
   ${menu.categories.map((c, i) => html`
   <section class="menu-category" id="${c.id}" aria-labelledby="${c.id}-title">
     <div class="menu-category__head">

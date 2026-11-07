@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/cormorant-garamond-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.ca15305256.css">
+<link rel="stylesheet" href="/assets/site.b65f4a0641.css">
 <script>(function(d){d.classList.replace('no-js','js');addEventListener('load',function(){if(!d.classList.contains('js-ok'))d.classList.replace('js','no-js')})})(document.documentElement)</script>
 <script src="/assets/main.80b0467436.js" defer></script>
 <meta property="og:type" content="website">
@@ -32,6 +32,7 @@
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+<p class="demo-banner" data-provisional="demo-banner">Aperçu de démonstration : photographies d&#39;illustration, avis fictifs et prix indicatifs, en attente des contenus officiels du restaurant.</p>
 <header class="site-header theme-dark">
     <div class="wrap site-header__inner">
       <a class="brand" href="/fr/" aria-label="Dar el Bacha, accueil">
@@ -99,7 +100,7 @@
 </nav>
 
 <div class="wrap menu-layout">
-  <p class="menu-notice note" data-provisional="menu-notice">Les plats, leurs descriptions et leurs prix sont en cours de validation par le restaurant.</p>
+  <p class="menu-notice note" data-provisional="menu-notice">Carte proposée pour l&#39;aperçu : plats, descriptions et prix sont en cours de validation par le restaurant. <span aria-hidden="true">*</span>Prix indicatifs en dirhams (DH), à confirmer.</p>
   
   <section class="menu-category" id="entrees" aria-labelledby="entrees-title">
     <div class="menu-category__head">
@@ -107,17 +108,29 @@
       <h2 id="entrees-title">Entrées</h2>
     </div>
     <p class="menu-category__desc">Salades marocaines et entrées de saison</p>
-    <ul class="dish-list" role="list"><li class="dish" id="plat-zaalouk">
+    <ul class="dish-list" role="list"><li class="dish" id="plat-salades-marocaines">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Salades marocaines</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">90 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Assortiment de salades cuites et crues de saison, servies à partager.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Selon le marché : carottes au cumin, betterave, tomates et poivrons, aubergines</p>
+    </div>
+  </li><li class="dish" id="plat-zaalouk">
     
     <div class="dish__body">
       <div class="dish__row">
         <h3 class="dish__name">Zaalouk</h3>
         <span class="dish__leader" aria-hidden="true"></span>
-        <span class="dish__price"><span class="tbc" data-provisional="price">[PRIX À CONFIRMER]</span></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">70 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
       </div>
-      <p class="dish__meta"><span class="badge" data-provisional="dish-pending">À valider</span></p>
-      
-      
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Caviar d&#39;aubergines fumées, tomates confites, ail doux et huile d&#39;olive.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Aubergine, tomate, ail, cumin, coriandre, huile d&#39;olive</p>
     </div>
   </li><li class="dish" id="plat-taktouka">
     
@@ -125,23 +138,23 @@
       <div class="dish__row">
         <h3 class="dish__name">Taktouka</h3>
         <span class="dish__leader" aria-hidden="true"></span>
-        <span class="dish__price"><span class="tbc" data-provisional="price">[PRIX À CONFIRMER]</span></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">70 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
       </div>
-      <p class="dish__meta"><span class="badge" data-provisional="dish-pending">À valider</span></p>
-      
-      
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Poivrons grillés et tomates fondantes, relevés de paprika et de cumin.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Poivron, tomate, ail, paprika, cumin, persil</p>
     </div>
-  </li><li class="dish" id="plat-pastilla">
+  </li><li class="dish" id="plat-harira">
     
     <div class="dish__body">
       <div class="dish__row">
-        <h3 class="dish__name">Pastilla traditionnelle</h3>
+        <h3 class="dish__name">Harira</h3>
         <span class="dish__leader" aria-hidden="true"></span>
-        <span class="dish__price"><span class="tbc" data-provisional="price">[PRIX À CONFIRMER]</span></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">60 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
       </div>
-      <p class="dish__meta"><span class="badge" data-provisional="dish-pending">À valider</span></p>
-      
-      
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Velouté traditionnel de tomates, lentilles et pois chiches, parfumé au céleri et à la coriandre, servi avec des dattes.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Tomate, lentilles, pois chiches, céleri, coriandre, gingembre</p>
     </div>
   </li><li class="dish" id="plat-briouates">
     
@@ -149,11 +162,23 @@
       <div class="dish__row">
         <h3 class="dish__name">Briouates</h3>
         <span class="dish__leader" aria-hidden="true"></span>
-        <span class="dish__price"><span class="tbc" data-provisional="price">[PRIX À CONFIRMER]</span></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">85 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
       </div>
-      <p class="dish__meta"><span class="badge" data-provisional="dish-pending">À valider</span></p>
-      
-      
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Feuilles de brick croustillantes, farcies de viande hachée épicée et d&#39;herbes fraîches.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Feuille de brick, bœuf haché, oignon, persil, coriandre, épices</p>
+    </div>
+  </li><li class="dish" id="plat-pastilla">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Pastilla traditionnelle</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">140 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Feuilleté de volaille aux amandes, cannelle et fleur d&#39;oranger, poudré de sucre glace.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Volaille, amandes, œufs, oignons, cannelle, fleur d&#39;oranger</p>
     </div>
   </li></ul>
   </section>
@@ -163,7 +188,127 @@
       <h2 id="plats-title">Plats principaux</h2>
     </div>
     <p class="menu-category__desc">Tajines, spécialités fassies et couscous</p>
-    <p class="menu-empty" data-provisional="menu-empty">Sélection en cours de validation par le restaurant.</p>
+    <ul class="dish-list" role="list"><li class="dish" id="plat-tajine-agneau-pruneaux">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Tajine d&#39;agneau aux pruneaux et amandes</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">260 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Épaule d&#39;agneau mijotée, pruneaux caramélisés, amandes grillées et graines de sésame.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Agneau, pruneaux, amandes, sésame, cannelle, miel</p>
+    </div>
+  </li><li class="dish" id="plat-tajine-poulet-citron">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Tajine de poulet au citron confit et olives</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">210 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Poulet mijoté au gingembre et au safran, citron confit et olives violettes.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Poulet, citron confit, olives, gingembre, safran, coriandre</p>
+    </div>
+  </li><li class="dish" id="plat-couscous-sept-legumes">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Couscous aux sept légumes</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">230 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Semoule fine cuite à la vapeur, bouillon parfumé, sept légumes de saison et agneau.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Semoule, agneau, carottes, navets, courgettes, potiron, chou, pois chiches</p>
+    </div>
+  </li><li class="dish" id="plat-rfissa">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Rfissa</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">220 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Msemen effiloché, poulet aux lentilles et au fenugrec, parfumé au ras el hanout.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Msemen, poulet, lentilles, fenugrec, ras el hanout, oignons</p>
+    </div>
+  </li><li class="dish" id="plat-mrouzia">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Mrouzia</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">270 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Agneau confit au miel et au ras el hanout, raisins secs et amandes, plat de fête.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Agneau, miel, raisins secs, amandes, ras el hanout, cannelle</p>
+    </div>
+  </li><li class="dish" id="plat-tanjia">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Tanjia marrakchia</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">250 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Jarret de veau cuit lentement en jarre de terre, citron confit, cumin et safran.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Veau, citron confit, ail, cumin, safran, smen</p>
+    </div>
+  </li><li class="dish" id="plat-mechoui">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Méchoui d&#39;agneau</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">290 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Épaule d&#39;agneau rôtie lentement, fondante, servie avec cumin et sel.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Agneau, beurre, cumin, sel</p>
+    </div>
+  </li><li class="dish" id="plat-tajine-kefta">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Tajine de kefta aux œufs</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">180 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Boulettes de viande épicées dans une sauce tomate parfumée, œufs mollets.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Bœuf haché, tomate, œufs, cumin, paprika, coriandre</p>
+    </div>
+  </li><li class="dish" id="plat-seffa-medfouna">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Seffa medfouna</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">220 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Vermicelles fins cuits à la vapeur, poulet fondant caché au cœur, cannelle et amandes.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Vermicelles, poulet, amandes, cannelle, sucre glace</p>
+    </div>
+  </li><li class="dish" id="plat-tajine-poisson">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Tajine de poisson à la chermoula</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">240 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Poisson du jour mariné à la chermoula, pommes de terre, tomates et poivrons.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Poisson, chermoula, pommes de terre, tomates, poivrons, citron</p>
+    </div>
+  </li></ul>
   </section>
   <section class="menu-category" id="desserts" aria-labelledby="desserts-title">
     <div class="menu-category__head">
@@ -171,7 +316,55 @@
       <h2 id="desserts-title">Desserts</h2>
     </div>
     <p class="menu-category__desc">Pâtisseries, amandes et fleur d&#39;oranger</p>
-    <p class="menu-empty" data-provisional="menu-empty">Sélection en cours de validation par le restaurant.</p>
+    <ul class="dish-list" role="list"><li class="dish" id="plat-pastilla-lait">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Pastilla au lait</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">75 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Feuilles croustillantes, crème légère à la fleur d&#39;oranger et amandes grillées.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Feuille de brick, lait, amandes, fleur d&#39;oranger</p>
+    </div>
+  </li><li class="dish" id="plat-cornes-gazelle">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Cornes de gazelle</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">70 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Pâte fine garnie de pâte d&#39;amande parfumée à la fleur d&#39;oranger.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Amandes, fleur d&#39;oranger, beurre, cannelle</p>
+    </div>
+  </li><li class="dish" id="plat-oranges-cannelle">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Oranges à la cannelle</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">60 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Oranges en fines tranches, cannelle et eau de fleur d&#39;oranger.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Oranges, cannelle, fleur d&#39;oranger</p>
+    </div>
+  </li><li class="dish" id="plat-patisseries">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Assortiment de pâtisseries</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">80 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Sélection de douceurs marocaines au miel et aux amandes, servie avec le thé.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Selon la saison : chebakia, briouates aux amandes, ghriba</p>
+    </div>
+  </li></ul>
   </section>
   <section class="menu-category" id="boissons" aria-labelledby="boissons-title">
     <div class="menu-category__head">
@@ -185,10 +378,58 @@
       <div class="dish__row">
         <h3 class="dish__name">Thé marocain</h3>
         <span class="dish__leader" aria-hidden="true"></span>
-        <span class="dish__price"><span class="tbc" data-provisional="price">[PRIX À CONFIRMER]</span></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">35 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
       </div>
-      <p class="dish__meta"><span class="badge" data-provisional="dish-pending">À valider</span></p>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Thé vert à la menthe fraîche, servi à la théière.</p>
+      <p class="dish__ingredients"><span class="visually-hidden">Ingrédients et particularités : </span>Thé vert, menthe fraîche, sucre à la demande</p>
+    </div>
+  </li><li class="dish" id="plat-jus-orange">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Jus d&#39;orange pressé</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">40 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Oranges pressées à la commande.</p>
       
+    </div>
+  </li><li class="dish" id="plat-infusion-verveine">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Infusion de verveine</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">35 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Verveine (louiza) en infusion, douce et parfumée.</p>
+      
+    </div>
+  </li><li class="dish" id="plat-lait-amande">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Lait d&#39;amande à la fleur d&#39;oranger</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">45 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Boisson traditionnelle d&#39;amandes mixées, fraîche et légèrement sucrée.</p>
+      
+    </div>
+  </li><li class="dish" id="plat-citronnade">
+    
+    <div class="dish__body">
+      <div class="dish__row">
+        <h3 class="dish__name">Citronnade à la menthe</h3>
+        <span class="dish__leader" aria-hidden="true"></span>
+        <span class="dish__price"><span data-provisional="price-indicative" title="Prix indicatifs en dirhams (DH), à confirmer.">40 DH<span class="dish__mark" aria-hidden="true">*</span></span></span>
+      </div>
+      <span class="visually-hidden" data-provisional="dish-pending">À valider</span>
+      <p class="dish__desc">Citron pressé, menthe fraîche et une touche de miel.</p>
       
     </div>
   </li></ul>
@@ -223,11 +464,35 @@
         <div>
           <h2>Nous trouver</h2>
           <address class="stack" style="--stack-gap: var(--space-3xs)">
-            <p><span class="tbc" data-provisional="address">[ADRESSE À CONFIRMER]</span></p>
-            <p><span class="tbc" data-provisional="phone">[TÉLÉPHONE À CONFIRMER]</span></p>
+            <p>22 Boulevard de Paris, Casablanca</p>
+            <p><a href="tel:+212623699270" dir="ltr">+212 6 23 69 92 70</a></p>
             
             
-            <div><span class="tbc" data-provisional="hours">[HORAIRES À CONFIRMER]</span></div>
+            <div><ul class="hours" role="list">
+    <li class="hours__line is-closed">
+      <span class="hours__day">lundi</span>
+      <span class="hours__time">Fermé</span>
+    </li><li class="hours__line">
+      <span class="hours__day">mardi</span>
+      <span class="hours__time" dir="ltr">12:30–15:00 · 19:00–23:00</span>
+    </li><li class="hours__line">
+      <span class="hours__day">mercredi</span>
+      <span class="hours__time" dir="ltr">12:30–15:00 · 19:00–23:00</span>
+    </li><li class="hours__line">
+      <span class="hours__day">jeudi</span>
+      <span class="hours__time" dir="ltr">12:30–15:00 · 19:00–23:00</span>
+    </li><li class="hours__line">
+      <span class="hours__day">vendredi</span>
+      <span class="hours__time" dir="ltr">12:30–15:00 · 19:00–23:00</span>
+    </li><li class="hours__line">
+      <span class="hours__day">samedi</span>
+      <span class="hours__time" dir="ltr">12:30–15:00 · 19:00–23:00</span>
+    </li><li class="hours__line">
+      <span class="hours__day">dimanche</span>
+      <span class="hours__time" dir="ltr">12:30–15:00 · 19:00–23:00</span>
+    </li>
+  </ul>
+  <p class="hours__note" data-provisional="hours-pending">Horaires proposés, à confirmer par le restaurant.</p></div>
           </address>
         </div>
 

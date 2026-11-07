@@ -26,9 +26,14 @@ export function dishLine(ctx, item) {
       <div class="dish__row">
         <h3 class="dish__name">${item.name[ctx.lang]}</h3>
         <span class="dish__leader" aria-hidden="true"></span>
-        <span class="dish__price">${info(ctx, price(ctx, item.price), 'price')}</span>
+        <span class="dish__price">${item.price != null && ctx.pricesIndicative
+          ? html`<span data-provisional="price-indicative" title="${ctx.t('pages.carte.indicative')}">${price(ctx, item.price)}<span class="dish__mark" aria-hidden="true">*</span></span>`
+          : info(ctx, price(ctx, item.price), 'price')}</span>
       </div>
-      ${item.status === 'a-valider' && html`<p class="dish__meta"><span class="badge" data-provisional="dish-pending">${t('pending')}</span></p>`}
+      ${item.status === 'a-valider' && (ctx.menuAllPending
+        // Toute la carte est à valider : la note en tête de carte le dit, le repère reste pour les lecteurs d'écran
+        ? html`<span class="visually-hidden" data-provisional="dish-pending">${t('pending')}</span>`
+        : html`<p class="dish__meta"><span class="badge" data-provisional="dish-pending">${t('pending')}</span></p>`)}
       ${desc && html`<p class="dish__desc">${desc}</p>`}
       ${ingredients && html`<p class="dish__ingredients"><span class="visually-hidden">${t('ingredients')} : </span>${ingredients}</p>`}
     </div>

@@ -30,16 +30,19 @@ test('siteUrl : domaines fictifs, locaux et non sécurisés refusés', () => {
 });
 
 test('carte : les limites viennent de menu.json', () => {
+  // Indépendant du contenu actuel de la carte : limites fixées juste sous le nombre de propositions présentes
+  const n = menu.categories[0].items.length;
+  const total = menu.categories.reduce((a, c) => a + c.items.length, 0);
   const m = clone(menu);
-  m.categories[0].max = 3; // 4 entrées présentes
-  assert.match(validateMenu(m, dict, LANGS).errors.join(), /4 propositions \(maximum 3\)/);
+  m.categories[0].max = n - 1;
+  assert.match(validateMenu(m, dict, LANGS).errors.join(), new RegExp(`${n} propositions \\(maximum ${n - 1}\\)`));
 
   const m2 = clone(menu);
-  m2.maxTotal = 4; // 5 propositions présentes
-  assert.match(validateMenu(m2, dict, LANGS).errors.join(), /5 propositions au total \(maximum 4\)/);
+  m2.maxTotal = total - 1;
+  assert.match(validateMenu(m2, dict, LANGS).errors.join(), new RegExp(`${total} propositions au total \\(maximum ${total - 1}\\)`));
 
   const m3 = clone(menu);
-  m3.categories[0].max = 5; // abaissé (sous le plafond du cahier) : accepté
+  m3.categories[0].max = n; // égal au nombre présent (sous le plafond du cahier) : accepté
   assert.deepEqual(validateMenu(m3, dict, LANGS).errors, []);
 });
 
@@ -71,10 +74,11 @@ test('carte : plafonds du cahier des charges infranchissables (6/10/4/5, 25 au t
 
 test('carte : 4 plats emblématiques au plus', () => {
   const m = clone(menu);
-  m.categories[0].items.forEach((i) => { i.signature = true; });
-  m.categories[3].items[0].signature = true; // 5 plats emblématiques
+  const all = m.categories.flatMap((c) => c.items);
+  all.forEach((i) => { delete i.signature; });
+  all.slice(0, 5).forEach((i) => { i.signature = true; }); // 5 plats emblématiques
   assert.match(validateMenu(m, dict, LANGS).errors.join(), /5 plats emblématiques/);
-  m.categories[3].items[0].signature = false;
+  all[4].signature = false;
   assert.deepEqual(validateMenu(m, dict, LANGS).errors, []);
 });
 

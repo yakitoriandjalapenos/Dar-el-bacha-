@@ -20,6 +20,13 @@ export function render(ctx) {
       { id: 'hebergement', title: s('hosting.title'), fields: ['hosting'] },
       { id: 'propriete', title: s('ip.title'), text: s('ip.text') },
       { id: 'credits', title: s('credits.title'), text: s('credits.fonts'), extra: html`<p lang="en" dir="ltr" class="legal-fonts">${FONTS}</p>`, fields: ['photoCredits'] },
+      ...(ctx.photoCredits.length ? [{
+        id: 'illustrations', title: ctx.t('demo.creditsTitle'), text: ctx.t('demo.creditsText'),
+        // Titres, auteurs et licences tels que publiés sur Wikimedia Commons (en latin dans toutes les langues)
+        extra: html`<ul class="photo-credits" lang="en" dir="ltr" data-provisional="photo-illustration">
+          ${ctx.photoCredits.map((c) => html`<li><a href="${c.source}" rel="noopener" target="_blank">${c.title}</a> — ${c.author} — <a href="${c.licenseUrl}" rel="noopener license" target="_blank">${c.license}</a></li>`)}
+        </ul>`,
+      }] : []),
       { id: 'donnees', title: s('privacy.title'), text: s('privacy.text'), extra: html`<p><a class="text-link" href="${ctx.path('confidentialite')}">${ctx.t('legal.privacy')}</a></p>` },
     ],
   });

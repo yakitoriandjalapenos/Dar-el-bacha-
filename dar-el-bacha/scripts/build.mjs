@@ -25,7 +25,7 @@ import { LANGS, DEFAULT_LANG, PAGES, LEGAL_PAGES, RESERVATION_RESULTS, pathFor }
 // Pages générées et référencées : les six pages principales et les pages juridiques
 const SITE_PAGES = [...PAGES, ...LEGAL_PAGES];
 import { layout } from '../src/components/layout.mjs';
-import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, collectImageRefs } from './lib/validate.mjs';
+import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, validateReviews, collectImageRefs } from './lib/validate.mjs';
 import { checkOutput, collectForeignTexts } from './lib/check-output.mjs';
 import { hoursLines, openingHoursSchema } from './lib/opening-hours.mjs';
 import { buildCsp, headersFile } from './lib/security-headers.mjs';
@@ -65,6 +65,9 @@ const site = await readJSON(path.join(SRC, 'content/site.json'));
 const menu = await readJSON(path.join(SRC, 'content/menu.json'));
 const gallery = await readJSON(path.join(SRC, 'content/gallery.json'));
 const media = await readJSON(path.join(SRC, 'content/media.json'));
+const reviews = await readJSON(path.join(SRC, 'content/reviews.json'));
+// Crédits des photographies d'illustration (aperçu) : source, auteur, licence de chaque image « illustrations/… »
+const photoCredits = existsSync(path.join(SRC, 'content/photo-credits.json')) ? await readJSON(path.join(SRC, 'content/photo-credits.json')) : { items: [] };
 // Manifeste des photos préparées par « npm run images » (dimensions, variantes, couleur dominante)
 const PHOTOS_MANIFEST = path.join(SRC, 'assets/img/photos/manifest.json');
 const photos = existsSync(PHOTOS_MANIFEST) ? await readJSON(PHOTOS_MANIFEST) : {};
@@ -78,11 +81,18 @@ const dict = Object.fromEntries(
 
 // Les catégories et les limites de la carte viennent exclusivement de menu.json.
 const menuCheck = validateMenu(menu, dict, LANGS);
-const checks = [validateI18n(dict, LANGS, DEFAULT_LANG), menuCheck, validateGallery(gallery, dict, LANGS), validateMedia(media, LANGS), validateSite(site, LANGS)];
+const checks = [validateI18n(dict, LANGS, DEFAULT_LANG), menuCheck, validateGallery(gallery, dict, LANGS), validateMedia(media, LANGS), validateSite(site, LANGS), validateReviews(reviews, LANGS)];
 const errors = checks.flatMap((c) => c.errors);
 // Chaque photo citée dans les contenus doit exister
 for (const { ref, where } of collectImageRefs({ media, gallery, menu })) {
   if (typeof ref === 'string' && !photos[ref]) errors.push(`${where} : photo « ${ref} » introuvable (lancer npm run images après avoir déposé l'original dans ressources/photos/).`);
+}
+// Photos utilisées ; toute illustration (banque d'images) doit avoir ses crédits : source, auteur, licence
+const usedImages = new Set(collectImageRefs({ media, gallery, menu }).map((r) => r.ref).filter((r) => typeof r === 'string'));
+for (const name of usedImages) {
+  if (!name.startsWith('illustrations/')) continue;
+  const c = photoCredits.items.find((x) => x.name === name);
+  if (!c || !c.source || !c.author || !c.license || !c.licenseUrl) errors.push(`photo-credits.json : crédits incomplets pour « ${name} » (source, auteur, licence et lien de licence obligatoires).`);
 }
 const warnings = checks.flatMap((c) => c.warnings);
 if (errors.length) fail('Build interrompu', errors);
@@ -183,6 +193,11 @@ function makeCtx(lang, pageId) {
     menu,
     gallery,
     media,
+    reviews,
+    // Crédits des seules illustrations réellement utilisées
+    photoCredits: photoCredits.items.filter((c) => usedImages.has(c.name)),
+    // Contenus de démonstration présents (bandeau d'aperçu sur toutes les pages)
+    demo: Boolean(reviews.demo || menu.pricesStatus === 'indicatif' || [...usedImages].some((n) => n.startsWith('illustrations/'))),
     reservationMaxDays: RESERVATION_MAX_DAYS,
     mode: MODE,
     preview: !PROD,
@@ -221,8 +236,10 @@ function makeCtx(lang, pageId) {
       const addr = ctx.address();
       return addr ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${site.name}, ${addr}`)}` : null;
     },
-    formatPrice: (n) =>
-      new Intl.NumberFormat(lang === 'ar' ? 'ar-MA-u-nu-latn' : `${lang}-MA`, { style: 'currency', currency: menu.currency, maximumFractionDigits: 0 }).format(n),
+    // Prix en dirhams, notés « DH » (usage marocain) ; chiffres latins dans les trois langues
+    formatPrice: (n) => `${new Intl.NumberFormat(`${lang === 'ar' ? 'fr' : lang}-MA`, { maximumFractionDigits: 0 }).format(n)}\u00a0${get(dict[lang], 'pages.carte.currency')}`,
+    pricesIndicative: menu.pricesStatus === 'indicatif',
+    menuAllPending: menu.categories.every((c) => c.items.every((i) => i.status === 'a-valider')),
 
     resolveImage: (ref) => resolveImage(ref),
     picture: (image) => pictureSources(image),
@@ -286,7 +303,8 @@ function restaurantSchema(ctx) {
   if (site.phone) data.telephone = site.phone;
   if (site.email) data.email = site.email;
   if (site.geo?.latitude && site.geo?.longitude) data.geo = { '@type': 'GeoCoordinates', latitude: site.geo.latitude, longitude: site.geo.longitude };
-  const opening = openingHoursSchema(site.openingHours);
+  // Horaires seulement proposés : jamais publiés dans les données structurées
+  const opening = site.hoursConfirmed === false ? null : openingHoursSchema(site.openingHours);
   if (opening?.length) data.openingHoursSpecification = opening;
   if (site.priceRange) data.priceRange = site.priceRange;
   const sameAs = Object.values(site.social || {}).filter(Boolean);
@@ -438,6 +456,10 @@ const PROVISIONAL_LABELS = {
   photo: 'photographies provisoires', 'dish-pending': 'plats « à valider »', 'menu-empty': 'catégories de la carte vides',
   'menu-notice': 'mention « carte en cours de validation »', 'signature-pending': 'texte d\'attente des plats emblématiques',
   'form-endpoint': 'formulaire de réservation non relié',
+  'hours-pending': 'horaires proposés, à confirmer',
+  'price-indicative': 'prix indicatifs (aperçu)',
+  'reviews-demo': 'avis fictifs de démonstration',
+  'photo-illustration': "photographies d'illustration (banques d'images)",
   'legal-draft': 'pages juridiques non validées par un juriste',
   legal: 'informations juridiques',
   conditions: 'conditions de réservation',
@@ -461,7 +483,7 @@ const walkLocalized = (v) => {
   if (LANG_CODES.every((c) => typeof v[c] === 'string')) return localized.push(v);
   Object.values(v).forEach(walkLocalized);
 };
-walkLocalized([site, menu, gallery, media]);
+walkLocalized([site, menu, gallery, media, reviews]);
 const foreignTexts = collectForeignTexts([
   ...Object.keys(flatDicts[DEFAULT_LANG]).map((k) => Object.fromEntries(LANG_CODES.map((c) => [c, flatDicts[c][k]]))),
   ...localized,

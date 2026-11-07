@@ -59,6 +59,7 @@ ${jsonLd.map((data) => html`<script type="application/ld+json">${raw(JSON.string
 </head>
 <body>
 <a class="skip-link" href="#contenu">${ctx.t('a11y.skip')}</a>
+${ctx.demo && html`<p class="demo-banner" data-provisional="demo-banner">${ctx.t('demo.banner')}</p>`}
 ${header(ctx)}
 <main id="contenu" tabindex="-1">
 ${body}

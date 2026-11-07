@@ -111,6 +111,7 @@ export function validateMenu(menu, dict, langs) {
   const where = 'menu.json';
 
   if (!/^[A-Z]{3}$/.test(menu.currency || '')) errors.push(`${where} : « currency » doit être un code de devise ISO (ex. MAD).`);
+  if (menu.pricesStatus !== undefined && !['indicatif', 'valide'].includes(menu.pricesStatus)) errors.push(`${where} : « pricesStatus » doit valoir « indicatif » ou « valide ».`);
   if (!isPosInt(menu.maxTotal)) errors.push(`${where} : « maxTotal » doit être un entier positif.`);
   else if (menu.maxTotal > MENU_CEILINGS.total) errors.push(`${where} : « maxTotal » (${menu.maxTotal}) dépasse le plafond du cahier des charges (${MENU_CEILINGS.total}).`);
   if (!Array.isArray(menu.categories) || !menu.categories.length) {
@@ -243,6 +244,7 @@ export function validateSite(site, langs) {
     errors.push(`${s} › whatsapp.number : format international en chiffres uniquement, sans + ni espaces (ex. 2125XXXXXXXX).`);
   }
   if (site.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(site.email)) errors.push(`${s} › email : adresse invalide.`);
+  if (site.hoursConfirmed !== undefined && typeof site.hoursConfirmed !== 'boolean') errors.push(`${s} › hoursConfirmed : true ou false attendu.`);
   if (site.phone !== null && site.phone !== undefined && !/^\+?[0-9 ().-]{8,20}$/.test(site.phone)) errors.push(`${s} › phone : numéro invalide.`);
 
   for (const [k, url] of Object.entries(site.social || {})) {
@@ -319,4 +321,24 @@ export function collectImageRefs({ media, gallery, menu }) {
   visit(gallery.items, 'gallery.json');
   menu.categories.forEach((c) => visit(c.items, `menu.json › ${c.id}`));
   return refs;
+}
+
+/** Témoignages (reviews.json) : avis fictifs signalés tant que « demo » vaut true. */
+export function validateReviews(reviews, langs) {
+  const errors = [];
+  const where = 'reviews.json';
+  if (!reviews || typeof reviews !== 'object') return { errors: [`${where} : fichier invalide.`], warnings: [] };
+  if (typeof reviews.demo !== 'boolean') errors.push(`${where} : « demo » doit valoir true (avis fictifs) ou false (avis réels).`);
+  if (!Array.isArray(reviews.items)) return { errors: [...errors, `${where} : « items » doit être une liste.`], warnings: [] };
+  const ids = new Set();
+  reviews.items.forEach((r, n) => {
+    const w = `${where} › items[${n}]`;
+    if (!r.id || ids.has(r.id)) errors.push(`${w} : identifiant absent ou en double.`);
+    ids.add(r.id);
+    if (!Number.isInteger(r.rating) || r.rating < 1 || r.rating > 5) errors.push(`${w} : « rating » doit être un entier de 1 à 5.`);
+    checkLocalized(r.text, langs, `${w} › text`, errors, { nullable: false });
+    checkLocalized(r.context, langs, `${w} › context`, errors, { nullable: false });
+    if (r.author !== null && r.author !== undefined) checkLocalized(r.author, langs, `${w} › author`, errors);
+  });
+  return { errors, warnings: [] };
 }
