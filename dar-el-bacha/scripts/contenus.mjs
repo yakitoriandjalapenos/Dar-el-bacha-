@@ -65,7 +65,9 @@ section(`La carte (actuellement ${items.length}/${MENU_CEILINGS.total} propositi
 section('Réservation', [
   item('Conditions de réservation et d\'annulation (FR, EN, AR)', site.reservation?.conditions, 'site.json › reservation.conditions', '{ fr, en, ar }'),
   item('Adresse e-mail qui reçoit les demandes', false, 'configuration du service (variable MAIL_TO)', 'adresse e-mail — jamais publiée'),
-  item('Service d\'envoi d\'e-mails (compte et clé)', false, 'configuration du service (MAIL_PROVIDER, MAIL_API_KEY)', 'Resend, Brevo… — secret côté serveur'),
+  item('Service d\'envoi d\'e-mails (compte et clé)', false, 'configuration du service (MAIL_PROVIDER, MAIL_API_KEY, MAIL_FROM)', 'Resend, Brevo… — secret côté serveur ; adresse d\'expédition vérifiée'),
+  item('Adresse de réponse de l\'accusé de réception envoyé au client (facultatif)', false, 'configuration du service (MAIL_REPLY_TO)', 'adresse e-mail'),
+  item('Anti-robot Cloudflare Turnstile (facultatif)', site.reservation?.antiSpam, 'site.json › reservation.antiSpam + TURNSTILE_SECRET', 'clé publique et clé secrète'),
   item('Adresse du service de réception une fois déployé', site.reservation?.formEndpoint, 'site.json › reservation.formEndpoint', '/api/reservation ou https://…'),
   item('Système de réservation externe (facultatif)', site.reservation?.bookingSystem, 'site.json › reservation.bookingSystem', 'uniquement s\'il gère réellement disponibilités et confirmations'),
 ]);

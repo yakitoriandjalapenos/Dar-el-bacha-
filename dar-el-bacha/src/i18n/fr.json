@@ -200,7 +200,8 @@
           "invalid": "Certains champs sont à compléter ou à corriger.",
           "notConfigured": "L'envoi en ligne n'est pas encore activé. Contactez le restaurant par WhatsApp ou par téléphone.",
           "simulated": "Mode test : le service d'envoi n'est pas encore activé, votre demande n'a pas été transmise au restaurant. Merci de le contacter par téléphone ou par WhatsApp.",
-          "rateLimited": "Plusieurs demandes ont déjà été envoyées depuis cette connexion. Merci de réessayer plus tard ou de contacter le restaurant par téléphone ou par WhatsApp."
+          "rateLimited": "Plusieurs demandes ont déjà été envoyées depuis cette connexion. Merci de réessayer plus tard ou de contacter le restaurant par téléphone ou par WhatsApp.",
+          "ackSent": "Un e-mail de réception vous a été envoyé (pensez à vérifier vos courriers indésirables)."
         },
         "errors": {
           "required": "Ce champ est obligatoire.",
@@ -322,7 +323,8 @@
           "title": "Services tiers",
           "whatsapp": "WhatsApp : le bouton WhatsApp ouvre une conversation avec un message prérempli que vous envoyez vous-même ; les échanges relèvent ensuite des conditions de WhatsApp.",
           "maps": "Google Maps : le plan d'accès n'est chargé qu'à votre demande, lorsque vous cliquez sur « Afficher le plan interactif » ; Google reçoit alors les données techniques habituelles (adresse IP, navigateur).",
-          "booking": "Système de réservation en ligne : s'il est proposé, son module n'est chargé qu'à votre demande et relève des conditions de son éditeur."
+          "booking": "Système de réservation en ligne : s'il est proposé, son module n'est chargé qu'à votre demande et relève des conditions de son éditeur.",
+          "antispam": "Protection anti-robot : si elle est activée sur le formulaire, la vérification Cloudflare Turnstile reçoit des données techniques (adresse IP, navigateur) afin de distinguer un visiteur d'un robot."
         },
         "cookies": {
           "title": "Cookies",
@@ -414,6 +416,16 @@
       "hosting": "Hébergeur",
       "emailProvider": "Service d'envoi d'e-mails",
       "photoCredits": "Crédits photographiques"
+    }
+  },
+  "email": {
+    "ack": {
+      "subject": "{site} — demande de réservation reçue, en attente de confirmation",
+      "greeting": "Bonjour {name},",
+      "received": "Nous avons bien reçu votre demande de réservation pour le {date} à {time}, pour {guests} personne(s).",
+      "notConfirmed": "Il ne s'agit pas encore d'une confirmation : le restaurant vous répondra pour confirmer votre table.",
+      "signature": "{site}",
+      "moreThan12": "plus de 12"
     }
   }
 }

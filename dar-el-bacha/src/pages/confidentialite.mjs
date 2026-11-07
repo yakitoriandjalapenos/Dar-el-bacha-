@@ -25,7 +25,7 @@ export function render(ctx) {
       { id: 'conservation', title: s('retention.title'), fields: ['dataRetention'] },
       { id: 'droits', title: s('rights.title'), text: s('rights.text'), fields: ['dataContactEmail'] },
       { id: 'cndp', title: s('cndp.title'), text: s('cndp.text'), extra: html`<p><a href="https://www.cndp.ma" target="_blank" rel="noopener" dir="ltr">www.cndp.ma</a></p>`, fields: ['cndpReference'] },
-      { id: 'tiers', title: s('thirdParty.title'), extra: list([s('thirdParty.whatsapp'), s('thirdParty.maps'), s('thirdParty.booking')]) },
+      { id: 'tiers', title: s('thirdParty.title'), extra: list([s('thirdParty.whatsapp'), s('thirdParty.maps'), s('thirdParty.booking'), ctx.site.reservation?.antiSpam && s('thirdParty.antispam')].filter(Boolean)) },
       { id: 'cookies', title: s('cookies.title'), text: s('cookies.text') },
       { id: 'securite', title: s('security.title'), text: s('security.text') },
     ],

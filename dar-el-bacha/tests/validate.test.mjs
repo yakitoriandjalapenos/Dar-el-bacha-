@@ -151,7 +151,9 @@ test('informations officielles : formats contrôlés', () => {
   assert.match(errors, /reservation\.conditions : version en manquante/);
   const s2 = clone(site);
   s2.reservation.bookingSystem = { url: 'https://reservation.example.ma', embedUrl: 'http://x' };
+  s2.reservation.antiSpam = { provider: 'recaptcha' };
   assert.match(validateSite(s2, LANGS).errors.join(), /embedUrl : adresse https/);
+  assert.match(validateSite(s2, LANGS).errors.join(), /reservation\.antiSpam : null ou/);
   assert.match(errors, /whatsapp\.number/);
   assert.match(errors, /email : adresse invalide/);
   assert.match(errors, /story : version en manquante/);

@@ -124,8 +124,9 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: ctx.t('pages.home.cta.e
             <p class="note" id="consent-info">${f('privacyInfo')} <a href="${ctx.path('confidentialite')}">${ctx.t('legal.privacy')}</a></p>
             <p class="field__error" id="e-consent"></p>
           </div>
+          ${site.reservation?.antiSpam?.provider === 'turnstile' && html`<div class="cf-turnstile" data-sitekey="${site.reservation.antiSpam.siteKey}" data-language="${ctx.lang}" data-theme="light" data-action="reservation"></div>`}
           <p class="note">${f('note')}</p>
-          ${!endpoint && html`<p class="note no-js-only">${f('noScript')}</p>`}
+          ${(!endpoint || site.reservation?.antiSpam) && html`<p class="note no-js-only">${f('noScript')}</p>`}
           <button class="btn" type="submit">${f('submit')}</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>

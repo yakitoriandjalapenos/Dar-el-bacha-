@@ -200,7 +200,8 @@
           "invalid": "Some fields need to be completed or corrected.",
           "notConfigured": "Online requests are not active yet. Please contact the restaurant via WhatsApp or by phone.",
           "simulated": "Test mode: the sending service is not active yet, your request has not been passed on to the restaurant. Please contact it by phone or WhatsApp.",
-          "rateLimited": "Several requests have already been sent from this connection. Please try again later or contact the restaurant by phone or WhatsApp."
+          "rateLimited": "Several requests have already been sent from this connection. Please try again later or contact the restaurant by phone or WhatsApp.",
+          "ackSent": "A receipt email has been sent to you (please check your spam folder)."
         },
         "errors": {
           "required": "This field is required.",
@@ -322,7 +323,8 @@
           "title": "Third-party services",
           "whatsapp": "WhatsApp: the WhatsApp button opens a conversation with a pre-filled message that you send yourself; the exchange is then governed by WhatsApp’s terms.",
           "maps": "Google Maps: the access map is only loaded when you ask for it, by clicking “Show the interactive map”; Google then receives the usual technical data (IP address, browser).",
-          "booking": "Online booking system: if offered, its module is only loaded when you ask for it and is governed by its provider’s terms."
+          "booking": "Online booking system: if offered, its module is only loaded when you ask for it and is governed by its provider’s terms.",
+          "antispam": "Anti-robot protection: if enabled on the form, the Cloudflare Turnstile check receives technical data (IP address, browser) to tell visitors from robots."
         },
         "cookies": {
           "title": "Cookies",
@@ -414,6 +416,16 @@
       "hosting": "Hosting provider",
       "emailProvider": "Email delivery service",
       "photoCredits": "Photo credits"
+    }
+  },
+  "email": {
+    "ack": {
+      "subject": "{site} — reservation request received, awaiting confirmation",
+      "greeting": "Hello {name},",
+      "received": "We have received your reservation request for {date} at {time}, for {guests} guest(s).",
+      "notConfirmed": "This is not yet a confirmation: the restaurant will reply to confirm your table.",
+      "signature": "{site}",
+      "moreThan12": "more than 12"
     }
   }
 }

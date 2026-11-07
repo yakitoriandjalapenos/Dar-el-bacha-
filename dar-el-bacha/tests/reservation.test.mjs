@@ -4,7 +4,8 @@ import assert from 'node:assert/strict';
 import { validateRequest, todayInMorocco } from '../server/reservation/rules.mjs';
 import { createRateLimiter } from '../server/reservation/rate-limit.mjs';
 import { createMailer, MailerConfigError } from '../server/reservation/mailer.mjs';
-import { createReservationHandler, composeEmail } from '../server/reservation/handler.mjs';
+import { createReservationHandler, composeEmail, composeAck } from '../server/reservation/handler.mjs';
+import { createTurnstileVerifier, TURNSTILE_VERIFY_URL } from '../server/reservation/turnstile.mjs';
 
 // Données DE TEST (fictives), jamais utilisées sur le site
 const NOW = new Date('2026-11-10T10:00:00Z'); // mardi 10 novembre 2026, 11:00 à Casablanca
@@ -93,6 +94,10 @@ const setup = (over = {}) => {
   });
   return { handle, logs, mailer };
 };
+const recorder = (fail = {}) => {
+  const sent = [];
+  return { sent, simulated: false, send: async (m) => { if (fail[m.to ? 'ack' : 'restaurant']) throw new Error('panne'); sent.push(m); return { delivered: true, simulated: false }; } };
+};
 const post = (handle, payload, { form = false, origin = 'https://www.exemple-test.ma', ip = '203.0.113.7' } = {}) =>
   handle({
     method: 'POST',
@@ -111,7 +116,7 @@ test('réponses : simulation, demande transmise (en attente), invalide, robot, p
   const live = setup({ mailer: { simulated: false, send: async () => ({ delivered: true, simulated: false }) } });
   r = await post(live.handle, VALID);
   assert.equal(r.status, 202);
-  assert.deepEqual(JSON.parse(r.body), { status: 'pending' }); // jamais « confirmée »
+  assert.deepEqual(JSON.parse(r.body), { status: 'pending', acknowledged: true }); // jamais « confirmée »
 
   r = await post(live.handle, { ...VALID, email: 'faux', consent: '' });
   assert.equal(r.status, 422);
@@ -157,4 +162,57 @@ test('journal : aucune donnée personnelle enregistrée', async () => {
   const dump = JSON.stringify(logs);
   for (const secret of ['Client Test', 'client@exemple-test.ma', '600 000 000', 'Allergie', '203.0.113.7', 'faux']) assert.ok(!dump.includes(secret), `« ${secret} » présent dans le journal`);
   assert.deepEqual(logs.map((l) => l.result), ['simulated', 'invalid']);
+});
+
+test('accusé de réception : envoyé au client seulement après la transmission réussie au restaurant, dans sa langue', async () => {
+  const mailer = recorder();
+  const handle = createReservationHandler({ mailer, limiter: createRateLimiter(), now: () => NOW, logger: () => {}, siteNames: { fr: 'DAR EL BACHA', ar: 'دار الباشا' } });
+  const r = await post(handle, { ...VALID, lang: 'ar' });
+  assert.deepEqual(JSON.parse(r.body), { status: 'pending', acknowledged: true });
+  assert.equal(mailer.sent.length, 2);
+  assert.equal(mailer.sent[0].to, undefined); // 1. au restaurant
+  assert.equal(mailer.sent[1].to, VALID.email); // 2. au client
+  assert.match(mailer.sent[1].subject, /^دار الباشا — /);
+  assert.match(mailer.sent[1].text, /ليس تأكيدًا/);
+
+  // Transmission au restaurant impossible : aucun accusé de réception, erreur claire
+  const down = recorder({ restaurant: true });
+  const h2 = createReservationHandler({ mailer: down, limiter: createRateLimiter(), now: () => NOW, logger: () => {} });
+  assert.equal((await post(h2, VALID)).status, 502);
+  assert.equal(down.sent.length, 0);
+
+  // Accusé impossible : la demande reste transmise, le site ne mentionne pas d'accusé
+  const ackDown = recorder({ ack: true });
+  const h3 = createReservationHandler({ mailer: ackDown, limiter: createRateLimiter(), now: () => NOW, logger: () => {} });
+  assert.deepEqual(JSON.parse((await post(h3, VALID)).body), { status: 'pending', acknowledged: false });
+
+  // Accusé désactivé
+  const off = recorder();
+  const h4 = createReservationHandler({ mailer: off, limiter: createRateLimiter(), now: () => NOW, logger: () => {}, ack: false });
+  assert.deepEqual(JSON.parse((await post(h4, VALID)).body), { status: 'pending', acknowledged: false });
+  assert.equal(off.sent.length, 1);
+});
+
+test('accusé de réception : contenu en français et en anglais, jamais une confirmation', () => {
+  const fr = composeAck({ ...VALID, guests: '12+' }, { siteNames: { fr: 'DAR EL BACHA' } });
+  assert.equal(fr.subject, 'DAR EL BACHA — demande de réservation reçue, en attente de confirmation');
+  assert.match(fr.text, /pour plus de 12 personne\(s\)/);
+  assert.match(fr.text, /pas encore d'une confirmation/);
+  const en = composeAck({ ...VALID, lang: 'en' }, { siteNames: { fr: 'DAR EL BACHA' } });
+  assert.match(en.text, /This is not yet a confirmation/);
+});
+
+test('anti-robot Turnstile (facultatif) : jeton absent ou refusé → rejet, jeton valide → accepté', async () => {
+  assert.equal(createTurnstileVerifier({}), null); // non configuré : aucune vérification externe
+  const calls = [];
+  const verify = createTurnstileVerifier({ secret: 'SECRET-TEST', fetch: async (url, init) => { calls.push({ url, body: String(init.body) }); return { ok: true, json: async () => ({ success: init.body.get('response') === 'bon-jeton' }) }; } });
+  assert.equal(await verify('', '203.0.113.7'), false);
+  assert.equal(await verify('mauvais', '203.0.113.7'), false);
+  assert.equal(await verify('bon-jeton', '203.0.113.7'), true);
+  assert.equal(calls[0].url, TURNSTILE_VERIFY_URL);
+  assert.match(calls[0].body, /secret=SECRET-TEST/);
+
+  const handle = createReservationHandler({ mailer: createMailer(), limiter: createRateLimiter(), now: () => NOW, logger: () => {}, verifyHuman: verify });
+  assert.deepEqual(JSON.parse((await post(handle, VALID)).body), { error: 'rejected' });
+  assert.deepEqual(JSON.parse((await post(handle, { ...VALID, 'cf-turnstile-response': 'bon-jeton' })).body), { status: 'simulated' });
 });

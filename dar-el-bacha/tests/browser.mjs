@@ -368,7 +368,8 @@ try {
     external.length = 0;
     await page.goto(`${FX}/fr/reservation/`, { waitUntil: 'networkidle' });
     const paths = await page.$$eval('.path__link', (a) => a.map((x) => x.getAttribute('href')));
-    const moduleBefore = external.length;
+    // Seules comptent les requêtes vers le module de réservation (une requête tardive du plan de la page précédente est ignorée)
+    const moduleBefore = external.filter((u) => u.includes('reservation.domaine-de-test.ma')).length;
     await page.locator('[data-embed-target="booking-embed"]').click();
     await page.waitForSelector('#booking-embed iframe');
     check('Réservation : 3 parcours distincts quand le système est configuré, module chargé seulement à la demande',
@@ -390,6 +391,9 @@ try {
     // Horaires DE TEST : fermé le lundi, service du soir les autres jours
     const evening = [['19:00', '23:00']];
     siteR.openingHours = { days: { mon: [], tue: evening, wed: evening, thu: evening, fri: evening, sat: evening, sun: evening } };
+    // Numéro WhatsApp DE TEST et clé publique Turnstile de test documentée par Cloudflare (jamais dans le projet)
+    siteR.whatsapp = { number: '212600000000' };
+    siteR.reservation.antiSpam = { provider: 'turnstile', siteKey: '1x00000000000000000000AA' };
     writeFileSync(siteFile, JSON.stringify(siteR, null, 2));
     const b = spawnSync(process.execPath, ['scripts/build.mjs'], { cwd: tmpR, encoding: 'utf8', env: { ...process.env, FORM_ENDPOINT: '/api/reservation' } });
     if (b.status !== 0) throw new Error(`build de la copie de test : ${b.stderr}`);
@@ -414,9 +418,18 @@ try {
     const state = (page) => page.evaluate(() => ({ state: document.querySelector('.form-status').dataset.state, text: document.querySelector('.form-status').textContent, errors: Object.fromEntries([...document.querySelectorAll('.field__error')].filter((e) => e.textContent).map((e) => [e.id, e.textContent])) }));
 
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const thirdParty = [];
+    await ctx.route('https://challenges.cloudflare.com/**', (r) => { thirdParty.push(r.request().url()); r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }); });
     const page = await ctx.newPage();
-    await page.goto(`${API_BASE}/fr/reservation/`);
+    await page.goto(`${API_BASE}/fr/reservation/`, { waitUntil: 'networkidle' });
+    const beforeInteraction = thirdParty.length;
+    const waBefore = await page.getAttribute('[data-whatsapp]', 'href');
     await fill(page, { date: MONDAY });
+    const waAfter = decodeURIComponent((await page.getAttribute('[data-whatsapp]', 'href')).split('text=')[1]);
+    check('WhatsApp : lien vers le numéro configuré, message prérempli en français complété par la saisie, envoyé par le client lui-même',
+      waBefore.startsWith('https://wa.me/212600000000?text=') && /^Bonjour, je souhaite réserver une table/.test(waAfter) && /Nom : Client Test/.test(waAfter) && /Personnes : 2/.test(waAfter)
+      && (await page.getAttribute('[data-whatsapp]', 'target')) === '_blank', waAfter);
+    check('Anti-robot : script tiers chargé seulement après la première interaction avec le formulaire', beforeInteraction === 0 && thirdParty.length === 1, `${beforeInteraction} → ${thirdParty.length}`);
     await page.click('#reservation-form [type=submit]');
     let st = await state(page);
     check('Service : jour de fermeture refusé dans le navigateur (horaires fournis)', /fermé ce jour-là/.test(st.errors['e-date'] || ''), JSON.stringify(st));
@@ -433,12 +446,18 @@ try {
 
     // Réponses du service simulées par interception : en attente, refus serveur, limite d'envois
     const reply = (status, body) => page.route('**/api/reservation', (r) => r.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) }), { times: 1 });
-    await reply(202, { status: 'pending' });
+    await reply(202, { status: 'pending', acknowledged: false });
     await page.click('#reservation-form [type=submit]');
     await page.waitForFunction(() => document.querySelector('.form-status').dataset.state === 'success');
     st = await state(page);
     const reset = await page.inputValue('#f-name');
     check('Service : demande transmise → « en attente de confirmation », jamais « confirmée », formulaire vidé', /en attente de confirmation/.test(st.text) && !/confirmée/.test(st.text) && reset === '', JSON.stringify(st));
+    check('Service : aucun accusé de réception mentionné s\'il n\'a pas été envoyé', !/e-mail de réception/.test(st.text), st.text);
+    await fill(page);
+    await reply(202, { status: 'pending', acknowledged: true });
+    await page.click('#reservation-form [type=submit]');
+    await page.waitForFunction(() => /e-mail de réception/.test(document.querySelector('.form-status').textContent));
+    check('Service : accusé de réception mentionné seulement lorsqu\'il a réellement été envoyé', true);
     await fill(page);
     await reply(422, { error: 'invalid', fields: { date: 'closure' } });
     await page.click('#reservation-form [type=submit]');
@@ -450,6 +469,14 @@ try {
     await page.waitForFunction(() => /Plusieurs demandes/.test(document.querySelector('.form-status').textContent));
     check('Service : limite d\'envois signalée clairement', true);
     await ctx.close();
+
+    const arCtx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await arCtx.route('https://challenges.cloudflare.com/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
+    const ar = await arCtx.newPage();
+    await ar.goto(`${API_BASE}/ar/reservations/`);
+    const waAr = decodeURIComponent((await ar.getAttribute('[data-whatsapp]', 'href')).split('text=')[1]);
+    check('WhatsApp (arabe) : message prérempli en arabe', /^مرحبًا|^مرحبا|طاولة/.test(waAr), waAr);
+    await arCtx.close();
 
     // Sans JavaScript : envoi classique, validé par le navigateur et le serveur, page de résultat dans la langue
     const noJs = await browser.newContext({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });

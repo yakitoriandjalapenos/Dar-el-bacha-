@@ -11,15 +11,31 @@ restaurant, et le site l'indique toujours ainsi.
 | `reservation/rules.mjs` | Validation côté serveur : champs obligatoires, formats, date au fuseau de Casablanca, horizon de réservation, créneaux de 15 minutes, consentement, horaires et fermetures (si fournis dans `site.json › openingHours`), anti-robot (piège invisible, saisie trop rapide). Seul ce contrôle fait foi ; celui du navigateur sert au confort. |
 | `reservation/rate-limit.mjs` | Limite d'envois par connexion (5 par 10 minutes par défaut). L'adresse IP n'est conservée qu'en empreinte salée, en mémoire, oubliée à la fin de la fenêtre. |
 | `reservation/mailer.mjs` | Envoi de l'e-mail au restaurant : `simulation` (par défaut), `resend` ou `brevo`. |
-| `reservation/handler.mjs` | Traitement d'une requête, indépendant de l'hébergeur : `handle({ method, headers, body, ip })` → `{ status, headers, body }`. |
+| `reservation/handler.mjs` | Traitement d'une requête, indépendant de l'hébergeur : `handle({ method, headers, body, ip })` → `{ status, headers, body }`. Envoie ensuite l'accusé de réception au client. |
+| `reservation/turnstile.mjs` | Vérification anti-robot Cloudflare Turnstile, uniquement si elle est configurée. |
 | `node-adapter.mjs` | Branchement sur un serveur Node.js (`http`). |
 | `index.mjs` | Service configuré par les variables d'environnement (utilisé par `npm run dev` et `npm run serve`). |
+
+## Accusé de réception au client
+
+Après la transmission **réussie** de la demande au restaurant (et jamais avant), le service envoie au client un e-mail dans sa
+langue : « demande reçue, en attente de confirmation », sans jamais l'annoncer comme une réservation confirmée. S'il échoue,
+la demande reste transmise ; la réponse indique `acknowledged: false` et le site ne mentionne pas d'accusé de réception.
+En mode simulation, rien n'est envoyé, ni au restaurant ni au client.
+
+## Anti-robot
+
+Toujours actifs : piège invisible, délai minimal de saisie (mesuré par le navigateur), limite d'envois par connexion, contrôle
+d'origine. Facultatif : **Cloudflare Turnstile** (clé publique dans `site.json › reservation.antiSpam`, clé secrète
+`TURNSTILE_SECRET`) ; son script n'est chargé qu'à la première interaction avec le formulaire, et la politique de
+confidentialité le mentionne automatiquement. Turnstile nécessite JavaScript : sans JavaScript, le visiteur est invité à
+téléphoner ou à écrire sur WhatsApp.
 
 ## Réponses
 
 | Résultat | Avec JavaScript (JSON) | Sans JavaScript |
 |---|---|---|
-| Demande transmise au restaurant, **en attente de confirmation** | `202 { "status": "pending" }` | redirection 303 vers `/<langue>/<réservation>/statut/pending/` |
+| Demande transmise au restaurant, **en attente de confirmation** | `202 { "status": "pending", "acknowledged": true \| false }` | redirection 303 vers `/<langue>/<réservation>/statut/pending/` |
 | Mode test : **rien n'a été transmis** | `200 { "status": "simulated" }` | `…/statut/simulated/` |
 | Champs invalides | `422 { "error": "invalid", "fields": { "date": "closedDay" } }` | `…/statut/invalid/` |
 | Trop de demandes | `429 { "error": "rate-limited", "retryAfter": 600 }` (+ en-tête `Retry-After`) | `…/statut/rate-limited/` |
@@ -38,6 +54,9 @@ Les pages de résultat sont produites par le build dans les trois langues et ne 
 | `ALLOWED_ORIGINS` | Origines autorisées, séparées par des virgules | `siteUrl` de `site.json` et les adresses locales |
 | `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW_MIN` | Limite d'envois par connexion | 5 par 10 minutes |
 | `RESERVATION_MAX_DAYS` | Horizon de réservation (jours), à définir aussi au build | 180 |
+| `MAIL_ACK` | `false` pour ne pas envoyer d'accusé de réception au client | envoyé |
+| `MAIL_REPLY_TO` | Adresse de réponse de l'accusé de réception (facultatif) | — |
+| `TURNSTILE_SECRET` | Clé secrète Cloudflare Turnstile (anti-robot facultatif ; clé publique dans `site.json › reservation.antiSpam`) | — |
 
 Avec un service d'e-mail réel, la configuration est vérifiée au démarrage : une clé ou une adresse manquante arrête le
 service plutôt que de perdre des demandes. Les adaptateurs `resend` et `brevo` suivent la documentation publique de ces

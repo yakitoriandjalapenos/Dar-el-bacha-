@@ -221,7 +221,17 @@
 
     // Temps de saisie (anti-robot côté serveur) : mesuré à la première interaction
     const started = form.elements.started;
-    form.addEventListener('focusin', () => { if (started && !started.value) started.value = String(Date.now()); }, { once: true });
+    // Anti-robot Turnstile (seulement s'il est configuré) : script tiers chargé à la première interaction, jamais avant
+    const turnstileBox = form.querySelector('.cf-turnstile');
+    form.addEventListener('focusin', () => {
+      if (started && !started.value) started.value = String(Date.now());
+      if (turnstileBox) {
+        const s = document.createElement('script');
+        s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+        s.async = true;
+        document.head.append(s);
+      }
+    }, { once: true });
 
     const errorFor = (input) => {
       if (input.type === 'checkbox') return input.required && !input.checked ? errorsText.consent : '';
@@ -308,8 +318,9 @@
           form.reset();
           if (started) started.value = '';
           fields.forEach((input) => input.removeAttribute('aria-invalid'));
-          // Demande transmise ≠ réservation confirmée : elle reste en attente de la réponse du restaurant
-          setStatus('success', msg.success);
+          // Demande transmise ≠ réservation confirmée : elle reste en attente de la réponse du restaurant.
+          // L'accusé de réception n'est mentionné que s'il a réellement été envoyé au client.
+          setStatus('success', body.acknowledged && msg.ackSent ? `${msg.success} ${msg.ackSent}` : msg.success);
         } else if (res.ok && body.status === 'simulated') {
           // Mode test : rien n'a été transmis au restaurant, on le dit
           setStatus('error', msg.simulated);
@@ -332,6 +343,8 @@
       } finally {
         clearTimeout(timeout);
         submit.disabled = false;
+        // Un jeton anti-robot ne sert qu'une fois
+        if (turnstileBox && window.turnstile) safely('turnstile', () => window.turnstile.reset(turnstileBox));
       }
     });
   });

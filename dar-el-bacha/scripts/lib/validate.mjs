@@ -259,6 +259,10 @@ export function validateSite(site, langs) {
     else if (system.embedUrl !== undefined && system.embedUrl !== null && !isHttpsUrl(system.embedUrl)) errors.push(`${s} › reservation.bookingSystem.embedUrl : adresse https:// attendue.`);
   }
   checkLocalized(site.reservation?.conditions, langs, `${s} › reservation.conditions`, errors);
+  const antiSpam = site.reservation?.antiSpam;
+  if (antiSpam !== null && antiSpam !== undefined && !(isObj(antiSpam) && antiSpam.provider === 'turnstile' && isNonEmpty(antiSpam.siteKey))) {
+    errors.push(`${s} › reservation.antiSpam : null ou { "provider": "turnstile", "siteKey": "…" } attendu.`);
+  }
 
   if (!['symbole', 'complet'].includes(site.logo?.header || 'symbole')) errors.push(`${s} › logo.header : « symbole » ou « complet » attendu.`);
   const { latitude, longitude } = site.geo || {};

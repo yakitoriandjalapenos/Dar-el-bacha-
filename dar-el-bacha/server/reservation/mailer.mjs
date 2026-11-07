@@ -4,6 +4,8 @@
     MAIL_API_KEY  = clé du service (secret, uniquement côté serveur)
     MAIL_TO       = adresse du restaurant qui reçoit les demandes (jamais publiée)
     MAIL_FROM     = adresse d'expédition vérifiée auprès du service
+    MAIL_REPLY_TO = adresse de réponse indiquée dans l'accusé de réception envoyé au client (facultatif)
+    MAIL_ACK      = « false » pour ne pas envoyer d'accusé de réception au client (envoyé par défaut)
   Mode simulation : rien n'est envoyé ; le résultat l'indique explicitement (delivered: false,
   simulated: true) et le site affiche « mode test », sans jamais prétendre que la demande est partie.
   Les adaptateurs resend et brevo suivent la documentation publique de ces services ; ils n'ont pas
@@ -16,12 +18,12 @@ const PROVIDERS = {
   resend: (cfg, msg) => ({
     url: 'https://api.resend.com/emails',
     headers: { Authorization: `Bearer ${cfg.apiKey}`, 'Content-Type': 'application/json' },
-    body: { from: cfg.from, to: [cfg.to], subject: msg.subject, text: msg.text, reply_to: msg.replyTo },
+    body: { from: cfg.from, to: [msg.to || cfg.to], subject: msg.subject, text: msg.text, ...(msg.replyTo && { reply_to: msg.replyTo }) },
   }),
   brevo: (cfg, msg) => ({
     url: 'https://api.brevo.com/v3/smtp/email',
     headers: { 'api-key': cfg.apiKey, 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: { sender: { email: cfg.from }, to: [{ email: cfg.to }], subject: msg.subject, textContent: msg.text, replyTo: { email: msg.replyTo } },
+    body: { sender: { email: cfg.from }, to: [{ email: msg.to || cfg.to }], subject: msg.subject, textContent: msg.text, ...(msg.replyTo && { replyTo: { email: msg.replyTo } }) },
   }),
 };
 

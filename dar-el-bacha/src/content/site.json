@@ -56,7 +56,9 @@
     "bookingSystem": null,
     "_bookingSystem": "Système de réservation connecté (optionnel), uniquement lorsqu'il est réellement configuré : { \"url\": \"https://…\" } pour un lien, et éventuellement \"embedUrl\": \"https://…\" pour un module intégré à la page (chargé à la demande). Jamais de disponibilités simulées.",
     "_conditions": "Conditions de réservation validées par le restaurant (délais, groupes, annulation…) : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
-    "conditions": null
+    "conditions": null,
+    "_antiSpam": "Anti-robot facultatif Cloudflare Turnstile : { \"provider\": \"turnstile\", \"siteKey\": \"clé publique\" }. La clé secrète se configure uniquement côté serveur (TURNSTILE_SECRET). Laissé à null : piège invisible, délai de saisie et limite d'envois.",
+    "antiSpam": null
   },
 
   "legal": {

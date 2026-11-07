@@ -1,6 +1,6 @@
 # Informations et fichiers à fournir — DAR EL BACHA
 
-Document généré par `npm run contenus` à partir de l'état réel du projet. **0 élément(s) fourni(s) sur 57.**
+Document généré par `npm run contenus` à partir de l'état réel du projet. **0 élément(s) fourni(s) sur 59.**
 
 Aucune de ces informations n'est inventée sur le site : tant qu'un élément manque, le site affiche un repère `[À CONFIRMER]` ou un emplacement provisoire, et `npm run build:prod` refuse la mise en production.
 
@@ -47,7 +47,9 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 |---|---|---|---|
 | ❌ | Conditions de réservation et d'annulation (FR, EN, AR) | `site.json › reservation.conditions` | { fr, en, ar } |
 | ❌ | Adresse e-mail qui reçoit les demandes | `configuration du service (variable MAIL_TO)` | adresse e-mail — jamais publiée |
-| ❌ | Service d'envoi d'e-mails (compte et clé) | `configuration du service (MAIL_PROVIDER, MAIL_API_KEY)` | Resend, Brevo… — secret côté serveur |
+| ❌ | Service d'envoi d'e-mails (compte et clé) | `configuration du service (MAIL_PROVIDER, MAIL_API_KEY, MAIL_FROM)` | Resend, Brevo… — secret côté serveur ; adresse d'expédition vérifiée |
+| ❌ | Adresse de réponse de l'accusé de réception envoyé au client (facultatif) | `configuration du service (MAIL_REPLY_TO)` | adresse e-mail |
+| ❌ | Anti-robot Cloudflare Turnstile (facultatif) | `site.json › reservation.antiSpam + TURNSTILE_SECRET` | clé publique et clé secrète |
 | ❌ | Adresse du service de réception une fois déployé | `site.json › reservation.formEndpoint` | /api/reservation ou https://… |
 | ❌ | Système de réservation externe (facultatif) | `site.json › reservation.bookingSystem` | uniquement s'il gère réellement disponibilités et confirmations |
 

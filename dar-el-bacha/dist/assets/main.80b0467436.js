@@ -185,7 +185,16 @@ const inside = rangesOf(date).some(([a, b]) => { const s = minutes(a); const e =
 return inside ? '' : errorsText.outsideHours;
 };
 const started = form.elements.started;
-form.addEventListener('focusin', () => { if (started && !started.value) started.value = String(Date.now()); }, { once: true });
+const turnstileBox = form.querySelector('.cf-turnstile');
+form.addEventListener('focusin', () => {
+if (started && !started.value) started.value = String(Date.now());
+if (turnstileBox) {
+const s = document.createElement('script');
+s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+s.async = true;
+document.head.append(s);
+}
+}, { once: true });
 const errorFor = (input) => {
 if (input.type === 'checkbox') return input.required && !input.checked ? errorsText.consent : '';
 const v = input.value.trim();
@@ -262,7 +271,7 @@ if (res.status === 202 && body.status === 'pending') {
 form.reset();
 if (started) started.value = '';
 fields.forEach((input) => input.removeAttribute('aria-invalid'));
-setStatus('success', msg.success);
+setStatus('success', body.acknowledged && msg.ackSent ? `${msg.success} ${msg.ackSent}` : msg.success);
 } else if (res.ok && body.status === 'simulated') {
 setStatus('error', msg.simulated);
 } else if (res.status === 422 && body.fields) {
@@ -283,6 +292,7 @@ setStatus('error', msg.error);
 } finally {
 clearTimeout(timeout);
 submit.disabled = false;
+if (turnstileBox && window.turnstile) safely('turnstile', () => window.turnstile.reset(turnstileBox));
 }
 });
 });

@@ -5,6 +5,8 @@
                                                        (par défaut : siteUrl de site.json et les adresses locales)
     RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MIN              limite d'envois par connexion (5 par 10 minutes)
     RESERVATION_MAX_DAYS                               horizon de réservation en jours (180)
+    MAIL_ACK, MAIL_REPLY_TO                            accusé de réception au client (activé par défaut)
+    TURNSTILE_SECRET                                   clé secrète Cloudflare Turnstile (anti-robot facultatif)
   Les horaires d'ouverture sont lus dans src/content/site.json (contrôle des jours et heures).
 */
 import { readFileSync } from 'node:fs';
@@ -12,6 +14,7 @@ import { createReservationHandler } from './reservation/handler.mjs';
 import { createRateLimiter } from './reservation/rate-limit.mjs';
 import { mailerFromEnv } from './reservation/mailer.mjs';
 import { toNodeHandler } from './node-adapter.mjs';
+import { createTurnstileVerifier } from './reservation/turnstile.mjs';
 
 export function createReservationService(env = process.env, { port } = {}) {
   const site = JSON.parse(readFileSync(new URL('../src/content/site.json', import.meta.url), 'utf8'));
@@ -24,6 +27,10 @@ export function createReservationService(env = process.env, { port } = {}) {
     openingHours: site.openingHours,
     allowedOrigins,
     maxDaysAhead: Number(env.RESERVATION_MAX_DAYS) || 180,
+    verifyHuman: createTurnstileVerifier({ secret: env.TURNSTILE_SECRET }),
+    ack: env.MAIL_ACK !== 'false',
+    ackReplyTo: env.MAIL_REPLY_TO,
+    siteNames: { fr: site.name, en: site.name, ar: site.nameAr },
   });
   return { handle, node: toNodeHandler(handle), mailer };
 }
