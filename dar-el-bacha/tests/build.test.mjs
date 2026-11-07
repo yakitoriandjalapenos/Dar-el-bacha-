@@ -78,7 +78,8 @@ test('production acceptée quand tous les contenus sont renseignés (données de
     siteUrl: 'https://www.domaine-de-test.ma',
     address: { street: 'Adresse de test', postalCode: '20000', district: 'Quartier de test' },
     geo: { latitude: 33.5, longitude: -7.6 },
-    phone: '+212 500 000 000', email: 'contact@domaine-de-test.ma', hours: T('Horaires'), story: T('Présentation'),
+    phone: '+212 500 000 000', email: 'contact@domaine-de-test.ma', hours: null, story: T('Présentation'), priceRange: 'MAD 000 (test)',
+    openingHours: { days: { mon: [], tue: [['12:00', '15:00']], wed: [['12:00', '15:00']], thu: [['12:00', '15:00']], fri: [['12:00', '15:00']], sat: [['19:00', '23:00']], sun: [] } },
     whatsapp: { number: '212600000000' }, googleMapsUrl: 'https://maps.google.com/?q=test',
     social: { instagram: 'https://www.instagram.com/test', facebook: 'https://www.facebook.com/test', tripadvisor: 'https://www.tripadvisor.com/test' },
     reservation: { formEndpoint: '/api/reservation', bookingSystem: null, conditions: T('Conditions') },
@@ -113,6 +114,11 @@ test('production acceptée quand tous les contenus sont renseignés (données de
   assert.match(home, /og:image" content="https:\/\/www\.domaine-de-test\.ma\/og-image\.jpg"/);
   assert.equal((home.match(/fetchpriority="high"/g) || []).length, 1);
   assert.doesNotMatch(home, /data-provisional/);
+  // Horaires structurés : liste affichée (jours traduits) et données schema.org
+  assert.match(home, /<li class="hours__line is-closed">\s*<span class="hours__day">lundi<\/span>/);
+  assert.match(home, /"openingHoursSpecification":\[\{"@type":"OpeningHoursSpecification","dayOfWeek":"https:\/\/schema.org\/Tuesday","opens":"12:00","closes":"15:00"\}/);
+  assert.match(home, /"priceRange":"MAD 000 \(test\)"/);
+  assert.match(await html('ar/index.html'), /<span class="hours__day">الاثنين<\/span>/);
   assert.match(await html('404.html'), /<meta name="robots" content="noindex">/);
 
   const sitemap = await html('sitemap.xml');

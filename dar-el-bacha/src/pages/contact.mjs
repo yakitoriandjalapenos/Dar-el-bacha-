@@ -2,6 +2,7 @@ import { html } from '../../scripts/lib/html.mjs';
 import { pageHead, info, button } from '../components/ui.mjs';
 import { media } from '../components/media.mjs';
 import { eyebrow, frieze } from '../components/sections.mjs';
+import { hoursBlock } from '../components/hours.mjs';
 
 const SOCIAL_LABELS = { instagram: 'Instagram', facebook: 'Facebook', tripadvisor: 'Tripadvisor' };
 
@@ -33,7 +34,7 @@ ${pageHead({ title: p('title'), lead: p('lead'), kicker: p('kicker') })}
         <div><dt>${p('address')}</dt><dd>${info(ctx, ctx.address(), 'address')}</dd></div>
         <div><dt>${p('phone')}</dt><dd>${site.phone ? html`<a href="tel:${site.phone.replace(/\s+/g, '')}" dir="ltr">${site.phone}</a>` : info(ctx, null, 'phone')}</dd></div>
         <div><dt>${p('email')}</dt><dd>${site.email ? html`<a href="mailto:${site.email}">${site.email}</a>` : info(ctx, null, 'email')}</dd></div>
-        <div><dt>${p('hours')}</dt><dd>${info(ctx, ctx.hours(), 'hours')}</dd></div>
+        <div><dt>${p('hours')}</dt><dd>${hoursBlock(ctx)}</dd></div>
         <div><dt>${p('whatsapp')}</dt><dd>${wa ? html`<a href="https://wa.me/${wa}" target="_blank" rel="noopener" dir="ltr">+${wa}</a>` : info(ctx, null, 'whatsapp')}</dd></div>
         <div><dt>${p('social')}</dt><dd>${socials.length
           ? socials.map(([k, url], i) => html`${i ? ', ' : ''}<a href="${url}" target="_blank" rel="noopener">${SOCIAL_LABELS[k] || k}</a>`)

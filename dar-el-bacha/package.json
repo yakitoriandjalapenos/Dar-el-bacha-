@@ -13,6 +13,7 @@
     "dev": "node scripts/dev.mjs",
     "serve": "node scripts/serve.mjs",
     "images": "node scripts/images.mjs",
+    "contenus": "node scripts/contenus.mjs",
     "test": "node --test",
     "test:browser": "node tests/browser.mjs"
   }

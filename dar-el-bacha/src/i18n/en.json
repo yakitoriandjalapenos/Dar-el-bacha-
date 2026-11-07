@@ -258,5 +258,8 @@
       "title": "Page not found",
       "lead": "This page does not exist or has been moved."
     }
+  },
+  "hours": {
+    "closed": "Closed"
   }
 }

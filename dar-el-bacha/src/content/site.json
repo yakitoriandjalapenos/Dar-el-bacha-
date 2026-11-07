@@ -32,7 +32,12 @@
     "number": null
   },
 
+  "_hours": "Horaires en texte libre { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" } : optionnel si openingHours est renseigné (l'affichage est alors produit automatiquement dans les trois langues).",
   "hours": null,
+  "_openingHours": "Horaires structurés, utilisés pour l'affichage, les données Google et le contrôle des demandes de réservation : { \"days\": { \"mon\": [[\"12:00\", \"15:00\"], [\"19:00\", \"23:00\"]], \"tue\": [], \"wed\": …, \"sun\": … }, \"closures\": [\"AAAA-MM-JJ\"] }. Liste vide = jour de fermeture.",
+  "openingHours": null,
+  "_priceRange": "Gamme de prix indicative publiée dans les données Google (ex. \"MAD 400–700 par personne\"), fournie par le restaurant.",
+  "priceRange": null,
 
   "_story": "Présentation et histoire du restaurant (page Notre histoire), fournies par le restaurant : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
   "story": null,
@@ -52,5 +57,27 @@
     "_bookingSystem": "Système de réservation connecté (optionnel), uniquement lorsqu'il est réellement configuré : { \"url\": \"https://…\" } pour un lien, et éventuellement \"embedUrl\": \"https://…\" pour un module intégré à la page (chargé à la demande). Jamais de disponibilités simulées.",
     "_conditions": "Conditions de réservation validées par le restaurant (délais, groupes, annulation…) : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
     "conditions": null
+  },
+
+  "legal": {
+    "_comment": "Informations juridiques des pages Mentions légales et Politique de confidentialité (loi 09-08). À fournir par le restaurant et à faire valider par un juriste ; rien n'est déduit ni inventé. « validated » ne passe à true qu'après cette validation : d'ici là, les pages affichent « Document en cours de validation juridique » et la production est refusée.",
+    "companyName": null,
+    "legalForm": null,
+    "shareCapital": null,
+    "registeredOffice": null,
+    "rc": null,
+    "ice": null,
+    "identifiantFiscal": null,
+    "publicationDirector": null,
+    "dataController": null,
+    "dataContactEmail": null,
+    "cndpReference": null,
+    "_dataRetention": "Durée de conservation des demandes de réservation : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
+    "dataRetention": null,
+    "_dataTransfers": "Localisation des données et transferts éventuels hors du Maroc (hébergeur, service d'e-mail) : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
+    "dataTransfers": null,
+    "hosting": null,
+    "emailProvider": null,
+    "validated": false
   }
 }

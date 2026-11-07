@@ -2,6 +2,7 @@ import { html } from '../../scripts/lib/html.mjs';
 import { info } from './ui.mjs';
 import { logoImage } from './logo.mjs';
 import { frieze } from './sections.mjs';
+import { hoursBlock } from './hours.mjs';
 
 const EXPLORE = ['histoire', 'carte', 'galerie', 'reservation', 'contact'];
 const SOCIAL_LABELS = { instagram: 'Instagram', facebook: 'Facebook', tripadvisor: 'Tripadvisor' };
@@ -32,7 +33,7 @@ export function footer(ctx) {
             <p>${site.phone ? html`<a href="tel:${site.phone.replace(/\s+/g, '')}" dir="ltr">${site.phone}</a>` : info(ctx, null, 'phone')}</p>
             ${site.email && html`<p><a href="mailto:${site.email}">${site.email}</a></p>`}
             ${wa && html`<p><a href="https://wa.me/${wa}" target="_blank" rel="noopener">WhatsApp<span class="visually-hidden"> (${ctx.t('a11y.newTab')})</span></a></p>`}
-            <p>${info(ctx, ctx.hours(), 'hours')}</p>
+            <div>${hoursBlock(ctx)}</div>
           </address>
         </div>
 

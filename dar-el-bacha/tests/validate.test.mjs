@@ -69,6 +69,32 @@ test('carte : plafonds du cahier des charges infranchissables (6/10/4/5, 25 au t
   assert.deepEqual({ ...MENU_CEILINGS.categories }, { entrees: 6, plats: 10, desserts: 4, boissons: 5 });
 });
 
+test('carte : 4 plats emblématiques au plus', () => {
+  const m = clone(menu);
+  m.categories[0].items.forEach((i) => { i.signature = true; });
+  m.categories[3].items[0].signature = true; // 5 plats emblématiques
+  assert.match(validateMenu(m, dict, LANGS).errors.join(), /5 plats emblématiques/);
+  m.categories[3].items[0].signature = false;
+  assert.deepEqual(validateMenu(m, dict, LANGS).errors, []);
+});
+
+test('informations officielles : horaires structurés, gamme de prix, informations juridiques', () => {
+  const s = clone(site);
+  s.openingHours = { days: { mon: [['12:00', '99:00']] } };
+  s.priceRange = '';
+  s.legal.rc = 42;
+  s.legal.dataContactEmail = 'pas-un-email';
+  s.legal.dataRetention = { fr: '1 an' };
+  s.legal.validated = 'oui';
+  const errors = validateSite(s, LANGS).errors.join('\n');
+  assert.match(errors, /openingHours › days\.mon : plage invalide/);
+  assert.match(errors, /priceRange : texte attendu/);
+  assert.match(errors, /legal\.rc : texte attendu/);
+  assert.match(errors, /legal\.dataContactEmail : adresse invalide/);
+  assert.match(errors, /legal\.dataRetention : version en manquante/);
+  assert.match(errors, /legal\.validated : true ou false/);
+});
+
 test('carte : ingrédients traduits, mise en avant booléenne', () => {
   const m = clone(menu);
   m.categories[0].items[0].ingredients = { fr: 'Aubergine' };

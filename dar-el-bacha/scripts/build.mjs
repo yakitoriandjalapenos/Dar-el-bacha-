@@ -24,6 +24,7 @@ import { LANGS, DEFAULT_LANG, PAGES, pathFor } from '../src/routes.mjs';
 import { layout } from '../src/components/layout.mjs';
 import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, collectImageRefs } from './lib/validate.mjs';
 import { checkOutput } from './lib/check-output.mjs';
+import { hoursLines, openingHoursSchema } from './lib/opening-hours.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
@@ -182,6 +183,8 @@ function makeCtx(lang, pageId) {
       return [a.street, a.district, [a.postalCode, site.city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
     },
     hours: () => (site.hours && typeof site.hours === 'object' ? site.hours[lang] : site.hours) || null,
+    // Horaires structurés (site.json › openingHours) : jours traduits par Intl, dans la langue de la page
+    hoursLines: () => hoursLines(site.openingHours, `${lang}-MA`),
     directionsUrl: () => {
       const { latitude, longitude } = site.geo || {};
       if (latitude && longitude) return `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
@@ -253,7 +256,9 @@ function restaurantSchema(ctx) {
   if (site.phone) data.telephone = site.phone;
   if (site.email) data.email = site.email;
   if (site.geo?.latitude && site.geo?.longitude) data.geo = { '@type': 'GeoCoordinates', latitude: site.geo.latitude, longitude: site.geo.longitude };
-  if (site.openingHoursSpecification) data.openingHoursSpecification = site.openingHoursSpecification;
+  const opening = openingHoursSchema(site.openingHours);
+  if (opening?.length) data.openingHoursSpecification = opening;
+  if (site.priceRange) data.priceRange = site.priceRange;
   const sameAs = Object.values(site.social || {}).filter(Boolean);
   if (sameAs.length) data.sameAs = sameAs;
   if (siteUrl && site.ogImage) data.image = ctx.absUrl(site.ogImage);

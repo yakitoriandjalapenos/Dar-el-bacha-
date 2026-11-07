@@ -4,6 +4,8 @@
   un avertissement est seulement affiché.
 */
 
+import { validateOpeningHours } from './opening-hours.mjs';
+
 const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const isPosInt = (n) => Number.isInteger(n) && n > 0;
 const isNonEmpty = (s) => typeof s === 'string' && s.trim() !== '';
@@ -159,6 +161,8 @@ export function validateMenu(menu, dict, langs) {
     }
   }
 
+  const signatures = menu.categories.flatMap((c) => (Array.isArray(c.items) ? c.items : [])).filter((i) => i.signature === true).length;
+  if (signatures > 4) errors.push(`${where} : ${signatures} plats emblématiques (« signature »: true), 4 au plus.`);
   const totalLimit = Math.min(isPosInt(menu.maxTotal) ? menu.maxTotal : Infinity, MENU_CEILINGS.total);
   if (total > totalLimit) errors.push(`${where} : ${total} propositions au total (maximum ${totalLimit}).`);
   for (const id of Object.keys(MENU_CEILINGS.categories)) {
@@ -220,6 +224,19 @@ export function validateSite(site, langs) {
 
   if (site.hours !== null && site.hours !== undefined && typeof site.hours !== 'string') checkLocalized(site.hours, langs, `${s} › hours`, errors);
   checkLocalized(site.story, langs, `${s} › story`, errors);
+  errors.push(...validateOpeningHours(site.openingHours));
+  if (site.priceRange !== null && site.priceRange !== undefined && !isNonEmpty(site.priceRange)) errors.push(`${s} › priceRange : texte attendu ou null.`);
+
+  // Informations juridiques : textes simples, sauf durée de conservation et transferts (traduits)
+  const legal = site.legal || {};
+  for (const [k, v] of Object.entries(legal)) {
+    if (k.startsWith('_') || k === 'validated' || k === 'dataRetention' || k === 'dataTransfers') continue;
+    if (v !== null && !isNonEmpty(v)) errors.push(`${s} › legal.${k} : texte attendu ou null.`);
+  }
+  checkLocalized(legal.dataRetention, langs, `${s} › legal.dataRetention`, errors);
+  checkLocalized(legal.dataTransfers, langs, `${s} › legal.dataTransfers`, errors);
+  if (legal.dataContactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(legal.dataContactEmail)) errors.push(`${s} › legal.dataContactEmail : adresse invalide.`);
+  if (typeof (legal.validated ?? false) !== 'boolean') errors.push(`${s} › legal.validated : true ou false attendu.`);
 
   const wa = site.whatsapp?.number;
   if (wa !== null && wa !== undefined && !/^[1-9]\d{7,14}$/.test(String(wa))) {

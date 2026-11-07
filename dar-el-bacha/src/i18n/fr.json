@@ -258,5 +258,8 @@
       "title": "Page introuvable",
       "lead": "Cette page n'existe pas ou a été déplacée."
     }
+  },
+  "hours": {
+    "closed": "Fermé"
   }
 }
