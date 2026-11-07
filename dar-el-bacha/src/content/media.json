@@ -1,27 +1,107 @@
 {
-  "_comment": "Emplacements photo des pages (la galerie est dans gallery.json ; les plats emblématiques de l'accueil utilisent les photos de menu.json). image : nom d'une photo préparée par « npm run images » (ex. « restaurant/salle-principale »), ou null = emplacement temporaire signalé « Photographie officielle à venir ». alt : texte alternatif { fr, en, ar } à rédiger avec la photo ; null si la photo est purement décorative. Ne jamais y placer une photo qui ne vient pas du restaurant.",
-
+  "_comment": "Emplacements photo des pages (la galerie est dans gallery.json ; les plats emblématiques de l'accueil utilisent les photos de menu.json). image : nom d'une photo préparée par « npm run images » (ex. « restaurant/salle-principale »), ou null = emplacement temporaire signalé « Photographie officielle à venir ». alt : texte alternatif { fr, en, ar } à rédiger avec la photo ; null si la photo est purement décorative. Les photos « illustrations/… » sont des photographies d'illustration de l'aperçu (Wikimedia Commons, licences dans photo-credits.json), signalées comme telles sur le site ; elles bloquent la mise en production et seront remplacées par les photographies officielles du restaurant.",
   "home": {
-    "hero": { "image": null, "alt": null },
-    "philosophy": { "image": null, "alt": null },
+    "hero": {
+      "image": "illustrations/salle-riad",
+      "alt": {
+        "fr": "Salon marocain traditionnel : zelliges, portes en cèdre sculpté, lanternes et banquettes",
+        "en": "Traditional Moroccan salon: zellige tiles, carved cedar doors, lanterns and banquettes",
+        "ar": "صالون مغربي تقليدي: زليج وأبواب من خشب الأرز المنقوش وفوانيس وأرائك"
+      }
+    },
+    "philosophy": {
+      "image": "illustrations/arche-brocart",
+      "alt": {
+        "fr": "Arche en plâtre ciselé ouvrant sur une alcôve tendue de brocart",
+        "en": "Carved plaster arch opening onto an alcove draped in brocade",
+        "ar": "قوس من الجبس المنقوش يطل على ركن مكسو بالديباج"
+      }
+    },
     "mosaic": [
-      { "image": null, "alt": null, "format": "portrait" },
-      { "image": null, "alt": null, "format": "paysage" },
-      { "image": null, "alt": null, "format": "paysage" }
+      {
+        "image": "illustrations/plafond-cedre-lanterne",
+        "alt": {
+          "fr": "Lanterne ciselée sous un plafond de bois sculpté",
+          "en": "Pierced lantern beneath a carved wooden ceiling",
+          "ar": "فانوس منقوش تحت سقف من الخشب المنحوت"
+        },
+        "format": "portrait"
+      },
+      {
+        "image": "illustrations/plateau-the-tajine",
+        "alt": {
+          "fr": "Couscous aux légumes, pain et thé à la menthe servis sur un plateau de cuivre",
+          "en": "Vegetable couscous, bread and mint tea served on a copper tray",
+          "ar": "كسكس بالخضر وخبز وشاي بالنعناع على صينية نحاسية"
+        },
+        "format": "paysage"
+      },
+      {
+        "image": "illustrations/patio-fontaine",
+        "alt": {
+          "fr": "Patio de riad : fontaine en zellige bleu entourée de plantes",
+          "en": "Riad patio: blue zellige fountain surrounded by plants",
+          "ar": "فناء رياض: نافورة من الزليج الأزرق تحيط بها النباتات"
+        },
+        "format": "paysage"
+      }
     ]
   },
-
   "histoire": {
-    "presentation": { "image": null, "alt": null },
-    "philosophie": { "image": null, "alt": null },
-    "inspiration": { "image": null, "alt": null },
-    "savoirFaire": { "image": null, "alt": null },
-    "recevoir": { "image": null, "alt": null },
-    "ambiance": { "image": null, "alt": null }
+    "presentation": {
+      "image": "illustrations/cour-doree",
+      "alt": {
+        "fr": "Cour aux arches, fontaine et lustre dans une lumière dorée",
+        "en": "Arched courtyard with a fountain and chandelier in golden light",
+        "ar": "فناء بأقواس ونافورة وثريا في ضوء ذهبي"
+      }
+    },
+    "philosophie": {
+      "image": "illustrations/salades-marocaines",
+      "alt": {
+        "fr": "Assortiment de salades marocaines dans des coupelles de terre cuite",
+        "en": "Assorted Moroccan salads in terracotta bowls",
+        "ar": "تشكيلة من السلطات المغربية في صحون فخارية"
+      }
+    },
+    "inspiration": {
+      "image": "illustrations/salon-platre-cisele",
+      "alt": {
+        "fr": "Salon d'une demeure traditionnelle : plâtre ciselé, plafonds peints et lustre",
+        "en": "Room in a traditional house: carved plaster, painted ceilings and chandelier",
+        "ar": "قاعة في دار تقليدية: جبس منقوش وأسقف مزخرفة وثريا"
+      }
+    },
+    "savoirFaire": {
+      "image": "illustrations/jarres-tanjia",
+      "alt": {
+        "fr": "Jarres de terre cuite de tanjia, prêtes pour une longue cuisson",
+        "en": "Clay tanjia jars ready for slow cooking",
+        "ar": "جرار طنجية من الفخار جاهزة للطهي البطيء"
+      }
+    },
+    "recevoir": {
+      "image": "illustrations/the-et-douceurs",
+      "alt": {
+        "fr": "Théière, verres de thé et sellou décoré d'amandes sur un plateau d'argent",
+        "en": "Teapot, tea glasses and almond-decorated sellou on a silver tray",
+        "ar": "براد وكؤوس شاي وسلّو مزين باللوز على صينية فضية"
+      }
+    },
+    "ambiance": {
+      "image": "illustrations/lanterne-zellige",
+      "alt": {
+        "fr": "Lanterne marocaine devant un mur de zellige et un tapis",
+        "en": "Moroccan lantern in front of a zellige wall and a rug",
+        "ar": "فانوس مغربي أمام جدار من الزليج وزربية"
+      }
+    }
   },
-
   "contact": {
     "_map": "Plan d'accès : image statique fournie ou validée par le restaurant (le plan interactif Google Maps chargé au clic est prévu dans une phase ultérieure).",
-    "map": { "image": null, "alt": null }
+    "map": {
+      "image": null,
+      "alt": null
+    }
   }
 }

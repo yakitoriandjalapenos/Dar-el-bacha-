@@ -13,6 +13,7 @@ Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est né
 | `npm run build:prod` | Compilation de **production**. Refusée (et `dist/` laissé intact) tant qu'il reste une information `[À CONFIRMER]`, une photo provisoire, un plat « à valider », un formulaire non relié ou que l'URL officielle (`siteUrl`) n'est pas configurée. |
 | `npm run serve` | Sert `dist/` tel quel (sans rechargement), avec les en-têtes de sécurité de `dist/_headers` (CSP…) appliqués comme chez l'hébergeur. |
 | `npm run images` | Prépare les photos de `ressources/photos/` (AVIF, WebP, JPEG, 480 à 2000 px). Nécessite `sharp`, voir « Photos ». |
+| `npm run apercu` | Met à jour le dossier de livraison `DAR-EL-BACHA-APERÇU/` (carte, avis, photos rangées par section, correspondances et licences) à partir des fichiers de contenu. |
 | `npm run contenus` | Régénère `INFORMATIONS-A-FOURNIR.md` : liste centralisée de tout ce que le restaurant doit fournir, avec l'état réel (fourni / à fournir), l'endroit où le renseigner et le format. |
 | `npm test` | Tests automatiques sans dépendance (contrôles des contenus, du site généré, des deux modes de compilation). |
 | `npm run test:browser` | Tests dans Chromium (25 pages × 7 largeurs, menu, clavier, RTL, formulaire et envoi de bout en bout, WhatsApp, pannes de script, politique de sécurité, préférence « réduire les animations »). Nécessite Playwright installé à part. |
@@ -51,6 +52,22 @@ scripts/
   lib/               Contrôles des contenus (validate), contrôle du site généré (check-output), en-têtes de sécurité, horaires, serveur statique, gabarits HTML
 tests/               Tests automatiques (npm test) et tests navigateur (npm run test:browser)
 ```
+
+## Aperçu de démonstration (complément avant la phase 5)
+
+Pour obtenir un aperçu complet et illustré, le site contient des **contenus de démonstration, toujours signalés comme tels**
+(bandeau d'aperçu sur chaque page) et qui **bloquent la mise en production** tant qu'ils restent en place :
+
+| Contenu | Fichier | Signalement sur le site | À faire avant la mise en ligne |
+|---|---|---|---|
+| Carte de 25 propositions (FR/EN/AR) | `src/content/menu.json` | note en tête de carte, `status: "a-valider"` | validation par le restaurant |
+| Prix indicatifs en DH | `menu.json › pricesStatus: "indicatif"` | astérisque et « Prix indicatifs… à confirmer » | `pricesStatus: "valide"` |
+| Horaires proposés | `site.json › openingHours`, `hoursConfirmed: false` | « Horaires proposés, à confirmer » | `hoursConfirmed: true` |
+| Six avis fictifs | `src/content/reviews.json › demo: true` | « Avis fictifs — aperçu de démonstration » | vrais avis, `demo: false` |
+| Photographies d'illustration (Wikimedia Commons, licences libres) | `ressources/photos/illustrations/`, `src/content/photo-credits.json` | « Photo d'illustration » sur chaque image, crédits dans les mentions légales | photographies officielles |
+
+Tout est regroupé et documenté dans **`DAR-EL-BACHA-APERÇU/`** : direction artistique de référence, cahier des charges, photos
+rangées par section avec leurs licences, carte, informations, avis et guide (`05-DOCUMENTATION/GUIDE-DE-L-APERCU.md`).
 
 ## Adresses des pages
 

@@ -19,6 +19,9 @@ const site = await read('src/content/site.json');
 const menu = await read('src/content/menu.json');
 const media = await read('src/content/media.json');
 const gallery = await read('src/content/gallery.json');
+const reviews = await read('src/content/reviews.json');
+// Photo d'illustration (banque d'images, aperçu) : ne compte jamais comme une photo fournie par le restaurant
+const official = (img) => Boolean(img) && !(typeof img === 'string' && img.startsWith('illustrations/'));
 const logoDir = path.join(ROOT, 'src/assets/img/logo');
 const logoFiles = existsSync(logoDir) ? await readdir(logoDir) : [];
 
@@ -29,12 +32,12 @@ const section = (title, items) => rows.push({ title, items });
 const item = (label, ok, where, format) => ({ label, ok: Boolean(ok), where, format });
 
 section('Le restaurant', [
-  item('Adresse complète (rue, quartier, code postal)', site.address?.street && site.address?.postalCode, 'site.json › address', 'texte'),
+  item(`Adresse complète (rue, quartier, code postal)${site.address?.street && !site.address?.postalCode ? ' — rue fournie, code postal et quartier manquants' : ''}`, site.address?.street && site.address?.postalCode, 'site.json › address', 'texte'),
   item('Coordonnées GPS', site.geo?.latitude != null && site.geo?.longitude != null, 'site.json › geo', 'latitude et longitude (nombres)'),
   item('Téléphone', site.phone, 'site.json › phone', 'format international, ex. +212 5…'),
   item('E-mail public', site.email, 'site.json › email', 'adresse e-mail'),
   item('Numéro WhatsApp officiel', site.whatsapp?.number, 'site.json › whatsapp.number', 'chiffres uniquement, ex. 2126…'),
-  item('Horaires d\'ouverture détaillés et jours de fermeture', site.openingHours || site.hours, 'site.json › openingHours', 'plages par jour + fermetures exceptionnelles'),
+  item(`Horaires d'ouverture détaillés et jours de fermeture${(site.openingHours || site.hours) && site.hoursConfirmed === false ? ' — horaires proposés, à confirmer' : ''}`, (site.openingHours || site.hours) && site.hoursConfirmed !== false, 'site.json › openingHours, hoursConfirmed', 'plages par jour + fermetures exceptionnelles, puis hoursConfirmed: true'),
   item('Lien Google Maps / fiche Google Business', site.googleMapsUrl, 'site.json › googleMapsUrl', 'adresse https://'),
   item('Instagram', site.social?.instagram, 'site.json › social.instagram', 'adresse https://'),
   item('Facebook', site.social?.facebook, 'site.json › social.facebook', 'adresse https://'),
@@ -57,9 +60,9 @@ section(`La carte (actuellement ${items.length}/${MENU_CEILINGS.total} propositi
   item('Noms en français, anglais et arabe', items.length && items.every((i) => i.status !== 'a-valider' && i.name?.fr && i.name?.en && i.name?.ar), 'menu.json › name', '{ fr, en, ar }'),
   item('Descriptions en français, anglais et arabe', items.length && items.every((i) => i.description), 'menu.json › description', '{ fr, en, ar }'),
   item('Ingrédients ou particularités (si souhaités)', items.some((i) => i.ingredients), 'menu.json › ingredients', '{ fr, en, ar }'),
-  item('Prix en MAD', items.length && items.every((i) => i.price != null), 'menu.json › price', 'nombre'),
-  item('Plats emblématiques (4 au plus)', items.some((i) => i.signature), 'menu.json › signature', 'true sur les plats choisis'),
-  item('Photographies des plats', items.some((i) => i.image), 'menu.json › image + ressources/photos/gastronomie/', 'originaux HD'),
+  item(`Prix en dirhams (DH)${menu.pricesStatus === 'indicatif' ? ' — prix indicatifs proposés pour l\'aperçu, à valider' : ''}`, items.length && items.every((i) => i.price != null) && menu.pricesStatus !== 'indicatif', 'menu.json › price, pricesStatus', 'nombre, puis pricesStatus: valide'),
+  item('Plats emblématiques (4 au plus)', items.some((i) => i.signature) && items.filter((i) => i.signature).every((i) => i.status !== 'a-valider'), 'menu.json › signature', 'true sur les plats choisis'),
+  item(`Photographies des plats${items.some((i) => i.image && !official(i.image)) ? ' — photos d\'illustration en place pour l\'aperçu' : ''}`, items.some((i) => i.image) && items.every((i) => !i.image || official(i.image)), 'menu.json › image + ressources/photos/gastronomie/', 'originaux HD'),
 ]);
 
 section('Réservation', [
@@ -97,7 +100,8 @@ section('Informations juridiques (à faire valider par un juriste)', [
 const slots = [];
 const collect = (v) => { if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') { if ('image' in v) slots.push(v); Object.entries(v).forEach(([k, x]) => { if (!k.startsWith('_') && k !== 'image' && k !== 'alt') collect(x); }); } };
 collect(media); collect(gallery.items);
-const filled = slots.filter((s) => s.image).length;
+const filled = slots.filter((s) => official(s.image)).length;
+const illustrated = slots.filter((s) => s.image && !official(s.image)).length;
 section('Identité visuelle et photographies', [
   item('Logo SVG — vert et or avec couronne', logoFiles.includes('logo-vert-or-couronne.svg'), 'src/assets/img/logo/logo-vert-or-couronne.svg', 'SVG'),
   item('Logo SVG — vert et or sans couronne', logoFiles.includes('logo-vert-or.svg'), 'src/assets/img/logo/logo-vert-or.svg', 'SVG'),
@@ -106,8 +110,12 @@ section('Identité visuelle et photographies', [
   item('Logo monochrome', false, 'ressources/logo/', 'SVG'),
   item('Favicon simplifié (arche seule) et icône d\'application 1024 px', existsSync(path.join(ROOT, 'src/static/favicon.svg')), 'src/static/favicon.svg, ressources/icones/', 'SVG + PNG 1024'),
   item('Confirmation des codes couleur du logo', false, 'ressources/logo/', 'confirmation du graphiste'),
-  item(`Photographies du restaurant et de la galerie (${filled}/${slots.length} emplacements remplis)`, filled === slots.length, 'ressources/photos/ puis media.json, gallery.json', 'originaux HD + droits d\'utilisation'),
+  item(`Photographies du restaurant et de la galerie (${filled}/${slots.length} emplacements remplis${illustrated ? ` ; ${illustrated} photo(s) d'illustration en attendant` : ''})`, filled === slots.length, 'ressources/photos/ puis media.json, gallery.json', 'originaux HD + droits d\'utilisation'),
   item('Textes alternatifs des photos (FR, EN, AR)', filled > 0 && slots.every((s) => !s.image || s.alt), 'media.json, gallery.json › alt', '{ fr, en, ar }'),
+]);
+
+section('Témoignages', [
+  item(`Avis clients réels, avec l'accord de leurs auteurs${reviews.demo ? ' — avis fictifs de démonstration en place' : ''}`, !reviews.demo && reviews.items?.length, 'src/content/reviews.json', '{ fr, en, ar } + nombre d\'étoiles, puis demo: false'),
 ]);
 
 section('Décisions et accès', [

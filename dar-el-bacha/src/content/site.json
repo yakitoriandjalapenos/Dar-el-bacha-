@@ -4,6 +4,7 @@
   "name": "DAR EL BACHA",
   "nameAr": "دار الباشا",
   "city": "Casablanca",
+  "cityAr": "الدار البيضاء",
 
   "logo": {
     "_comment": "En-tête : « symbole » = porte du logo + nom en texte (lisible, traduit en arabe) ; « complet » = logo complet avec le nom. Fichiers dans src/assets/img/logo/.",
@@ -16,6 +17,8 @@
 
   "address": {
     "street": "22 Boulevard de Paris",
+    "_streetAr": "Graphie arabe de l'adresse, affichée sur les pages en arabe (à faire confirmer par le restaurant).",
+    "streetAr": "22 شارع باريس",
     "postalCode": null,
     "district": null
   },

@@ -14,6 +14,7 @@
     "serve": "node scripts/serve.mjs",
     "images": "node scripts/images.mjs",
     "contenus": "node scripts/contenus.mjs",
+    "apercu": "node scripts/apercu.mjs",
     "test": "node --test",
     "test:browser": "node tests/browser.mjs"
   }

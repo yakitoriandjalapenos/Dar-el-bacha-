@@ -58,6 +58,18 @@ test('prévisualisation : 41 pages (6 principales, 2 juridiques et 5 résultats 
   // Seuls les modules réellement présents sont autorisés en cadre (ici, le plan Google Maps de l'adresse)
   assert.match(headers, /Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-[A-Za-z0-9+/]+='; .*frame-src (?:'none'|https:\/\/maps\.google\.com https:\/\/www\.google\.com);/);
   assert.match(r.stdout, /À confirmer avant mise en ligne/);
+  // Contenus de démonstration toujours signalés comme tels (dans les trois langues)
+  const home = await html('fr/index.html');
+  assert.match(home, /<p class="demo-banner" data-provisional="demo-banner">Aperçu de démonstration/);
+  assert.match(home, /data-provisional="reviews-demo">Avis fictifs — aperçu de démonstration</);
+  assert.doesNotMatch(home, /AggregateRating|"@type":"Review"/, 'aucune note ni avis dans les données structurées');
+  assert.match(await html('ar/index.html'), /آراء وهمية — معاينة تجريبية/);
+  assert.match(await html('en/index.html'), /Fictitious reviews — demonstration preview/);
+  const carte = await html('fr/la-carte/index.html');
+  assert.match(carte, /data-provisional="price-indicative"[^>]*>\d+\u00a0DH/);
+  assert.match(carte, /Prix indicatifs en dirhams \(DH\), à confirmer/);
+  assert.match(await html('fr/contact/index.html'), /data-provisional="hours-pending">Horaires proposés, à confirmer/);
+  assert.doesNotMatch(home, /openingHoursSpecification/, 'horaires proposés jamais publiés dans les données structurées');
 });
 
 test('production refusée tant que des informations sont à confirmer, dist/ inchangé', async () => {
@@ -70,6 +82,9 @@ test('production refusée tant que des informations sont à confirmer, dist/ inc
   assert.match(r.stderr, /photographies provisoires/);
   assert.match(r.stderr, /plats « à valider »/);
   assert.match(r.stderr, /pages juridiques non validées par un juriste/);
+  assert.match(r.stderr, /avis fictifs de démonstration/);
+  assert.match(r.stderr, /prix indicatifs \(aperçu\)/);
+  assert.match(r.stderr, /horaires proposés, à confirmer/);
   assert.equal(await html('fr/index.html'), before);
   assert.equal(existsSync(path.join(dir, '.build-tmp')), false);
 });

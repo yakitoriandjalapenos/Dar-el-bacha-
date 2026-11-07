@@ -225,7 +225,11 @@ function makeCtx(lang, pageId) {
     address: () => {
       const a = site.address || {};
       if (!a.street) return null;
-      return [a.street, a.district, [a.postalCode, site.city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      // Pages arabes : graphie arabe de la rue et de la ville si elle est fournie (jamais d'adresse en latin dans un texte arabe)
+      const ar = lang === 'ar';
+      const street = ar && a.streetAr ? a.streetAr : a.street;
+      const city = ar && site.cityAr ? site.cityAr : site.city;
+      return [street, a.district, [a.postalCode, city].filter(Boolean).join(' ')].filter(Boolean).join(ar ? '، ' : ', ');
     },
     hours: () => (site.hours && typeof site.hours === 'object' ? site.hours[lang] : site.hours) || null,
     // Horaires structurés (site.json › openingHours) : jours traduits par Intl, dans la langue de la page

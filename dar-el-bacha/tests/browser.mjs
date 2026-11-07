@@ -183,7 +183,8 @@ try {
       check(`RTL : mise en page ${code} ${expectRtl ? 'de droite à gauche' : 'de gauche à droite'} (sens, marque, titre)`, ok, JSON.stringify(r));
     }
     await page.goto(`${BASE}/ar/menu/`);
-    check('RTL : prix et intitulés de la carte en arabe', (await page.locator('.dish__name').first().textContent()).includes('زعلوك'));
+    const names = await page.locator('.dish__name').allTextContents();
+    check('RTL : prix et intitulés de la carte en arabe', names.some((n) => n.includes('زعلوك')) && names.every((n) => !/[A-Za-z]/.test(n)), names.slice(0, 3).join(' · '));
     await ctx.close();
   }
 

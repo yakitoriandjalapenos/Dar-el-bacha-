@@ -1,6 +1,6 @@
 # Informations et fichiers à fournir — DAR EL BACHA
 
-Document généré par `npm run contenus` à partir de l'état réel du projet. **0 élément(s) fourni(s) sur 59.**
+Document généré par `npm run contenus` à partir de l'état réel du projet. **3 élément(s) fourni(s) sur 60.**
 
 Aucune de ces informations n'est inventée sur le site : tant qu'un élément manque, le site affiche un repère `[À CONFIRMER]` ou un emplacement provisoire, et `npm run build:prod` refuse la mise en production.
 
@@ -8,12 +8,12 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 
 | | Élément | Où le renseigner | Format |
 |---|---|---|---|
-| ❌ | Adresse complète (rue, quartier, code postal) | `site.json › address` | texte |
+| ❌ | Adresse complète (rue, quartier, code postal) — rue fournie, code postal et quartier manquants | `site.json › address` | texte |
 | ❌ | Coordonnées GPS | `site.json › geo` | latitude et longitude (nombres) |
-| ❌ | Téléphone | `site.json › phone` | format international, ex. +212 5… |
+| ✅ | Téléphone | `site.json › phone` | format international, ex. +212 5… |
 | ❌ | E-mail public | `site.json › email` | adresse e-mail |
 | ❌ | Numéro WhatsApp officiel | `site.json › whatsapp.number` | chiffres uniquement, ex. 2126… |
-| ❌ | Horaires d'ouverture détaillés et jours de fermeture | `site.json › openingHours` | plages par jour + fermetures exceptionnelles |
+| ❌ | Horaires d'ouverture détaillés et jours de fermeture — horaires proposés, à confirmer | `site.json › openingHours, hoursConfirmed` | plages par jour + fermetures exceptionnelles, puis hoursConfirmed: true |
 | ❌ | Lien Google Maps / fiche Google Business | `site.json › googleMapsUrl` | adresse https:// |
 | ❌ | Instagram | `site.json › social.instagram` | adresse https:// |
 | ❌ | Facebook | `site.json › social.facebook` | adresse https:// |
@@ -29,15 +29,15 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 | ❌ | Relecture et validation des textes du site (FR, EN, AR, dont relecture arabe native) | `src/i18n/fr.json, en.json, ar.json` | validation écrite |
 | ❌ | Graphie officielle du nom dans les textes (« DAR EL BACHA » ou « Dar el Bacha ») | `src/i18n/*.json` | décision |
 
-## La carte (actuellement 5/25 propositions : entrees 4/6, plats 0/10, desserts 0/4, boissons 1/5)
+## La carte (actuellement 25/25 propositions : entrees 6/6, plats 10/10, desserts 4/4, boissons 5/5)
 
 | | Élément | Où le renseigner | Format |
 |---|---|---|---|
 | ❌ | Liste définitive des propositions (25 au plus : 6 entrées, 10 plats, 4 desserts, 5 boissons) | `menu.json › categories` | validée par le restaurant |
 | ❌ | Noms en français, anglais et arabe | `menu.json › name` | { fr, en, ar } |
-| ❌ | Descriptions en français, anglais et arabe | `menu.json › description` | { fr, en, ar } |
-| ❌ | Ingrédients ou particularités (si souhaités) | `menu.json › ingredients` | { fr, en, ar } |
-| ❌ | Prix en MAD | `menu.json › price` | nombre |
+| ✅ | Descriptions en français, anglais et arabe | `menu.json › description` | { fr, en, ar } |
+| ✅ | Ingrédients ou particularités (si souhaités) | `menu.json › ingredients` | { fr, en, ar } |
+| ❌ | Prix en dirhams (DH) — prix indicatifs proposés pour l'aperçu, à valider | `menu.json › price, pricesStatus` | nombre, puis pricesStatus: valide |
 | ❌ | Plats emblématiques (4 au plus) | `menu.json › signature` | true sur les plats choisis |
 | ❌ | Photographies des plats | `menu.json › image + ressources/photos/gastronomie/` | originaux HD |
 
@@ -88,6 +88,12 @@ Aucune de ces informations n'est inventée sur le site : tant qu'un élément ma
 | ❌ | Confirmation des codes couleur du logo | `ressources/logo/` | confirmation du graphiste |
 | ❌ | Photographies du restaurant et de la galerie (0/19 emplacements remplis) | `ressources/photos/ puis media.json, gallery.json` | originaux HD + droits d'utilisation |
 | ❌ | Textes alternatifs des photos (FR, EN, AR) | `media.json, gallery.json › alt` | { fr, en, ar } |
+
+## Témoignages
+
+| | Élément | Où le renseigner | Format |
+|---|---|---|---|
+| ❌ | Avis clients réels, avec l'accord de leurs auteurs — avis fictifs de démonstration en place | `src/content/reviews.json` | { fr, en, ar } + nombre d'étoiles, puis demo: false |
 
 ## Décisions et accès
 

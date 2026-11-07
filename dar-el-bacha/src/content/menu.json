@@ -28,7 +28,7 @@
             "ar": "حسب السوق: جزر بالكمون، شمندر، طماطم وفلفل، باذنجان"
           },
           "price": 90,
-          "image": null
+          "image": "illustrations/salades-marocaines"
         },
         {
           "id": "zaalouk",
@@ -49,7 +49,7 @@
             "ar": "باذنجان، طماطم، ثوم، كمون، قزبر، زيت الزيتون"
           },
           "price": 70,
-          "image": null
+          "image": "illustrations/zaalouk"
         },
         {
           "id": "taktouka",
@@ -70,7 +70,7 @@
             "ar": "فلفل، طماطم، ثوم، فلفل أحمر حلو، كمون، معدنوس"
           },
           "price": 70,
-          "image": null
+          "image": "illustrations/taktouka"
         },
         {
           "id": "harira",
@@ -91,7 +91,7 @@
             "ar": "طماطم، عدس، حمص، كرفس، قزبر، زنجبيل"
           },
           "price": 60,
-          "image": null
+          "image": "illustrations/harira"
         },
         {
           "id": "briouates",
@@ -112,7 +112,7 @@
             "ar": "ورقة البسطيلة، لحم بقري مفروم، بصل، معدنوس، قزبر، توابل"
           },
           "price": 85,
-          "image": null
+          "image": "illustrations/briouates"
         },
         {
           "id": "pastilla",
@@ -133,7 +133,7 @@
             "ar": "دجاج، لوز، بيض، بصل، قرفة، ماء الزهر"
           },
           "price": 140,
-          "image": null
+          "image": "illustrations/pastilla"
         }
       ]
     },
@@ -160,7 +160,7 @@
             "ar": "لحم الغنم، برقوق، لوز، سمسم، قرفة، عسل"
           },
           "price": 260,
-          "image": null,
+          "image": "illustrations/tajine-agneau-pruneaux",
           "signature": true
         },
         {
@@ -182,7 +182,7 @@
             "ar": "دجاج، ليمون مصبّر، زيتون، زنجبيل، زعفران، قزبر"
           },
           "price": 210,
-          "image": null,
+          "image": "illustrations/tajine-poulet-citron",
           "signature": true
         },
         {
@@ -204,7 +204,7 @@
             "ar": "سميد، لحم الغنم، جزر، لفت، كوسة، قرع، كرنب، حمص"
           },
           "price": 230,
-          "image": null,
+          "image": "illustrations/couscous-sept-legumes",
           "signature": true
         },
         {
@@ -226,7 +226,7 @@
             "ar": "مسمن، دجاج، عدس، حلبة، رأس الحانوت، بصل"
           },
           "price": 220,
-          "image": null
+          "image": "illustrations/rfissa"
         },
         {
           "id": "mrouzia",
@@ -247,7 +247,7 @@
             "ar": "لحم الغنم، عسل، زبيب، لوز، رأس الحانوت، قرفة"
           },
           "price": 270,
-          "image": null
+          "image": "illustrations/mrouzia"
         },
         {
           "id": "tanjia",
@@ -268,7 +268,7 @@
             "ar": "لحم عجل، ليمون مصبّر، ثوم، كمون، زعفران، سمن"
           },
           "price": 250,
-          "image": null
+          "image": "illustrations/tanjia"
         },
         {
           "id": "mechoui",
@@ -289,7 +289,7 @@
             "ar": "لحم الغنم، زبدة، كمون، ملح"
           },
           "price": 290,
-          "image": null,
+          "image": "illustrations/mechoui",
           "signature": true
         },
         {
@@ -311,7 +311,7 @@
             "ar": "لحم بقري مفروم، طماطم، بيض، كمون، فلفل أحمر حلو، قزبر"
           },
           "price": 180,
-          "image": null
+          "image": "illustrations/tajine-kefta"
         },
         {
           "id": "seffa-medfouna",
@@ -332,7 +332,7 @@
             "ar": "شعرية، دجاج، لوز، قرفة، سكر ناعم"
           },
           "price": 220,
-          "image": null
+          "image": "illustrations/seffa-medfouna"
         },
         {
           "id": "tajine-poisson",
@@ -353,7 +353,7 @@
             "ar": "سمك، شرمولة، بطاطس، طماطم، فلفل، حامض"
           },
           "price": 240,
-          "image": null
+          "image": "illustrations/tajine-poisson"
         }
       ]
     },
@@ -380,7 +380,7 @@
             "ar": "ورقة البسطيلة، حليب، لوز، ماء الزهر"
           },
           "price": 75,
-          "image": null
+          "image": "illustrations/pastilla-lait"
         },
         {
           "id": "cornes-gazelle",
@@ -401,7 +401,7 @@
             "ar": "لوز، ماء الزهر، زبدة، قرفة"
           },
           "price": 70,
-          "image": null
+          "image": "illustrations/cornes-gazelle"
         },
         {
           "id": "oranges-cannelle",
@@ -422,7 +422,7 @@
             "ar": "برتقال، قرفة، ماء الزهر"
           },
           "price": 60,
-          "image": null
+          "image": "illustrations/oranges-cannelle"
         },
         {
           "id": "patisseries",
@@ -443,7 +443,7 @@
             "ar": "حسب الموسم: شباكية، بريوات باللوز، غريبة"
           },
           "price": 80,
-          "image": null
+          "image": "illustrations/patisseries"
         }
       ]
     },
@@ -470,7 +470,7 @@
             "ar": "شاي أخضر، نعناع طازج، سكر حسب الرغبة"
           },
           "price": 35,
-          "image": null
+          "image": "illustrations/the-marocain"
         },
         {
           "id": "jus-orange",
@@ -487,7 +487,7 @@
           },
           "ingredients": null,
           "price": 40,
-          "image": null
+          "image": "illustrations/jus-orange"
         },
         {
           "id": "infusion-verveine",
@@ -504,7 +504,7 @@
           },
           "ingredients": null,
           "price": 35,
-          "image": null
+          "image": "illustrations/infusion-verveine"
         },
         {
           "id": "lait-amande",
@@ -521,7 +521,7 @@
           },
           "ingredients": null,
           "price": 45,
-          "image": null
+          "image": "illustrations/lait-amande"
         },
         {
           "id": "citronnade",
@@ -538,7 +538,7 @@
           },
           "ingredients": null,
           "price": 40,
-          "image": null
+          "image": "illustrations/citronnade"
         }
       ]
     }

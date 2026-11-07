@@ -1,0 +1,96 @@
+{
+  "_comment": "Témoignages affichés sur l'accueil. « demo »: true = AVIS FICTIFS DE DÉMONSTRATION : le site affiche la mention « Avis fictifs — aperçu de démonstration » et la production est refusée. Pour publier de vrais avis : remplacer les éléments par des avis réels (avec l'accord de leurs auteurs), renseigner éventuellement « author » { fr, en, ar } (ex. prénom et initiale), puis passer « demo » à false. rating : nombre d'étoiles de 1 à 5. Aucune note moyenne, aucune donnée Google n'est affichée ni publiée.",
+  "demo": true,
+  "items": [
+    {
+      "id": "famille",
+      "rating": 5,
+      "text": {
+        "fr": "Une pastilla d'une grande finesse et un service plein d'attention : on se sent reçu comme dans une maison de famille.",
+        "en": "A pastilla of real finesse and wonderfully attentive service: you feel welcomed as if into a family home.",
+        "ar": "بسطيلة بالغة الرقة وخدمة مليئة بالعناية: تشعر وكأنك ضيف في بيت العائلة."
+      },
+      "context": {
+        "fr": "Dîner en famille",
+        "en": "Family dinner",
+        "ar": "عشاء عائلي"
+      },
+      "author": null
+    },
+    {
+      "id": "deux",
+      "rating": 5,
+      "text": {
+        "fr": "Le tajine d'agneau aux pruneaux, fondant et parfumé, valait à lui seul le détour. Une soirée douce et raffinée.",
+        "en": "The lamb tagine with prunes, tender and fragrant, was worth the visit on its own. A gentle, refined evening.",
+        "ar": "طاجين لحم الغنم بالبرقوق، طري وعطر، يستحق الزيارة وحده. سهرة هادئة وراقية."
+      },
+      "context": {
+        "fr": "Soirée à deux",
+        "en": "Evening for two",
+        "ar": "سهرة لشخصين"
+      },
+      "author": null
+    },
+    {
+      "id": "affaires",
+      "rating": 5,
+      "text": {
+        "fr": "Un déjeuner d'affaires parfaitement orchestré : un rythme juste, des conseils avisés sur la carte et un thé servi dans les règles de l'art.",
+        "en": "A perfectly orchestrated business lunch: well-judged pacing, thoughtful advice on the menu and tea served the proper way.",
+        "ar": "غداء عمل منظَّم بإتقان: إيقاع مضبوط، ونصائح موفقة حول القائمة، وشاي يُقدَّم وفق الأصول."
+      },
+      "context": {
+        "fr": "Déjeuner d'affaires",
+        "en": "Business lunch",
+        "ar": "غداء عمل"
+      },
+      "author": null
+    },
+    {
+      "id": "voyageurs",
+      "rating": 5,
+      "text": {
+        "fr": "Nous découvrions la cuisine marocaine : chaque plat nous a été présenté avec soin et patience. Une très belle première fois.",
+        "en": "It was our first taste of Moroccan cuisine: every dish was introduced to us with care and patience. A wonderful first time.",
+        "ar": "كانت أول تجربة لنا مع المطبخ المغربي: قُدِّم لنا كل طبق بعناية وصبر. تجربة أولى رائعة."
+      },
+      "context": {
+        "fr": "Voyageurs de passage à Casablanca",
+        "en": "Travellers visiting Casablanca",
+        "ar": "مسافرون في زيارة للدار البيضاء"
+      },
+      "author": null
+    },
+    {
+      "id": "anniversaire",
+      "rating": 4,
+      "text": {
+        "fr": "Les desserts à la fleur d'oranger concluent le repas avec délicatesse. Seul regret : ne plus avoir de place pour tout goûter.",
+        "en": "The orange-blossom desserts close the meal with delicacy. Our only regret: having no room left to taste everything.",
+        "ar": "الحلويات بماء الزهر تختم الوجبة برقة. أسفنا الوحيد أننا لم نعد قادرين على تذوق كل شيء."
+      },
+      "context": {
+        "fr": "Anniversaire",
+        "en": "Birthday celebration",
+        "ar": "احتفال بعيد ميلاد"
+      },
+      "author": null
+    },
+    {
+      "id": "amis",
+      "rating": 5,
+      "text": {
+        "fr": "Des saveurs franches, une table généreuse et une atmosphère chaleureuse. Une adresse que nous recommandons volontiers.",
+        "en": "Honest flavours, a generous table and a warm atmosphere. A place we are happy to recommend.",
+        "ar": "نكهات أصيلة ومائدة سخية وأجواء دافئة. عنوان نوصي به بكل سرور."
+      },
+      "context": {
+        "fr": "Soirée entre amis",
+        "en": "Evening with friends",
+        "ar": "سهرة مع الأصدقاء"
+      },
+      "author": null
+    }
+  ]
+}

@@ -5,50 +5,78 @@
       "id": "plat-signature",
       "theme": "plats",
       "format": "portrait",
-      "image": null,
-      "alt": null
+      "image": "illustrations/tajine-table",
+      "alt": {
+        "fr": "Tajine de poulet aux légumes servi sur une natte colorée",
+        "en": "Chicken and vegetable tagine served on a colourful mat",
+        "ar": "طاجين دجاج بالخضر على حصير ملون"
+      }
     },
     {
       "id": "salle",
       "theme": "interieur",
       "format": "paysage",
-      "image": null,
-      "alt": null
+      "image": "illustrations/salon-vue-haute",
+      "alt": {
+        "fr": "Salon marocain vu d'en haut : tapis, tables basses et banquettes",
+        "en": "Moroccan salon seen from above: rugs, low tables and banquettes",
+        "ar": "صالون مغربي من الأعلى: زرابي وموائد منخفضة وأرائك"
+      }
     },
     {
       "id": "arches",
       "theme": "architecture",
       "format": "portrait",
-      "image": null,
-      "alt": null
+      "image": "illustrations/arche-patio",
+      "alt": {
+        "fr": "Arche outrepassée ouvrant sur un patio blanc",
+        "en": "Horseshoe arch opening onto a white patio",
+        "ar": "قوس على شكل حدوة يطل على فناء أبيض"
+      }
     },
     {
       "id": "service-the",
       "theme": "accueil",
       "format": "portrait",
-      "image": null,
-      "alt": null
+      "image": "illustrations/service-du-the",
+      "alt": {
+        "fr": "Service du thé à la menthe et pâtisseries marocaines sur un plateau",
+        "en": "Mint tea service and Moroccan pastries on a tray",
+        "ar": "تقديم الشاي بالنعناع مع حلويات مغربية على صينية"
+      }
     },
     {
       "id": "detail-epices",
       "theme": "details",
       "format": "carre",
-      "image": null,
-      "alt": null
+      "image": "illustrations/epices",
+      "alt": {
+        "fr": "Épices marocaines dans un bol de céramique peinte",
+        "en": "Moroccan spices in a painted ceramic bowl",
+        "ar": "توابل مغربية في زلافة من الخزف المزخرف"
+      }
     },
     {
       "id": "zellige",
       "theme": "decoration",
       "format": "carre",
-      "image": null,
-      "alt": null
+      "image": "illustrations/zellige",
+      "alt": {
+        "fr": "Panneau de zellige à motif d'étoiles",
+        "en": "Zellige panel with a star pattern",
+        "ar": "لوحة زليج بزخرفة نجمية"
+      }
     },
     {
       "id": "lumiere",
       "theme": "ambiance",
       "format": "paysage",
-      "image": null,
-      "alt": null
+      "image": "illustrations/lanternes-dorees",
+      "alt": {
+        "fr": "Lanternes dorées suspendues",
+        "en": "Golden hanging lanterns",
+        "ar": "فوانيس ذهبية معلقة"
+      }
     }
   ]
 }
