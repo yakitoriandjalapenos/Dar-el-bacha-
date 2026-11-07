@@ -341,6 +341,10 @@ try {
     const href = await page.locator('[data-lightbox]').first().getAttribute('href');
     const direct = await fetch(FX + href);
     check('Galerie : chaque photo est un lien vers sa grande version (fonctionne sans JavaScript)', links === 7 && direct.ok, `${links} liens, ${href} → ${direct.status}`);
+    // Chargement différé : toute image hors du premier écran attend d'être approchée (loading="lazy")
+    const lazy = await page.evaluate(() => [...document.querySelectorAll('main img')].map((i) => ({ below: i.getBoundingClientRect().top > innerHeight, lazy: i.loading === 'lazy', high: i.fetchPriority === 'high' })));
+    check('Images : chargement différé hors du premier écran, jamais pour l\'image prioritaire',
+      lazy.filter((i) => i.below).length >= 1 && lazy.filter((i) => i.below).every((i) => i.lazy) && lazy.filter((i) => i.high).every((i) => !i.lazy), JSON.stringify(lazy));
     await page.locator('[data-lightbox]').first().click();
     const state = () => page.evaluate(() => ({ open: document.querySelector('dialog.lightbox')?.open, counter: document.querySelector('.lightbox__counter')?.textContent, focus: document.activeElement.className, img: !!document.querySelector('.lightbox__frame img') }));
     let st = await state();
@@ -520,6 +524,28 @@ try {
     }));
     check('CSP appliquée : script principal et script de repli autorisés, script injecté refusé',
       /script-src 'self' 'sha256-/.test(csp) && !/unsafe-eval/.test(csp) && r.jsOk && !r.injected && /script-src/.test(r.violation || ''), `${csp.slice(0, 120)}… ${JSON.stringify(r)}`);
+    await ctx.close();
+  }
+  /* ---------- 13. Préférence « réduire les animations » ---------- */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    const issues = [];
+    for (const u of ['/fr/', '/ar/', '/en/menu/', '/fr/galerie/']) {
+      await page.goto(BASE + u, { waitUntil: 'load' });
+      const r = await page.evaluate(() => ({
+        // Tous les contenus visibles d'emblée, sans attendre le défilement
+        hidden: [...document.querySelectorAll('[data-reveal]')].filter((el) => getComputedStyle(el).opacity !== '1' || getComputedStyle(el).transform !== 'none').length,
+        // Aucune animation en cours (durées ramenées à 0,01 ms)
+        running: document.getAnimations().filter((a) => a.playState === 'running' && (a.effect?.getTiming().duration ?? 0) > 1).length,
+        smooth: getComputedStyle(document.documentElement).scrollBehavior,
+      }));
+      if (r.hidden || r.running || r.smooth === 'smooth') issues.push(`${u} ${JSON.stringify(r)}`);
+    }
+    // Menu mobile : ouverture immédiate, sans transition
+    await page.click('.nav-toggle');
+    const menuDuration = await page.evaluate(() => Math.max(0, ...document.getAnimations().map((a) => Number(a.effect?.getTiming().duration) || 0)));
+    check('Réduire les animations : contenus visibles d\'emblée, aucune animation ni défilement animé', issues.length === 0 && menuDuration <= 1, issues.join('\n') || `menu ${menuDuration} ms`);
     await ctx.close();
   }
   check('Aucune violation de la politique de sécurité (CSP) sur l\'ensemble des parcours testés', cspViolations.length === 0, cspViolations.slice(0, 5).join('\n'));

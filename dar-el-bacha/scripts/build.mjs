@@ -523,7 +523,7 @@ console.log(`\n✓ Build ${PROD ? 'de PRODUCTION' : 'de prévisualisation (noind
 console.log(`  CSS ${cssName} : ${kb(Buffer.byteLength(css))}   JS ${jsName} : ${kb(Buffer.byteLength(js))}`);
 console.log(`  Polices : ${fontManifest.map((f) => f.file).join(', ') || 'aucune (polices système)'}`);
 console.log(`  Carte : ${total}/${menu.maxTotal} propositions (${menu.categories.map((c) => `${c.id} ${c.items.length}/${c.max}`).join(', ')})`);
-console.log(`  Contrôles : ${pageChecks.length} pages vérifiées (langue, titres, liens, canonical, hreflang, Open Graph, sitemap, indexation)`);
+console.log(`  Contrôles : ${pageChecks.length} pages vérifiées (langue, textes d'une autre langue, titres et descriptions, liens, canonical, hreflang, Open Graph, sitemap, indexation) ; en-têtes de sécurité (CSP) générés`);
 if (warnings.length) console.log(`\n⚠ Avertissements :\n  - ${warnings.join('\n  - ')}`);
 
 if (!PROD) {

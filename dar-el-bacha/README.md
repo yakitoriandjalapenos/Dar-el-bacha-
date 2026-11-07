@@ -1,6 +1,6 @@
 # DAR EL BACHA — site gastronomique
 
-Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : phase 3 en cours — fonctions réelles (service de réservation, pages juridiques, contenus centralisés) en attente des informations officielles du restaurant (voir `INFORMATIONS-A-FOURNIR.md`).
+Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : un petit générateur Node assemble les pages à partir des contenus et des traductions. Étape actuelle : phase 4 terminée — fonctions, intégrations et contrôles finalisés ; mise en ligne en attente des informations officielles du restaurant (voir `INFORMATIONS-A-FOURNIR.md`) et du choix de l'hébergeur (voir `HEBERGEMENT.md`).
 
 ## Démarrer
 
@@ -11,13 +11,13 @@ Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est né
 | `npm run dev` | Compile, lance http://localhost:4321/fr/, recompile à chaque modification de `src/` ou `scripts/` et **recharge le navigateur** automatiquement. Une erreur de build s'affiche dans la page ; la dernière version valide reste servie. Le formulaire de réservation est relié au service local `/api/reservation` en **mode simulation** (rien n'est transmis au restaurant ; voir `server/README.md`). |
 | `npm run build` | Compilation de **prévisualisation** → `dist/`. Toutes les pages portent `noindex`, `robots.txt` bloque l'indexation. Les contenus provisoires sont listés. |
 | `npm run build:prod` | Compilation de **production**. Refusée (et `dist/` laissé intact) tant qu'il reste une information `[À CONFIRMER]`, une photo provisoire, un plat « à valider », un formulaire non relié ou que l'URL officielle (`siteUrl`) n'est pas configurée. |
-| `npm run serve` | Sert `dist/` tel quel (sans rechargement). |
+| `npm run serve` | Sert `dist/` tel quel (sans rechargement), avec les en-têtes de sécurité de `dist/_headers` (CSP…) appliqués comme chez l'hébergeur. |
 | `npm run images` | Prépare les photos de `ressources/photos/` (AVIF, WebP, JPEG, 480 à 2000 px). Nécessite `sharp`, voir « Photos ». |
 | `npm run contenus` | Régénère `INFORMATIONS-A-FOURNIR.md` : liste centralisée de tout ce que le restaurant doit fournir, avec l'état réel (fourni / à fournir), l'endroit où le renseigner et le format. |
 | `npm test` | Tests automatiques sans dépendance (contrôles des contenus, du site généré, des deux modes de compilation). |
-| `npm run test:browser` | Tests dans Chromium (19 pages × 7 largeurs, menu, clavier, RTL, formulaire, pannes de script). Nécessite Playwright installé à part. |
+| `npm run test:browser` | Tests dans Chromium (25 pages × 7 largeurs, menu, clavier, RTL, formulaire et envoi de bout en bout, WhatsApp, pannes de script, politique de sécurité, préférence « réduire les animations »). Nécessite Playwright installé à part. |
 
-Chaque compilation construit le site dans un dossier temporaire, le **contrôle** (langue et sens d'écriture, titres, liens et ressources internes, ancres, canonical, hreflang, Open Graph, sitemap, indexation, images), puis remplace `dist/` seulement si tout est conforme.
+Chaque compilation construit le site dans un dossier temporaire, le **contrôle** (langue et sens d'écriture, textes d'une autre langue, titres et descriptions, liens et ressources internes, ancres, canonical, hreflang, Open Graph, sitemap, indexation, images), produit les en-têtes de sécurité (`dist/_headers`), puis remplace `dist/` seulement si tout est conforme.
 
 Le dossier `dist/` est le site final : il se dépose tel quel chez n'importe quel hébergeur statique (Netlify, Cloudflare Pages, Vercel, OVH…). Ouvrir les fichiers directement par double-clic ne fonctionne pas (les liens partent de la racine du site) : passer par `npm run serve`. **Ne mettre en ligne qu'un `dist/` produit par `npm run build:prod`.**
 
@@ -36,18 +36,19 @@ src/
   components/        Éléments réutilisables (en-tête, pied de page, arche, médias, boutons…)
   pages/             Les 6 pages + la page 404
   styles/            tokens → base → layout → components → pages (concaténés au build)
-  scripts/main.js    Menu mobile, apparitions, formulaire, lien WhatsApp (7 ko non compressé)
+  scripts/main.js    Menu mobile, apparitions, galerie, formulaire, lien WhatsApp (13 ko minifié, 3,9 ko compressé)
   assets/            Images (logo, arche, motif zellige, photos préparées), polices
   static/            Fichiers copiés à la racine (favicon, icônes, image de partage, robots)
 ressources/          Fichiers sources définitifs (logo, icônes, polices, photos) — inventaire dans ressources/README.md
 server/              Service des demandes de réservation (Node.js, sans dépendance) — voir server/README.md
 INFORMATIONS-A-FOURNIR.md   Liste centralisée des informations et fichiers attendus du restaurant (npm run contenus)
+HEBERGEMENT.md       Mise en ligne : HTTPS, en-têtes de sécurité, types d'hébergement, points à faire valider
 scripts/
   build.mjs          Générateur (prévisualisation / production)
   dev.mjs            Serveur de développement avec rechargement automatique
   serve.mjs          Serveur local
   images.mjs         Préparation des photographies
-  lib/               Contrôles des contenus (validate), contrôle du site généré (check-output), serveur statique, gabarits HTML
+  lib/               Contrôles des contenus (validate), contrôle du site généré (check-output), en-têtes de sécurité, horaires, serveur statique, gabarits HTML
 tests/               Tests automatiques (npm test) et tests navigateur (npm run test:browser)
 ```
 
@@ -175,6 +176,11 @@ avec compression Brotli et en-têtes de cache. Les mesures de laboratoire ne rem
 - **Contrôle phase 3** (mêmes conditions, après ajout du service de réservation et des pages juridiques) : accueil FR 100 / LCP 1,69 s ;
   accueil AR 99 / 1,92 s ; réservation FR 100 / 1,74 s et AR 99 / 1,99 s ; confidentialité EN 100 / 1,69 s ; contact FR 100 / 1,72 s ;
   accessibilité et bonnes pratiques 100 partout ; CLS ≤ 0,010.
+- **Contrôle phase 4** (mêmes conditions, **en-têtes de sécurité et CSP appliqués**) : accueil FR 99 / LCP 1,78 s ; accueil AR 99 / 1,91 s ;
+  réservation FR 100 / 1,69 s et AR 99 / 1,97 s ; carte EN 99 / 1,71 s ; contact EN 99 / 1,69 s ; galerie FR 99 / 1,75 s ;
+  confidentialité FR 99 / 1,67 s ; accueil FR ordinateur 100 / 0,40 s ; accessibilité et bonnes pratiques 100 partout ; CLS ≤ 0,008 ;
+  TBT 0 ms. INP estimé 32 ms (pire interaction : envoi du formulaire vide). Points relevés par Lighthouse sans effet sur la note :
+  feuille de style bloquante (unique, 7,9 ko compressés) et découpes du logo plus grandes que leur affichage (en attente du SVG).
 - **SEO** : 66 en prévisualisation **par construction** (`noindex`) ; 100 en production (copie de test, phase 1).
 - **INP** (Chromium, processeur ralenti ×4, Event Timing) : 56 ms pour la pire interaction (ouverture d'une photo en grand) ;
   menu, formulaire, carte et galerie entre 16 et 32 ms.
@@ -187,7 +193,7 @@ latin visible hors noms de marque et de langues (test automatique). Le build ref
 d'une autre langue (traduction oubliée, texte alternatif ou contenu non localisé), hors passages marqués d'un attribut `lang`,
 ainsi que les titres et descriptions absents, en double ou de longueur inadaptée aux résultats de recherche.
 
-## Réservation (phase 3)
+## Réservation (phases 3 et 4)
 
 - **Formulaire** : nom, e-mail, téléphone, date, heure, nombre de personnes, message facultatif et **consentement** obligatoire
   (avec lien vers la politique de confidentialité). Validation dans le navigateur **et** sur le serveur, avec les mêmes règles :
@@ -198,6 +204,10 @@ ainsi que les titres et descriptions absents, en double ou de longueur inadapté
   dans la langue du visiteur (`/fr/reservation/statut/…/`, non indexée).
 - **Service** (`server/`) : anti-robot, limite d'envois, contrôle d'origine, e-mail configurable (simulation par défaut), journal sans
   donnée personnelle. Détails, configuration, sauvegarde et récupération : `server/README.md`.
+- **Accusé de réception** : e-mail au client dans sa langue (« demande reçue, en attente de confirmation »), envoyé **uniquement** après
+  la transmission réussie au restaurant ; le site ne le mentionne que s'il est parti.
+- **Anti-robot** : piège invisible, délai minimal de saisie, limite d'envois, contrôle d'origine ; **Cloudflare Turnstile** facultatif
+  (`site.json › reservation.antiSpam`), chargé seulement à la première interaction et mentionné alors dans la politique de confidentialité.
 - **WhatsApp** : message prérempli dans la langue de la page, envoyé par le client ; actif dès que le numéro officiel est renseigné.
 - **Système externe** : seulement s'il est réellement configuré (`reservation.bookingSystem`).
 
