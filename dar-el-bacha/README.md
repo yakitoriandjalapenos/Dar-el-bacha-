@@ -6,6 +6,8 @@ Site statique, trilingue (FR / EN / AR en RTL), sans framework ni dépendance : 
 
 Prérequis : Node.js 18 ou plus récent. Aucune installation de paquet n'est nécessaire pour compiler le site.
 
+**Voir le site sans rien taper** : double-cliquer sur `LANCER-APERCU-WINDOWS.bat` ou `LANCER-APERCU-MAC.command`, puis ouvrir http://localhost:4321/fr/ (s'ouvre automatiquement). Mode d'emploi : `OUVRIR-L-APERCU.md`.
+
 | Commande | Rôle |
 |---|---|
 | `npm run dev` | Compile, lance http://localhost:4321/fr/, recompile à chaque modification de `src/` ou `scripts/` et **recharge le navigateur** automatiquement. Une erreur de build s'affiche dans la page ; la dernière version valide reste servie. Le formulaire de réservation est relié au service local `/api/reservation` en **mode simulation** (rien n'est transmis au restaurant ; voir `server/README.md`). |

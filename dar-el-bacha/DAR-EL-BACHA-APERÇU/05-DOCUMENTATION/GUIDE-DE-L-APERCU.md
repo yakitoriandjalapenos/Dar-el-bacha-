@@ -9,7 +9,11 @@ Tous les chemins partent du dossier du projet `dar-el-bacha/`.
 
 ## 1. Lancer l'aperçu du site
 
-Prérequis : Node.js 18 ou plus récent (aucune installation de paquet n'est nécessaire pour le site).
+**Le plus simple** : double-cliquer sur `LANCER-APERCU-WINDOWS.bat` (Windows) ou `LANCER-APERCU-MAC.command` (Mac) dans le
+dossier `dar-el-bacha` ; le site s'ouvre tout seul dans le navigateur. Mode d'emploi pas à pas, y compris l'installation de
+Node.js et les solutions en cas de problème : **`OUVRIR-L-APERCU.md`** à la racine du projet.
+
+Méthode manuelle — prérequis : Node.js 18 ou plus récent (aucune installation de paquet n'est nécessaire pour le site).
 
 ```bash
 cd dar-el-bacha
