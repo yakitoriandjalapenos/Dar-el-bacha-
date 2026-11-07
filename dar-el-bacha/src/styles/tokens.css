@@ -1,55 +1,76 @@
 /* ==========================================================================
-   Design tokens — DAR EL BACHA
+   Design tokens — DAR EL BACHA · « patrimoine marocain revisité »
    Toutes les couleurs, polices et mesures du site partent d'ici.
+
+   Palette de référence validée : émeraude #123D32, or patiné #B99A62, sable #E9DFCC,
+   ivoire #F7F3EA, noyer #38291F. Les nuances dérivées servent uniquement à l'interface
+   (contrastes d'accessibilité) ; les couleurs du logo officiel ne sont jamais modifiées.
+
+   Contrastes vérifiés (WCAG, tests/tokens.test.mjs) :
+     noyer / ivoire 12,6:1 · émeraude / ivoire 10,9:1 · ivoire / émeraude 10,9:1
+     or clair #CDB385 / émeraude 6,0:1 · or foncé #6E5730 / ivoire 6,2:1
+     or patiné #B99A62 / ivoire 2,4:1 → filets et ornements uniquement, jamais de texte sur fond clair
    ========================================================================== */
 
 :root {
-  /* Palette de marque */
-  --c-emerald-950: #0c2a21;
-  --c-emerald-900: #0f3128;
-  --c-emerald-800: #12372b;
-  --c-emerald-700: #1c4a3b;
-  --c-emerald-600: #2a5c4b;
-  --c-gold-500: #b08d57;   /* or : filets, icônes, bordures — pas de texte sur fond clair */
-  --c-gold-300: #cdb07a;   /* or clair : texte et détails sur fond émeraude */
-  --c-sand-300: #d9c7a6;
-  --c-sand-200: #e6d9c0;
-  --c-sand-100: #efe6d4;
-  --c-ivory: #f5f0e6;
-  --c-ivory-50: #faf7f1;
-  --c-brown-700: #5b3a26;
-  --c-ink: #1e1c19;        /* noir doux */
-  --c-ink-soft: #4a443c;
+  /* Palette de référence */
+  --c-emerald: #123d32;
+  --c-gold: #b99a62;         /* or patiné : filets, ornements, détails, signature */
+  --c-sand: #e9dfcc;
+  --c-ivory: #f7f3ea;
+  --c-walnut: #38291f;       /* noyer */
+
+  /* Nuances dérivées (interface) */
+  --c-emerald-950: #0b2721;
+  --c-emerald-900: #0e3029;
+  --c-emerald-800: var(--c-emerald);
+  --c-emerald-700: #1a4c3f;
+  --c-emerald-600: #285e4f;
+  --c-gold-500: var(--c-gold);
+  --c-gold-300: #cdb385;     /* or clair : texte doré sur émeraude (6,0:1) */
+  --c-gold-700: #6e5730;     /* or foncé : texte doré sur fond clair (6,2:1) */
+  --c-sand-300: var(--c-sand);
+  --c-sand-200: #efe7d8;
+  --c-sand-100: #f3ede1;
+  --c-ivory-50: #fbf9f4;
+  --c-brown-700: #5e4c3f;    /* noyer adouci : texte secondaire (7,4:1 sur ivoire) */
+  --c-ink: var(--c-walnut);
+  --c-ink-soft: #5e4c3f;
+  --c-ivory-soft: #c7d3cc;   /* ivoire atténué sur émeraude (7,8:1) */
   --c-danger: #9b2c1f;
   --c-success: #1c5a3f;
 
   /* Rôles (thème clair par défaut) */
   --bg: var(--c-ivory);
   --bg-raised: var(--c-ivory-50);
-  --fg: var(--c-ink);
+  --fg: var(--c-walnut);
   --fg-muted: var(--c-ink-soft);
-  --heading: var(--c-emerald-800);
-  --accent: var(--c-gold-500);
-  --rule: color-mix(in srgb, var(--c-gold-500) 55%, transparent);
+  --heading: var(--c-emerald);
+  --accent: var(--c-gold);
+  --accent-text: var(--c-gold-700);
+  --rule: color-mix(in srgb, var(--c-gold) 60%, transparent);
   --link: var(--c-emerald-700);
-  --focus: var(--c-gold-500);
+  --focus: var(--c-emerald-600);
 
   /* Typographie */
-  --font-display: "Dar Display", "Lora", Georgia, "Times New Roman", serif;
-  --font-text: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --leading-text: 1.65;
-  --leading-display: 1.12;
-  --tracking-display: -0.01em;
-  --tracking-wordmark: 0.2em;
+  --font-display: "Dar Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-text: "Dar Text", "Jost", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --leading-text: 1.7;
+  --leading-display: 1.08;
+  --tracking-display: -0.005em;
+  --tracking-eyebrow: 0.22em;
+  --tracking-wordmark: 0.24em;
 
-  /* Échelle typographique fluide (quarte, ~1.333) */
-  --step--1: clamp(0.84rem, 0.82rem + 0.1vw, 0.9rem);
+  /* Échelle typographique fluide */
+  --step--2: clamp(0.75rem, 0.73rem + 0.08vw, 0.8rem);
+  --step--1: clamp(0.86rem, 0.83rem + 0.12vw, 0.94rem);
   --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
-  --step-1: clamp(1.19rem, 1.12rem + 0.35vw, 1.375rem);
-  --step-2: clamp(1.42rem, 1.28rem + 0.7vw, 1.875rem);
-  --step-3: clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem);
-  --step-4: clamp(2.15rem, 1.7rem + 2.2vw, 3.5rem);
-  --step-5: clamp(2.5rem, 1.8rem + 3.4vw, 4.6rem);
+  --step-1: clamp(1.2rem, 1.12rem + 0.38vw, 1.45rem);
+  --step-2: clamp(1.5rem, 1.33rem + 0.8vw, 2.05rem);
+  --step-3: clamp(1.9rem, 1.6rem + 1.45vw, 2.9rem);
+  --step-4: clamp(2.35rem, 1.85rem + 2.5vw, 4rem);
+  --step-5: clamp(2.8rem, 2rem + 4vw, 5.4rem);
+  --step-6: clamp(3.1rem, 2rem + 5.6vw, 6.6rem);
 
   /* Espacements fluides */
   --space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.3rem);
@@ -59,46 +80,64 @@
   --space-m: clamp(1.5rem, 1.4rem + 0.5vw, 1.75rem);
   --space-l: clamp(2rem, 1.8rem + 1vw, 2.75rem);
   --space-xl: clamp(3rem, 2.6rem + 2vw, 4.5rem);
-  --space-2xl: clamp(4.5rem, 3.6rem + 4vw, 7.5rem);
+  --space-2xl: clamp(4.5rem, 3.6rem + 4.5vw, 8rem);
+  --space-3xl: clamp(6rem, 4.5rem + 7vw, 11rem);
 
   /* Mise en page */
   --gutter: clamp(1.25rem, 0.8rem + 2.5vw, 3rem);
-  --wrap-max: 76rem;
-  --measure: 34em;          /* longueur de ligne confortable */
-  --header-h: 4.5rem;
+  --wrap-max: 78rem;
+  --wrap-narrow: 46rem;
+  --measure: 36em;
+  --header-h: 4.75rem;
 
-  /* Formes & mouvements */
+  /* Formes, ombres et mouvements */
   --radius-s: 2px;
   --radius-m: 4px;
+  --shadow-soft: 0 1.5rem 3rem -1.5rem color-mix(in srgb, var(--c-walnut) 35%, transparent);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 160ms;
-  --dur-base: 320ms;
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-base: 360ms;
   --dur-slow: 900ms;
 
   /* Ressources graphiques (chemins relatifs à /assets/, où se trouve la feuille de style compilée) */
   --img-arch: url("img/arch.svg");
   --img-zellige: url("img/zellige.svg");
+  --img-moucharabieh: url("img/moucharabieh.svg");
+  --img-frieze: url("img/frise.svg");
+  /* Grain de tadelakt : bruit SVG minuscule, rendu une fois puis répété (aucune image à télécharger) */
+  --img-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.22 0 0 0 0 0.16 0 0 0 0 0.12 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* Sections sur fond émeraude */
 .theme-dark {
-  --bg: var(--c-emerald-800);
+  --bg: var(--c-emerald);
   --bg-raised: var(--c-emerald-700);
   --fg: var(--c-ivory);
-  --fg-muted: color-mix(in srgb, var(--c-ivory) 78%, var(--c-emerald-800));
+  --fg-muted: var(--c-ivory-soft);
   --heading: var(--c-ivory);
-  --accent: var(--c-gold-300);
-  --rule: color-mix(in srgb, var(--c-gold-300) 45%, transparent);
+  --accent: var(--c-gold);
+  --accent-text: var(--c-gold-300);
+  --rule: color-mix(in srgb, var(--c-gold) 50%, transparent);
   --link: var(--c-gold-300);
   --focus: var(--c-gold-300);
 }
 
-/* Arabe : polices dédiées, interlignage plus ample, jamais d'espacement entre lettres */
+/* Sections sable */
+.theme-sand {
+  --bg: var(--c-sand-100);
+  --bg-raised: var(--c-ivory-50);
+}
+
+/* Arabe : polices dédiées, interlignage plus ample, jamais d'espacement entre lettres ni de capitales */
 :root:lang(ar) {
-  --font-display: "Dar Display Arabic", "Noto Naskh Arabic", "Amiri", "Geeza Pro", "Traditional Arabic", serif;
-  --font-text: "Dar Text Arabic", "Noto Sans Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
-  --leading-text: 1.85;
-  --leading-display: 1.4;
+  --font-display: "Dar Display Arabic", "Noto Kufi Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  --font-text: "Dar Text Arabic", "Noto Naskh Arabic", "Geeza Pro", "Traditional Arabic", Tahoma, serif;
+  --leading-text: 1.95;
+  --leading-display: 1.45;
   --tracking-display: 0;
+  --tracking-eyebrow: 0;
   --tracking-wordmark: 0;
+  --step-5: clamp(2.3rem, 1.7rem + 3vw, 4.2rem);
+  --step-6: clamp(2.5rem, 1.7rem + 4vw, 5rem);
 }

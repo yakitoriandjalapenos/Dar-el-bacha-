@@ -120,6 +120,8 @@ await writeFile(path.join(OUT, 'assets', jsName), js);
 await cp(path.join(SRC, 'assets/img'), path.join(OUT, 'assets/img'), { recursive: true, filter: (f) => f !== PHOTOS_MANIFEST && path.basename(f) !== '.gitkeep' });
 await mkdir(path.join(OUT, 'assets/fonts'), { recursive: true });
 for (const f of fontManifest) await cp(path.join(fontsDir, f.file), path.join(OUT, 'assets/fonts', f.file));
+// Licences des polices publiées avec elles (SIL Open Font License)
+if (existsSync(path.join(fontsDir, 'licences'))) await cp(path.join(fontsDir, 'licences'), path.join(OUT, 'assets/fonts/licences'), { recursive: true });
 for (const f of await readdir(path.join(SRC, 'static'))) {
   if (f === 'robots.txt') continue;
   await cp(path.join(SRC, 'static', f), path.join(OUT, f), { recursive: true });
@@ -157,7 +159,10 @@ function makeCtx(lang, pageId) {
     siteUrl,
     year: new Date().getFullYear(),
     assets: { css: `${BASE}/assets/${cssName}`, js: `${BASE}/assets/${jsName}` },
-    fontPreloads: lang === 'ar' ? [] : fontManifest.filter((f) => f.preload).map((f) => ({ href: `${BASE}/assets/fonts/${f.file}`, format: f.format })),
+    // Préchargement : uniquement la police des titres de la langue de la page (voir fonts.json › preload)
+    fontPreloads: fontManifest
+      .filter((f) => (Array.isArray(f.preload) ? f.preload.includes(lang) : f.preload === true && lang !== 'ar'))
+      .map((f) => ({ href: `${BASE}/assets/fonts/${f.file}`, format: f.format })),
 
     t: (key, vars) => tFor(lang, key, vars),
     tFor,
@@ -166,6 +171,8 @@ function makeCtx(lang, pageId) {
     // Adresse absolue sur le domaine officiel ; null tant que siteUrl n'est pas configurée.
     absUrl: (p) => (siteUrl ? siteUrl + (BASE && p.startsWith(BASE) ? p.slice(BASE.length) : p) : null),
     asset: (name) => `${BASE}/${name}`,
+    // Fichier image présent dans src/assets/img/ (ex. logo SVG définitif déposé)
+    hasAsset: (p) => p.startsWith('assets/img/') && imageFiles.includes(p.slice('assets/img/'.length)),
 
     address: () => {
       const a = site.address || {};
@@ -416,7 +423,7 @@ const missingGalleryPhotos = gallery.items.filter((i) => !i.image).length;
 
 // Ressources définitives encore absentes (non bloquant : signalé à chaque compilation)
 const resources = [];
-if (!imageFiles.some((f) => /^logo\/.+\.svg$/.test(f))) resources.push('logo définitif vectoriel (SVG, variantes fond sombre / fond clair) : logo actuel = découpe provisoire de 300 px');
+if (!imageFiles.some((f) => /^logo\/.+\.svg$/.test(f))) resources.push('logo définitif vectoriel (SVG : avec et sans couronne, vert et or, ivoire et or, monochrome) : découpes de la planche officielle utilisées en attendant (333 px au plus, affichées à mi-taille)');
 const provisionalFonts = fontManifest.filter((f) => f.provisional).map((f) => f.file);
 if (provisionalFonts.length) resources.push(`police de titres définitive (police provisoire : ${provisionalFonts.join(', ')})`);
 if (!fontManifest.some((f) => /Arabic/.test(f.family))) resources.push('police arabe (les polices du système sont utilisées)');

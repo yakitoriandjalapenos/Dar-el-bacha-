@@ -1,5 +1,5 @@
 {
-  "_comment": "Carte gastronomique. Limites strictes : 6 entrées, 10 plats, 4 desserts, 5 boissons, 25 au total. Le build échoue si une limite est dépassée. Ne rien inventer : description, ingrédients et prix restent à null tant que le restaurant ne les a pas fournis. status « a-valider » = proposition issue du cahier des charges, en attente de validation.",
+  "_comment": "Carte gastronomique. Plafonds stricts du cahier des charges (section 5.2), contrôlés au build : 6 entrées, 10 plats, 4 desserts, 5 boissons, 25 au total ; « max » et « maxTotal » peuvent seulement les abaisser, aucune autre catégorie n'est acceptée (tajines et spécialités fassies dans « plats »). Ne rien inventer : description, ingredients (ingrédients ou particularités, { fr, en, ar }), prix et photo restent à null tant que le restaurant ne les a pas fournis et validés. status « a-valider » = proposition issue du cahier des charges, en attente de validation. signature: true = plat emblématique mis en avant sur l'accueil (choix du restaurant ; 4 au plus).",
   "currency": "MAD",
   "maxTotal": 25,
   "categories": [
@@ -7,10 +7,10 @@
       "id": "entrees",
       "max": 6,
       "items": [
-        { "id": "zaalouk", "status": "a-valider", "name": { "fr": "Zaalouk", "en": "Zaalouk", "ar": "زعلوك" }, "description": null, "price": null, "image": null },
-        { "id": "taktouka", "status": "a-valider", "name": { "fr": "Taktouka", "en": "Taktouka", "ar": "تكتوكة" }, "description": null, "price": null, "image": null },
-        { "id": "pastilla", "status": "a-valider", "name": { "fr": "Pastilla traditionnelle", "en": "Traditional pastilla", "ar": "بسطيلة تقليدية" }, "description": null, "price": null, "image": null },
-        { "id": "briouates", "status": "a-valider", "name": { "fr": "Briouates", "en": "Briouates", "ar": "بريوات" }, "description": null, "price": null, "image": null }
+        { "id": "zaalouk", "status": "a-valider", "name": { "fr": "Zaalouk", "en": "Zaalouk", "ar": "زعلوك" }, "description": null, "ingredients": null, "price": null, "image": null },
+        { "id": "taktouka", "status": "a-valider", "name": { "fr": "Taktouka", "en": "Taktouka", "ar": "تكتوكة" }, "description": null, "ingredients": null, "price": null, "image": null },
+        { "id": "pastilla", "status": "a-valider", "name": { "fr": "Pastilla traditionnelle", "en": "Traditional pastilla", "ar": "بسطيلة تقليدية" }, "description": null, "ingredients": null, "price": null, "image": null },
+        { "id": "briouates", "status": "a-valider", "name": { "fr": "Briouates", "en": "Briouates", "ar": "بريوات" }, "description": null, "ingredients": null, "price": null, "image": null }
       ]
     },
     {
@@ -27,7 +27,7 @@
       "id": "boissons",
       "max": 5,
       "items": [
-        { "id": "the-marocain", "status": "a-valider", "name": { "fr": "Thé marocain", "en": "Moroccan tea", "ar": "الشاي المغربي" }, "description": null, "price": null, "image": null }
+        { "id": "the-marocain", "status": "a-valider", "name": { "fr": "Thé marocain", "en": "Moroccan tea", "ar": "الشاي المغربي" }, "description": null, "ingredients": null, "price": null, "image": null }
       ]
     }
   ]

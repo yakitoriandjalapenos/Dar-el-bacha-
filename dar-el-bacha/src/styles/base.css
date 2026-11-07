@@ -25,6 +25,11 @@ body {
 .theme-dark { background: var(--bg); color: var(--fg); }
 
 img, svg, picture, video { display: block; max-width: 100%; height: auto; }
+
+/* Logo officiel : une découpe raster ne dépasse jamais la moitié de sa largeur réelle (pas d'agrandissement) ;
+   un fichier SVG définitif (.logo--vector) n'a pas de limite. */
+.logo { width: auto; max-width: min(100%, var(--logo-max, 100%)); height: auto; }
+.logo--vector { max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
 p, h1, h2, h3, h4, figure, blockquote, dl, dd { margin: 0; }

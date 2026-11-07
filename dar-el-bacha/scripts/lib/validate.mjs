@@ -94,6 +94,15 @@ function checkImage(image, label, errors) {
 
 const DISH_STATUS = ['a-valider'];
 
+/**
+ * Plafonds du cahier des charges (section 5.2) : limites strictes, jamais des minimums.
+ * menu.json reste la source des données et peut seulement les abaisser ; toute autre catégorie est refusée.
+ */
+export const MENU_CEILINGS = Object.freeze({
+  total: 25,
+  categories: Object.freeze({ entrees: 6, plats: 10, desserts: 4, boissons: 5 }),
+});
+
 export function validateMenu(menu, dict, langs) {
   const errors = [];
   const warnings = [];
@@ -101,6 +110,7 @@ export function validateMenu(menu, dict, langs) {
 
   if (!/^[A-Z]{3}$/.test(menu.currency || '')) errors.push(`${where} : « currency » doit être un code de devise ISO (ex. MAD).`);
   if (!isPosInt(menu.maxTotal)) errors.push(`${where} : « maxTotal » doit être un entier positif.`);
+  else if (menu.maxTotal > MENU_CEILINGS.total) errors.push(`${where} : « maxTotal » (${menu.maxTotal}) dépasse le plafond du cahier des charges (${MENU_CEILINGS.total}).`);
   if (!Array.isArray(menu.categories) || !menu.categories.length) {
     errors.push(`${where} : « categories » doit contenir au moins une catégorie.`);
     return { errors, warnings, total: 0 };
@@ -115,9 +125,13 @@ export function validateMenu(menu, dict, langs) {
     if (!/^[a-z0-9-]+$/.test(cat.id || '')) errors.push(`${where} : identifiant de catégorie invalide « ${cat.id} » (minuscules, chiffres, tirets).`);
     if (catIds.has(cat.id)) errors.push(`${c} : identifiant en double.`);
     catIds.add(cat.id);
+    const ceiling = MENU_CEILINGS.categories[cat.id];
+    if (ceiling === undefined) errors.push(`${c} : catégorie non autorisée par le cahier des charges (catégories autorisées : ${Object.keys(MENU_CEILINGS.categories).join(', ')} ; les tajines et spécialités fassies vont dans « plats »).`);
     if (!isPosInt(cat.max)) errors.push(`${c} : « max » doit être un entier positif.`);
+    else if (ceiling !== undefined && cat.max > ceiling) errors.push(`${c} : « max » (${cat.max}) dépasse le plafond du cahier des charges (${ceiling}).`);
     if (!Array.isArray(cat.items)) { errors.push(`${c} : « items » doit être une liste.`); continue; }
-    if (isPosInt(cat.max) && cat.items.length > cat.max) errors.push(`${c} : ${cat.items.length} propositions (maximum ${cat.max}).`);
+    const limit = Math.min(isPosInt(cat.max) ? cat.max : Infinity, ceiling ?? Infinity);
+    if (cat.items.length > limit) errors.push(`${c} : ${cat.items.length} propositions (maximum ${limit}).`);
     total += cat.items.length;
 
     for (const { code } of langs) {
@@ -133,6 +147,8 @@ export function validateMenu(menu, dict, langs) {
       itemIds.add(item.id);
       checkLocalized(item.name, langs, `${i} › name`, errors, { nullable: false });
       checkLocalized(item.description, langs, `${i} › description`, errors);
+      checkLocalized(item.ingredients, langs, `${i} › ingredients`, errors);
+      if (item.signature !== undefined && typeof item.signature !== 'boolean') errors.push(`${i} : « signature » doit valoir true ou false.`);
       if (item.price !== null && item.price !== undefined && !(typeof item.price === 'number' && Number.isFinite(item.price) && item.price >= 0)) {
         errors.push(`${i} : « price » doit être un nombre positif ou null.`);
       }
@@ -143,7 +159,11 @@ export function validateMenu(menu, dict, langs) {
     }
   }
 
-  if (isPosInt(menu.maxTotal) && total > menu.maxTotal) errors.push(`${where} : ${total} propositions au total (maximum ${menu.maxTotal}).`);
+  const totalLimit = Math.min(isPosInt(menu.maxTotal) ? menu.maxTotal : Infinity, MENU_CEILINGS.total);
+  if (total > totalLimit) errors.push(`${where} : ${total} propositions au total (maximum ${totalLimit}).`);
+  for (const id of Object.keys(MENU_CEILINGS.categories)) {
+    if (!catIds.has(id)) warnings.push(`${where} : catégorie « ${id} » absente (prévue par le cahier des charges).`);
+  }
   const sumMax = menu.categories.reduce((s, c) => s + (isPosInt(c.max) ? c.max : 0), 0);
   if (isPosInt(menu.maxTotal) && sumMax > menu.maxTotal) {
     warnings.push(`${where} : la somme des maximums par catégorie (${sumMax}) dépasse « maxTotal » (${menu.maxTotal}) ; c'est « maxTotal » qui s'applique.`);
@@ -217,9 +237,11 @@ export function validateSite(site, langs) {
   const endpoint = site.reservation?.formEndpoint;
   if (endpoint && !isHttpsUrl(endpoint) && !/^\/[^/]/.test(endpoint)) errors.push(`${s} › reservation.formEndpoint : adresse https:// ou chemin du site (/api/…) attendu.`);
   const system = site.reservation?.bookingSystem;
-  if (system !== null && system !== undefined && !(isObj(system) && isHttpsUrl(system.url))) {
-    errors.push(`${s} › reservation.bookingSystem : null ou { "url": "https://…" } attendu.`);
+  if (system !== null && system !== undefined) {
+    if (!(isObj(system) && isHttpsUrl(system.url))) errors.push(`${s} › reservation.bookingSystem : null ou { "url": "https://…" } attendu.`);
+    else if (system.embedUrl !== undefined && system.embedUrl !== null && !isHttpsUrl(system.embedUrl)) errors.push(`${s} › reservation.bookingSystem.embedUrl : adresse https:// attendue.`);
   }
+  checkLocalized(site.reservation?.conditions, langs, `${s} › reservation.conditions`, errors);
 
   if (!['symbole', 'complet'].includes(site.logo?.header || 'symbole')) errors.push(`${s} › logo.header : « symbole » ou « complet » attendu.`);
   const { latitude, longitude } = site.geo || {};

@@ -48,6 +48,9 @@
   "reservation": {
     "_comment": "formEndpoint : URL du service qui reçoit les demandes du formulaire (à brancher). bookingSystem : système de réservation connecté optionnel ; laissé à null, il n'apparaît pas sur le site.",
     "formEndpoint": null,
-    "bookingSystem": null
+    "bookingSystem": null,
+    "_bookingSystem": "Système de réservation connecté (optionnel), uniquement lorsqu'il est réellement configuré : { \"url\": \"https://…\" } pour un lien, et éventuellement \"embedUrl\": \"https://…\" pour un module intégré à la page (chargé à la demande). Jamais de disponibilités simulées.",
+    "_conditions": "Conditions de réservation validées par le restaurant (délais, groupes, annulation…) : { \"fr\": \"…\", \"en\": \"…\", \"ar\": \"…\" }.",
+    "conditions": null
   }
 }
