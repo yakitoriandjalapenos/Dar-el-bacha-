@@ -215,7 +215,10 @@ production est refusée.
   (`server/`) ; consentement ; pages juridiques ; horaires structurés ; liste centralisée des informations à fournir.
 - ⏳ À configurer selon l'hébergeur : déploiement du service, service d'e-mail réel (clé, adresse de réception, SPF/DKIM/DMARC),
   limite d'envois partagée entre instances, `formEndpoint`.
-- ⏳ **En-têtes de sécurité** : **CSP** (le script en ligne de repli devra être autorisé par empreinte) et **HSTS**, chez l'hébergeur retenu.
+- ✅ **En-têtes de sécurité** générés à chaque build dans `dist/_headers` : **CSP** stricte (script de repli autorisé par empreinte,
+  cadres externes seulement s'ils sont configurés), **HSTS** en production, vérifiés par les tests navigateur.
+  ⏳ À reporter chez l'hébergeur retenu et à contrôler en ligne : voir **`HEBERGEMENT.md`** (HTTPS, en-têtes, types d'hébergement,
+  points à faire valider).
 - ⛔ **Données personnelles** : informations juridiques, durée de conservation, transferts, démarches **CNDP** (loi 09-08) et
   validation par un juriste (`legal.validated`).
 - ⛔ **Contenus officiels** : coordonnées, horaires, carte validée et prix, plats emblématiques, conditions de réservation, histoire,

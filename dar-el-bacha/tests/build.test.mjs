@@ -52,7 +52,10 @@ test('prévisualisation : 41 pages (6 principales, 2 juridiques et 5 résultats 
   }
   assert.equal(existsSync(path.join(dir, 'dist/sitemap.xml')), false);
   assert.match(await html('robots.txt'), /Disallow: \//);
-  assert.match(await html('_headers'), /X-Robots-Tag: noindex/);
+  const headers = await html('_headers');
+  assert.match(headers, /X-Robots-Tag: noindex/);
+  assert.doesNotMatch(headers, /Strict-Transport-Security/, 'HSTS réservé au domaine officiel');
+  assert.match(headers, /Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-[A-Za-z0-9+/]+='; .*frame-src 'none'/);
   assert.match(r.stdout, /À confirmer avant mise en ligne/);
 });
 
@@ -130,7 +133,11 @@ test('production acceptée quand tous les contenus sont renseignés (données de
   assert.match(sitemap, /<loc>https:\/\/www\.domaine-de-test\.ma\/fr\/confidentialite\/<\/loc>/);
   assert.doesNotMatch(await html('fr/mentions-legales/index.html'), /data-provisional/);
   assert.match(await html('robots.txt'), /Sitemap: https:\/\/www\.domaine-de-test\.ma\/sitemap\.xml/);
-  assert.doesNotMatch(await html('_headers'), /X-Robots-Tag/);
+  const headers = await html('_headers');
+  assert.doesNotMatch(headers, /X-Robots-Tag/);
+  assert.match(headers, /Strict-Transport-Security: max-age=31536000/);
+  // Carte intégrée (adresse renseignée) : seul Google Maps est autorisé en cadre
+  assert.match(headers, /frame-src https:\/\/maps\.google\.com https:\/\/www\.google\.com;/);
   // Fil d'Ariane des pages intérieures et manifeste d'application
   assert.match(await html('fr/la-carte/index.html'), /"@type":"BreadcrumbList".*"item":"https:\/\/www\.domaine-de-test\.ma\/fr\/la-carte\/"/);
   assert.doesNotMatch(home, /BreadcrumbList/);

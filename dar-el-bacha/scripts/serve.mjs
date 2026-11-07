@@ -12,4 +12,4 @@ const HOME = pathFor('home', DEFAULT_LANG);
 
 // Service des demandes de réservation (simulation par défaut) : utilisé si le site a été compilé avec FORM_ENDPOINT=/api/reservation
 const reservation = createReservationService(process.env, { port: PORT });
-listen(createStaticServer({ root: DIST, home: HOME, routes: { '/api/reservation': reservation.node } }), PORT, () => console.log(`→ http://localhost:${PORT}${HOME}`));
+listen(createStaticServer({ root: DIST, home: HOME, headers: true, routes: { '/api/reservation': reservation.node } }), PORT, () => console.log(`→ http://localhost:${PORT}${HOME}`));

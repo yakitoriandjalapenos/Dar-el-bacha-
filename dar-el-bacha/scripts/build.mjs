@@ -28,6 +28,7 @@ import { layout } from '../src/components/layout.mjs';
 import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, collectImageRefs } from './lib/validate.mjs';
 import { checkOutput } from './lib/check-output.mjs';
 import { hoursLines, openingHoursSchema } from './lib/opening-hours.mjs';
+import { buildCsp, headersFile } from './lib/security-headers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
@@ -418,15 +419,14 @@ const robots = PROD
   : 'User-agent: *\nDisallow: /\n';
 await writePage('robots.txt', robots);
 
-// En-têtes HTTP (format Netlify / Cloudflare Pages ; à adapter selon l'hébergeur)
-await writePage('_headers', `/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-/*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  X-Frame-Options: SAMEORIGIN
-${PROD ? '' : '  X-Robots-Tag: noindex, nofollow\n'}`);
+// En-têtes HTTP (format Netlify / Cloudflare Pages ; voir HEBERGEMENT.md pour les autres hébergeurs).
+// La politique de sécurité (CSP) est déduite des pages générées : empreintes des scripts intégrés, cadres configurés.
+const csp = buildCsp({
+  pages: [...textFiles].filter(([f]) => f.endsWith('.html')).map(([, c]) => c),
+  formEndpoint: site.reservation?.formEndpoint,
+  turnstile: site.reservation?.antiSpam?.provider === 'turnstile',
+});
+await writePage('_headers', headersFile({ csp, prod: PROD, assetsPath: `${BASE}/assets/*` }));
 
 /* ------------------------------------------------------------------ */
 /* Contrôle du site généré                                             */

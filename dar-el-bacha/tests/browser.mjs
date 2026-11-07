@@ -39,10 +39,20 @@ const URLS = [...LANGS.flatMap((l) => [...PAGES, ...LEGAL_PAGES].map((p) => path
 const results = [];
 const check = (name, ok, detail = '') => results.push({ name, ok: Boolean(ok), detail });
 
-const server = createStaticServer({ root: DIST, home: pathFor('home', DEFAULT_LANG) });
+const server = createStaticServer({ root: DIST, home: pathFor('home', DEFAULT_LANG), headers: true });
 await new Promise((r) => server.listen(0, r));
 const BASE = `http://localhost:${server.address().port}`;
 const browser = await chromium.launch();
+
+// Les en-têtes de dist/_headers (dont la CSP) sont appliqués par le serveur de test, comme chez l'hébergeur :
+// toute ressource ou script refusé par la politique de sécurité est relevé, dans toutes les sections.
+const cspViolations = [];
+const newContext = browser.newContext.bind(browser);
+browser.newContext = async (options) => {
+  const c = await newContext(options);
+  c.on('page', (p) => p.on('console', (m) => { if (/Content Security Policy/i.test(m.text())) cspViolations.push(`${p.url()} : ${m.text().slice(0, 200)}`); }));
+  return c;
+};
 
 try {
   /* ---------- 1. Toutes les pages, toutes les largeurs ---------- */
@@ -314,7 +324,7 @@ try {
     wr('src/content/site.json', site);
     const b = spawnSync(process.execPath, ['scripts/build.mjs'], { cwd: tmp, encoding: 'utf8' });
     if (b.status !== 0) throw new Error(`build de la copie de test : ${b.stderr}`);
-    fxServer = createStaticServer({ root: path.join(tmp, 'dist'), home: '/fr/' });
+    fxServer = createStaticServer({ root: path.join(tmp, 'dist'), home: '/fr/', headers: true });
     await new Promise((r) => fxServer.listen(0, r));
     const FX = `http://localhost:${fxServer.address().port}`;
 
@@ -399,7 +409,7 @@ try {
     if (b.status !== 0) throw new Error(`build de la copie de test : ${b.stderr}`);
     const { createReservationService } = await import(pathToFileURL(path.join(tmpR, 'server/index.mjs')).href);
     const service = createReservationService({ ALLOWED_ORIGINS: '' });
-    apiServer = createStaticServer({ root: path.join(tmpR, 'dist'), home: '/fr/', routes: { '/api/reservation': service.node } });
+    apiServer = createStaticServer({ root: path.join(tmpR, 'dist'), home: '/fr/', headers: true, routes: { '/api/reservation': service.node } });
     await new Promise((r) => apiServer.listen(0, r));
     const API_BASE = `http://localhost:${apiServer.address().port}`;
     const dayOffset = (want) => { for (let i = 2; i < 14; i++) { const d = new Date(Date.now() + i * 864e5); if (((d.getUTCDay() + 6) % 7 === 0) === want) return d.toISOString().slice(0, 10); } };
@@ -492,6 +502,27 @@ try {
     apiServer?.close();
     rmSync(tmpR, { recursive: true, force: true });
   }
+
+  /* ---------- 12. Politique de sécurité (CSP) ---------- */
+  {
+    // Contexte non surveillé : le script injecté ci-dessous doit justement être refusé
+    const ctx = await newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    const res = await page.goto(`${BASE}/fr/reservation/`);
+    const csp = res.headers()['content-security-policy'] || '';
+    const r = await page.evaluate(() => new Promise((resolve) => {
+      let violation = null;
+      document.addEventListener('securitypolicyviolation', (e) => { violation = e.violatedDirective; });
+      const s = document.createElement('script');
+      s.textContent = 'window.__injected = true';
+      document.body.append(s);
+      setTimeout(() => resolve({ injected: window.__injected === true, violation, jsOk: document.documentElement.classList.contains('js-ok') }), 100);
+    }));
+    check('CSP appliquée : script principal et script de repli autorisés, script injecté refusé',
+      /script-src 'self' 'sha256-/.test(csp) && !/unsafe-eval/.test(csp) && r.jsOk && !r.injected && /script-src/.test(r.violation || ''), `${csp.slice(0, 120)}… ${JSON.stringify(r)}`);
+    await ctx.close();
+  }
+  check('Aucune violation de la politique de sécurité (CSP) sur l\'ensemble des parcours testés', cspViolations.length === 0, cspViolations.slice(0, 5).join('\n'));
 } finally {
   await browser.close();
   server.close();

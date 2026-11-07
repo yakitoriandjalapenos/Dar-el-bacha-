@@ -2,6 +2,10 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
+import { parseHeaders, headersFor } from './security-headers.mjs';
+
+// En-têtes du fichier _headers non repris en local : pas de cache (fichiers recompilés), pas de HTTPS
+const LOCAL_SKIP = new Set(['cache-control', 'strict-transport-security']);
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -16,12 +20,20 @@ const TYPES = {
  * @param {string} o.home               redirection de « / » (ex. /fr/)
  * @param {(html:string)=>string} [o.transformHtml]  modification des pages HTML (développement uniquement)
  * @param {Record<string,(req,res)=>void>} [o.routes] routes spéciales (développement uniquement)
+ * @param {boolean} [o.headers]         applique les en-têtes de sécurité de dist/_headers (CSP…), comme l'hébergeur
  */
-export function createStaticServer({ root, home, transformHtml = (s) => s, routes = {} }) {
+export function createStaticServer({ root, home, transformHtml = (s) => s, routes = {}, headers = false }) {
   const ROOT = path.resolve(root);
 
-  const send = (res, status, type, body) => {
-    res.writeHead(status, { 'Content-Type': type, 'Cache-Control': 'no-store' });
+  // Relu à chaque requête : le fichier change à chaque build
+  const extraHeaders = async (pathname) => {
+    if (!headers) return {};
+    const text = await readFile(path.join(ROOT, '_headers'), 'utf8').catch(() => '');
+    return Object.fromEntries(Object.entries(headersFor(parseHeaders(text), pathname)).filter(([k]) => !LOCAL_SKIP.has(k.toLowerCase())));
+  };
+
+  const send = async (res, status, type, body) => {
+    res.writeHead(status, { ...(await extraHeaders(res.req ? new URL(res.req.url, 'http://localhost').pathname : '/')), 'Content-Type': type, 'Cache-Control': 'no-store' });
     res.end(body);
   };
   const notFound = async (res) => {
@@ -32,6 +44,7 @@ export function createStaticServer({ root, home, transformHtml = (s) => s, route
   return createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
     if (routes[url.pathname]) return routes[url.pathname](req, res);
+    if (url.pathname === '/_headers') return notFound(res); // fichier de configuration, jamais publié par l'hébergeur
 
     let p;
     try { p = decodeURIComponent(url.pathname); } catch { return send(res, 400, TYPES['.txt'], 'Bad request'); }
