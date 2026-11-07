@@ -26,7 +26,7 @@ import { LANGS, DEFAULT_LANG, PAGES, LEGAL_PAGES, RESERVATION_RESULTS, pathFor }
 const SITE_PAGES = [...PAGES, ...LEGAL_PAGES];
 import { layout } from '../src/components/layout.mjs';
 import { parseSiteUrl, validateI18n, validateMenu, validateGallery, validateSite, validateMedia, collectImageRefs } from './lib/validate.mjs';
-import { checkOutput } from './lib/check-output.mjs';
+import { checkOutput, collectForeignTexts } from './lib/check-output.mjs';
 import { hoursLines, openingHoursSchema } from './lib/opening-hours.mjs';
 import { buildCsp, headersFile } from './lib/security-headers.mjs';
 
@@ -444,7 +444,29 @@ const PROVISIONAL_LABELS = {
 };
 const forbiddenTexts = LANGS.flatMap((l) => [...Object.values(dict[l.code].tbc || {}), get(dict[l.code], 'pages.carte.pending')]);
 const allFiles = new Set(await listFiles(OUT));
-const output = checkOutput({ files: textFiles, allFiles, pages: pageChecks, mode: MODE, siteUrl, base: BASE, forbiddenTexts });
+// Textes propres à chaque langue : traductions (même clé) et contenus localisés { fr, en, ar } des fichiers de contenu
+const LANG_CODES = LANGS.map((l) => l.code);
+const flat = (obj, prefix = '', out = {}) => {
+  for (const [k, v] of Object.entries(obj || {})) {
+    if (v && typeof v === 'object' && !Array.isArray(v)) flat(v, `${prefix}${k}.`, out);
+    else if (typeof v === 'string') out[prefix + k] = v;
+  }
+  return out;
+};
+const flatDicts = Object.fromEntries(LANG_CODES.map((c) => [c, flat(dict[c])]));
+const localized = [];
+const walkLocalized = (v) => {
+  if (Array.isArray(v)) return v.forEach(walkLocalized);
+  if (!v || typeof v !== 'object') return;
+  if (LANG_CODES.every((c) => typeof v[c] === 'string')) return localized.push(v);
+  Object.values(v).forEach(walkLocalized);
+};
+walkLocalized([site, menu, gallery, media]);
+const foreignTexts = collectForeignTexts([
+  ...Object.keys(flatDicts[DEFAULT_LANG]).map((k) => Object.fromEntries(LANG_CODES.map((c) => [c, flatDicts[c][k]]))),
+  ...localized,
+], LANG_CODES);
+const output = checkOutput({ files: textFiles, allFiles, pages: pageChecks, mode: MODE, siteUrl, base: BASE, forbiddenTexts, foreignTexts });
 
 const provisionalLines = [...output.provisional].map(
   ([type, { count, files }]) => `${PROVISIONAL_LABELS[type] || type} : ${count} repère${count > 1 ? 's' : ''} sur ${files.size} page${files.size > 1 ? 's' : ''}`,

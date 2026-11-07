@@ -5,6 +5,8 @@
   - Référencement : canonical, hreflang, Open Graph et sitemap cohérents avec l'URL officielle ;
     noindex sur les versions de prévisualisation, absent en production.
   - Liens et ressources internes : chaque lien, image, feuille de style ou script pointe vers un fichier existant.
+  - Langues : aucun texte d'une autre langue (traductions et contenus localisés) dans une page, hors éléments
+    explicitement marqués d'un attribut lang ; titre et description présents, de longueur adaptée, uniques par langue.
   - Contenus provisoires : éléments balisés data-provisional (repères [À CONFIRMER], photos à venir,
     plats à valider…) et textes interdits (repères non balisés, domaine fictif, lorem ipsum…).
 
@@ -28,6 +30,45 @@ const GENERIC_FORBIDDEN = [
   /[\w-]+\.(example|invalid|test)\b|\bexample\.(com|net|org)\b/i,
 ];
 
+const TITLE_MAX = 70;
+const DESCRIPTION_MAX = 170;
+const normalize = (s) => s.replace(/\s+/g, ' ').trim();
+
+/** Texte lu ou entendu par le visiteur : titre, description, contenu, textes alternatifs et libellés. */
+export function visibleText(html, lang) {
+  const attrs = [...html.matchAll(/\s(?:alt|aria-label|title|placeholder)="([^"]*)"/g)].map((m) => m[1]);
+  const meta = attr(tags(html, /<meta name="description"[^>]*>/g)[0] || '', 'content') || '';
+  const title = html.match(/<title>([^<]*)<\/title>/)?.[1] || '';
+  const body = (html.match(/<body\b[\s\S]*<\/body>/)?.[0] || html)
+    .replace(/<script\b[\s\S]*?<\/script>|<style\b[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, ' ')
+    // Passages volontairement dans une autre langue, marqués comme tels (noms de langues, crédits…)
+    .replace(/<(\w+)\b[^>]*\slang="([^"]+)"[^>]*>[\s\S]*?<\/\1>/g, (m, tag, l) => (l === lang ? m : ' '))
+    .replace(/<[^>]+>/g, ' ');
+  return normalize(decode([title, meta, body, ...attrs].join(' ')));
+}
+
+/**
+ * Textes propres à chaque langue (traductions et contenus localisés { fr, en, ar }), regroupés par langue cible :
+ * pour une page en `fr`, les textes anglais et arabes qui diffèrent du français et n'existent nulle part en français.
+ * Seules les phrases (au moins 12 caractères et une espace) sont retenues, pour éviter les faux positifs (noms, sigles).
+ */
+export function collectForeignTexts(entries, langs) {
+  const fragments = (v) => String(v).replace(/<[^>]+>/g, ' ').split(/\{[^}]*\}/).map(normalize).filter((f) => f.length >= 12 && f.includes(' '));
+  const own = Object.fromEntries(langs.map((l) => [l, entries.map((e) => normalize(String(e[l] ?? ''))).join('\n')]));
+  const out = {};
+  for (const l of langs) {
+    const set = new Set();
+    for (const e of entries) {
+      for (const other of langs) {
+        if (other === l || e[other] == null || e[other] === e[l]) continue;
+        for (const f of fragments(e[other])) if (!own[l].includes(f)) set.add(f);
+      }
+    }
+    out[l] = [...set];
+  }
+  return out;
+}
+
 /**
  * @param {object} o
  * @param {Map<string,string>} o.files    contenus texte écrits (chemin relatif → contenu)
@@ -37,8 +78,9 @@ const GENERIC_FORBIDDEN = [
  * @param {string|null} o.siteUrl
  * @param {string} o.base
  * @param {string[]} o.forbiddenTexts     textes provisoires connus (repères de toutes les langues)
+ * @param {Record<string,string[]>} [o.foreignTexts]  par langue, textes des autres langues qui ne doivent pas y figurer
  */
-export function checkOutput({ files, allFiles, pages, mode, siteUrl, base, forbiddenTexts }) {
+export function checkOutput({ files, allFiles, pages, mode, siteUrl, base, forbiddenTexts, foreignTexts = {} }) {
   const errors = [];
   const provisional = new Map(); // type → { count, files:Set }
   const stray = new Map(); // texte → Set de fichiers
@@ -58,6 +100,7 @@ export function checkOutput({ files, allFiles, pages, mode, siteUrl, base, forbi
   };
   const exists = (href) => allFiles.has(resolve(href));
   const abs = (p) => (siteUrl ? siteUrl + p : null);
+  const seenTitles = new Map(); // langue → Map(titre → page)
 
   for (const page of pages) {
     const html = files.get(page.file);
@@ -97,6 +140,28 @@ export function checkOutput({ files, allFiles, pages, mode, siteUrl, base, forbi
       const expected = page.alternates.map((a) => `${a.hreflang} ${abs(a.path)}`).sort().join('\n');
       const actual = alternates.map(([h, u]) => `${h} ${u}`).sort().join('\n');
       if (expected !== actual) errors.push(`${where} : liens hreflang incorrects.\n      attendu :\n        ${expected.replace(/\n/g, '\n        ')}\n      trouvé :\n        ${actual.replace(/\n/g, '\n        ') || '(aucun)'}`);
+    }
+
+    // Titre et description (résultats de recherche, aperçus de partage)
+    const title = decode(html.match(/<title>([^<]*)<\/title>/)?.[1] || '').trim();
+    const description = decode(attr(tags(html, /<meta name="description"[^>]*>/g)[0] || '', 'content') || '').trim();
+    if (!title || !description) errors.push(`${where} : titre ou description absent.`);
+    if (page.indexable) {
+      // Longueurs lisibles dans les résultats de recherche (pages non indexées : 404, résultats de demande, exemptées)
+      if (title.length < 10 || title.length > TITLE_MAX) errors.push(`${where} : titre de ${title.length} caractères (10 à ${TITLE_MAX} attendus) « ${title} ».`);
+      if (description.length < 50 || description.length > DESCRIPTION_MAX) errors.push(`${where} : description de ${description.length} caractères (50 à ${DESCRIPTION_MAX} attendus).`);
+      const byLang = seenTitles.get(page.lang) || new Map();
+      if (byLang.has(title)) errors.push(`${where} : titre identique à celui de ${byLang.get(title)}.`);
+      byLang.set(title, where);
+      seenTitles.set(page.lang, byLang);
+    }
+
+    // Aucun texte d'une autre langue (oubli de traduction, contenu non localisé)
+    const foreign = foreignTexts[page.lang] || [];
+    if (foreign.length) {
+      const text = visibleText(html, page.lang);
+      const found = foreign.filter((t) => text.includes(t));
+      if (found.length) errors.push(`${where} : texte d'une autre langue : ${found.slice(0, 3).map((t) => `« ${t} »`).join(', ')}${found.length > 3 ? '…' : ''}`);
     }
 
     // Liens et ressources internes

@@ -128,6 +128,27 @@ test('production acceptée quand tous les contenus sont renseignés (données de
   assert.match(await html('ar/index.html'), /<span class="hours__day">الاثنين<\/span>/);
   assert.match(await html('404.html'), /<meta name="robots" content="noindex">/);
 
+  // Aperçus de partage complets dans chaque langue (réseaux sociaux, messageries), données structurées valides
+  for (const [file, locale, others] of [['fr/index.html', 'fr_MA', ['en_US', 'ar_MA']], ['en/menu/index.html', 'en_US', ['fr_MA', 'ar_MA']], ['ar/reservations/index.html', 'ar_MA', ['fr_MA', 'en_US']]]) {
+    const h = await html(file);
+    const meta = (prop) => h.match(new RegExp(`<meta (?:property|name)="${prop}" content="([^"]*)"`))?.[1];
+    assert.equal(meta('og:url'), h.match(/<link rel="canonical" href="([^"]+)"/)[1], file);
+    assert.equal(meta('og:title'), h.match(/<title>([^<]+)<\/title>/)[1], file);
+    assert.equal(meta('og:description'), meta('description'), file);
+    assert.equal(meta('og:locale'), locale, file);
+    assert.deepEqual([...h.matchAll(/og:locale:alternate" content="([^"]+)"/g)].map((m) => m[1]), others, file);
+    assert.equal(meta('og:image:width'), '1200');
+    assert.equal(meta('og:image:height'), '630');
+    assert.ok(meta('og:image:alt'), file);
+    assert.equal(meta('twitter:card'), 'summary_large_image');
+    for (const [, json] of h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      const data = JSON.parse(json);
+      assert.equal(data['@context'], 'https://schema.org', file);
+      assert.doesNotMatch(json, /null|undefined|À CONFIRMER/, file);
+    }
+  }
+  assert.match(await html('ar/reservations/index.html'), /og:image:alt" content="دار الباشا"/);
+
   const sitemap = await html('sitemap.xml');
   assert.equal((sitemap.match(/<loc>/g) || []).length, 24);
   assert.match(sitemap, /<loc>https:\/\/www\.domaine-de-test\.ma\/fr\/confidentialite\/<\/loc>/);

@@ -183,7 +183,9 @@ avec compression Brotli et en-têtes de cache. Les mesures de laboratoire ne rem
 
 Accessibilité : Lighthouse 100 sur les pages mesurées ; navigation au clavier (menu, galerie), focus visibles, contrastes vérifiés
 automatiquement, textes alternatifs, libellés, `prefers-reduced-motion`, RTL complet. Les pages arabes ne contiennent aucun texte
-latin visible hors noms de marque et de langues (test automatique).
+latin visible hors noms de marque et de langues (test automatique). Le build refuse aussi toute page contenant une phrase
+d'une autre langue (traduction oubliée, texte alternatif ou contenu non localisé), hors passages marqués d'un attribut `lang`,
+ainsi que les titres et descriptions absents, en double ou de longueur inadaptée aux résultats de recherche.
 
 ## Réservation (phase 3)
 
